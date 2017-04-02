@@ -7,7 +7,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:eyeX="clr-namespace:EyeXFramework.Wpf;assembly=EyeXFramework"
         KeyDown="Window_KeyDown"
-        Title="MainWindow" Height="700" Width="1000" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="700" Width="1000" WindowStartupLocation="CenterScreen"  WindowState="Maximized">
     <Window.Resources>
         <Style x:Key="EyeXGazeAwareElement" TargetType="FrameworkElement">
             <Setter Property="eyeX:Behavior.GazeAware" Value="True" />
@@ -33,7 +33,7 @@
             <EventSetter Event="eyeX:Behavior.HasGazeChanged" Handler="MessegaMedium_OnHasGazeChanged" />
             <Style.Triggers>
                 <Trigger Property="eyeX:Behavior.HasGaze" Value="true">
-                    <Setter Property="Background" Value="LightYellow"/>
+                    <Setter Property="Background" Value="Green"/>
                 </Trigger>
             </Style.Triggers>
 
@@ -49,9 +49,8 @@
             </ItemsControl.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Name}" Style="{StaticResource EyeXGazeAwareSelect}">
-                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
-                        <Image Source="{Binding ImageData}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="250"/>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Name}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
+                        <Image Source="{Binding ImageData}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="193" Height="164" Margin="10,10,10,10"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

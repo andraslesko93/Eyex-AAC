@@ -115,7 +115,10 @@
       <Link>Tobii.EyeX.Client.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="cat.jpg" />
+    <Resource Include="Resources\Images\nachos.jpg" />
+    <Resource Include="Resources\Images\newspaper.jpg" />
+    <Resource Include="Resources\Images\no.jpg" />
+    <Resource Include="Resources\Images\yes.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\EyeXFramework\EyeXFramework.csproj">

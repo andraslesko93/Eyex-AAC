@@ -25,12 +25,12 @@ namespace EyexAAC
 
             this.MessageMediums.ItemsSource = new MessageMedium[]
             {
-            new MessageMedium{Name="Card 1", ImageData=LoadImage("cat.jpg")},
-            new MessageMedium{Name="Card 2", ImageData=LoadImage("cat.jpg")},
-            new MessageMedium{Name="Card 3", ImageData=LoadImage("cat.jpg")},
-            new MessageMedium{Name="Card 4", ImageData=LoadImage("cat.jpg")},
-            new MessageMedium{Name="Card 5", ImageData=LoadImage("cat.jpg")},
-            new MessageMedium{Name="Card 6", ImageData=LoadImage("cat.jpg")}
+            new MessageMedium{Name="no", ImageData=LoadImage("no.jpg")},
+            new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
+            new MessageMedium{Name="nachos", ImageData=LoadImage("nachos.jpg")},
+            new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
+          /*  new MessageMedium{Name="Card 5", ImageData=LoadImage("cat.jpg")},
+            new MessageMedium{Name="Card 6", ImageData=LoadImage("cat.jpg")}*/
             };  
         }
         private void MessegaMedium_OnHasGazeChanged(object sender, RoutedEventArgs e)
@@ -45,7 +45,7 @@ namespace EyexAAC
 
         private BitmapImage LoadImage(string filename)
         {
-            return new BitmapImage(new Uri("pack://application:,,,/" + filename));
+            return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/" + filename));
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
