@@ -36,8 +36,6 @@ C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\bin\x86\Debug\Tobii.EyeX.Client.Ne
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\bin\x86\Debug\EyeXFramework.pdb
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\bin\x86\Debug\Tobii.EyeX.Client.Net20.xml
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\Eyex-AAC.csprojResolveAssemblyReference.cache
-C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\MainWindow.baml
-C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\MainWindow.g.cs
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\App.g.cs
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\EyexAAC_Content.g.cs
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\GeneratedInternalTypeHelper.g.cs
@@ -47,3 +45,5 @@ C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\App.baml
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\EyexAAC.g.resources
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\EyexAAC.Properties.Resources.resources
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\Eyex-AAC.csproj.GenerateResource.Cache
+C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\View\MainWindow.baml
+C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\View\MainWindow.g.cs
