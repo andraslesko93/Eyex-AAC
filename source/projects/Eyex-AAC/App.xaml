@@ -13,7 +13,7 @@
     <Application.MainWindow>
         <local:MainWindow Visibility="Visible">
             <local:MainWindow.DataContext>
-                <local:MainWindowModel />
+                <local:MainWindow />
             </local:MainWindow.DataContext>
         </local:MainWindow>
     </Application.MainWindow>
