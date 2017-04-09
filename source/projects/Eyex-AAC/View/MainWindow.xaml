@@ -7,7 +7,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:eyeX="clr-namespace:EyeXFramework.Wpf;assembly=EyeXFramework"
         KeyDown="Window_KeyDown"
-        Title="MainWindow" Height="700" Width="1000" WindowStartupLocation="CenterScreen"  WindowState="Maximized">
+        Title="MainWindow" WindowStartupLocation="CenterScreen"  WindowState="Maximized">
     <Window.Resources>
         <Style x:Key="EyeXGazeAwareElement" TargetType="FrameworkElement">
             <Setter Property="eyeX:Behavior.GazeAware" Value="True" />
@@ -38,10 +38,47 @@
             </Style.Triggers>
 
         </Style>
-
     </Window.Resources>
     <Grid>
-        <ListView x:Name="MessageMediums" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+        <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" >Settings</Button>
+        <ListView x:Name="MessageMediums" Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
+            <ItemsControl.ItemsPanel >
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="5" HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Name}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
+                        <Image Source="{Binding ImageData}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="193" Height="164" Margin="10,10,10,10"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListView x:Name="FamilyMessageMediums" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
+            <ItemsControl.ItemsPanel >
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="1" HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Name}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
+                        <Image Source="{Binding ImageData}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="193" Height="164" Margin="10,10,10,10"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListView x:Name="BasicMessageMediums" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
             <ItemsControl.ItemsPanel >
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="4" HorizontalAlignment="Center"/>
@@ -56,4 +93,5 @@
             </ListView.ItemTemplate>
         </ListView>
     </Grid>
+
 </Window>

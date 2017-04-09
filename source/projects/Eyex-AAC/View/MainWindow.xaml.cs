@@ -29,9 +29,31 @@ namespace EyexAAC
             new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
             new MessageMedium{Name="nachos", ImageData=LoadImage("nachos.jpg")},
             new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
-          /*  new MessageMedium{Name="Card 5", ImageData=LoadImage("cat.jpg")},
-            new MessageMedium{Name="Card 6", ImageData=LoadImage("cat.jpg")}*/
-            };  
+            new MessageMedium{Name="Card 5", ImageData=LoadImage("newspaper.jpg")},
+            new MessageMedium{Name="Card 6", ImageData=LoadImage("newspaper.jpg")},
+            new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
+            new MessageMedium{Name="Card 5", ImageData=LoadImage("newspaper.jpg")},
+            new MessageMedium{Name="Card 6", ImageData=LoadImage("newspaper.jpg")},
+            new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
+            new MessageMedium{Name="Card 5", ImageData=LoadImage("newspaper.jpg")},
+            new MessageMedium{Name="Card 6", ImageData=LoadImage("newspaper.jpg")}
+            };
+
+            this.FamilyMessageMediums.ItemsSource = new MessageMedium[]
+            {
+            new MessageMedium{Name="no", ImageData=LoadImage("no.jpg")},
+            new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
+            new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
+            new MessageMedium{Name="Card 6", ImageData=LoadImage("newspaper.jpg")}
+            };
+            this.BasicMessageMediums.ItemsSource = new MessageMedium[]
+{
+            new MessageMedium{Name="no", ImageData=LoadImage("no.jpg")},
+            new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
+            new MessageMedium{Name="nachos", ImageData=LoadImage("nachos.jpg")},
+            new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
+};
+
         }
         private void MessegaMedium_OnHasGazeChanged(object sender, RoutedEventArgs e)
         {
