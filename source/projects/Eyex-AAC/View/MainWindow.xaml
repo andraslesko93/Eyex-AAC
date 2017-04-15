@@ -58,7 +58,7 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Name}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Id}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
                         <Image Source="{Binding Image}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="193" Height="164" Margin="10,10,10,10"/>
                     </StackPanel>
                 </DataTemplate>

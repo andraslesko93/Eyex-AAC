@@ -17,12 +17,16 @@ namespace EyexAAC.Model
         public byte[] ImageAsByte { get; set; }
         [NotMapped]
         public BitmapImage Image { get; set; }
+        public string Type { get; set; } //main or sub
+        public bool IsItMeta { get; set; }
         public MessageMedium(){}
         public MessageMedium(string name, BitmapImage image)
         {
             this.Name = name;
             this.Image = image;
             this.ImageAsByte = BitmapImageToByte(image);
+            this.Type = "main";
+            this.IsItMeta = false;
         }
         public void initializeImage()
         {

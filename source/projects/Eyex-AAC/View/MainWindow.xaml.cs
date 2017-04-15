@@ -25,16 +25,20 @@ namespace EyexAAC
         public MainWindow()
         {
             InitializeComponent();
-           /* using (var ctx = new MessageMediumContext())
+          /*  using (var ctx = new MessageMediumContext())
             {
                 MessageMedium asd = new MessageMedium("no", LoadImage("no.jpg"));
                 ctx.MessageMediums.Add(asd);
+                MetaMessageMedium meta = new MetaMessageMedium("foods", LoadImage("nachos.jpg"));
+                meta.AddElement(new MessageMedium("nachos", LoadImage("nachos.jpg")));
+                meta.AddElement(new MessageMedium("paper", LoadImage("newspaper.jpg")));
+                ctx.MetaMessageMediums.Add(meta);
                 ctx.SaveChanges();
             }*/
             List<MessageMedium> MessageMediumsToDisplay;
             using (var ctx = new MessageMediumContext())
             {
-                var msgs = ctx.MessageMediums.Where(b => b.Name == "no").ToList();
+                var msgs = ctx.MessageMediums.Where(b => b.Type == "main").ToList();
                 MessageMediumsToDisplay = msgs;
 
                 foreach (MessageMedium messageMedium in MessageMediumsToDisplay)
@@ -76,7 +80,23 @@ namespace EyexAAC
             var hasGaze = stackPanel.GetHasGaze();
             if (hasGaze)
             {
-                Console.WriteLine(stackPanel.Tag);
+                using (var ctx = new MessageMediumContext())
+                {
+                    int id = (int)stackPanel.Tag;
+                    var messageMedium = ctx.MessageMediums.FirstOrDefault(c => c.Id == id);
+                    Console.WriteLine(messageMedium.Name);
+                    if (messageMedium.IsItMeta==true)
+                    {
+                        Console.WriteLine("Meta object, containing:");
+                        var metaMessageMedium = ctx.MetaMessageMediums.FirstOrDefault(c => c.Id == id);
+                        /*foreach (MessageMedium msg in metaMessageMedium.MessageMediumList)
+                        {
+                            Console.WriteLine(msg.Name);
+                        }*/
+                        //MetaMessageMedium metaMessageMedium = (MetaMessageMedium)messageMedium;
+                    }
+                }
+
             }
         }
 
