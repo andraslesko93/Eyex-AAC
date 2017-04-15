@@ -5,3 +5,10 @@ C:\Users\Vori\Desktop\TobiiEyeXSdk-DotNet-1.8.498\source\EyeXFramework\bin\x86\D
 C:\Users\Vori\Desktop\TobiiEyeXSdk-DotNet-1.8.498\source\EyeXFramework\obj\x86\Debug\EyeXFramework.csprojResolveAssemblyReference.cache
 C:\Users\Vori\Desktop\TobiiEyeXSdk-DotNet-1.8.498\source\EyeXFramework\obj\x86\Debug\EyeXFramework.dll
 C:\Users\Vori\Desktop\TobiiEyeXSdk-DotNet-1.8.498\source\EyeXFramework\obj\x86\Debug\EyeXFramework.pdb
+C:\Projects\Eyex-AAC\source\EyeXFramework\bin\x86\Debug\EyeXFramework.dll
+C:\Projects\Eyex-AAC\source\EyeXFramework\bin\x86\Debug\EyeXFramework.pdb
+C:\Projects\Eyex-AAC\source\EyeXFramework\bin\x86\Debug\Tobii.EyeX.Client.Net20.dll
+C:\Projects\Eyex-AAC\source\EyeXFramework\bin\x86\Debug\Tobii.EyeX.Client.Net20.xml
+C:\Projects\Eyex-AAC\source\EyeXFramework\obj\x86\Debug\EyeXFramework.csprojResolveAssemblyReference.cache
+C:\Projects\Eyex-AAC\source\EyeXFramework\obj\x86\Debug\EyeXFramework.dll
+C:\Projects\Eyex-AAC\source\EyeXFramework\obj\x86\Debug\EyeXFramework.pdb

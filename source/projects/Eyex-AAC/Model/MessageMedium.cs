@@ -4,22 +4,54 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using System.Drawing;
+using System.IO;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EyexAAC.Model
 {
     class MessageMedium
     {
-        private string _Name;
-        public string Name
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public byte[] ImageAsByte { get; set; }
+        [NotMapped]
+        public BitmapImage Image { get; set; }
+        public MessageMedium(){}
+        public MessageMedium(string name, BitmapImage image)
         {
-            get { return this._Name; }
-            set { this._Name = value; }
+            this.Name = name;
+            this.Image = image;
+            this.ImageAsByte = BitmapImageToByte(image);
         }
-        private BitmapImage _ImageData;
-        public BitmapImage ImageData
+        public void initializeImage()
         {
-            get { return this._ImageData; }
-            set { this._ImageData = value; }
+            if (ImageAsByte != null)
+            {
+                Image = ByteToBitmapImage(ImageAsByte);
+            }
         }
+
+        public byte[] BitmapImageToByte(BitmapImage image)
+        {
+            MemoryStream memStream = new MemoryStream();
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(image));
+            encoder.Save(memStream);
+            return memStream.ToArray();
+        }
+        public BitmapImage ByteToBitmapImage(byte[] array)
+        {
+            using (var ms = new System.IO.MemoryStream(array))
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.StreamSource = ms;
+                image.EndInit();
+                return image;
+            }
+        }
+
     }
 }

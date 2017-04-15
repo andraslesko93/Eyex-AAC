@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Vori\Desktop\TobiiEyeXSdk-DotNet-1.8.498\source\WPFwithEFSample\obj\Debug\
+C:\Projects\Eyex-AAC\source\projects\WPFwithEFSample\obj\Debug\
 WPFwithEFSample
 none
 false
 DEBUG;TRACE
-C:\Users\Vori\Desktop\TobiiEyeXSdk-DotNet-1.8.498\source\WPFwithEFSample\App.xaml
+C:\Projects\Eyex-AAC\source\projects\WPFwithEFSample\App.xaml
 11151548125
 
 12371576200
-16-1638198784
+16-599115623
 MainWindow.xaml;
 
-False
+True
 

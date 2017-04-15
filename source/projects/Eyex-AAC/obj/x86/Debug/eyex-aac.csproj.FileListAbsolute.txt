@@ -47,3 +47,7 @@ C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\EyexAAC.Properties.R
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\Eyex-AAC.csproj.GenerateResource.Cache
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\View\MainWindow.baml
 C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\obj\x86\Debug\View\MainWindow.g.cs
+C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\bin\x86\Debug\EntityFramework.dll
+C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\bin\x86\Debug\EntityFramework.xml
+C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\bin\x86\Debug\EntityFramework.SqlServer.dll
+C:\Projects\Eyex-AAC\source\projects\Eyex-AAC\bin\x86\Debug\EntityFramework.SqlServer.xml

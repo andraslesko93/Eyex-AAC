@@ -13,48 +13,63 @@ namespace EyexAAC
     using EyexAAC.Model;
     using System.Collections.Generic;
     using System.Windows.Media.Imaging;
+    using System.Data.Entity;
+    using System.Linq;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MessageMediumContext _messageMediumContext = new MessageMediumContext();
         public MainWindow()
         {
             InitializeComponent();
-
-            this.MessageMediums.ItemsSource = new MessageMedium[]
+           /* using (var ctx = new MessageMediumContext())
             {
-            new MessageMedium{Name="no", ImageData=LoadImage("no.jpg")},
-            new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
-            new MessageMedium{Name="nachos", ImageData=LoadImage("nachos.jpg")},
-            new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
-            new MessageMedium{Name="Card 5", ImageData=LoadImage("newspaper.jpg")},
-            new MessageMedium{Name="Card 6", ImageData=LoadImage("newspaper.jpg")},
-            new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
-            new MessageMedium{Name="Card 5", ImageData=LoadImage("newspaper.jpg")},
-            new MessageMedium{Name="Card 6", ImageData=LoadImage("newspaper.jpg")},
-            new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
-            new MessageMedium{Name="Card 5", ImageData=LoadImage("newspaper.jpg")},
-            new MessageMedium{Name="Card 6", ImageData=LoadImage("newspaper.jpg")}
-            };
-
-            this.FamilyMessageMediums.ItemsSource = new MessageMedium[]
+                MessageMedium asd = new MessageMedium("no", LoadImage("no.jpg"));
+                ctx.MessageMediums.Add(asd);
+                ctx.SaveChanges();
+            }*/
+            List<MessageMedium> MessageMediumsToDisplay;
+            using (var ctx = new MessageMediumContext())
             {
-            new MessageMedium{Name="no", ImageData=LoadImage("no.jpg")},
-            new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
-            new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
-            new MessageMedium{Name="Card 6", ImageData=LoadImage("newspaper.jpg")}
-            };
-            this.BasicMessageMediums.ItemsSource = new MessageMedium[]
-{
-            new MessageMedium{Name="no", ImageData=LoadImage("no.jpg")},
-            new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
-            new MessageMedium{Name="nachos", ImageData=LoadImage("nachos.jpg")},
-            new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
-};
+                var msgs = ctx.MessageMediums.Where(b => b.Name == "no").ToList();
+                MessageMediumsToDisplay = msgs;
 
+                foreach (MessageMedium messageMedium in MessageMediumsToDisplay)
+                {
+                    if (messageMedium.ImageAsByte != null)
+                    {
+                        messageMedium.initializeImage();
+                    }
+                }
+            }
+            MessageMediums.ItemsSource = MessageMediumsToDisplay;
+
+
+            /* this.FamilyMessageMediums.ItemsSource = new MessageMedium[]
+             {
+             new MessageMedium{Name="no", ImageData=LoadImage("no.jpg")},
+             new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
+             new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
+             new MessageMedium{Name="Card 6", ImageData=LoadImage("newspaper.jpg")}
+             };
+             this.BasicMessageMediums.ItemsSource = new MessageMedium[]
+             {
+             new MessageMedium{Name="no", ImageData=LoadImage("no.jpg")},
+             new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
+             new MessageMedium{Name="nachos", ImageData=LoadImage("nachos.jpg")},
+             new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
+             };
+ */
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
         private void MessegaMedium_OnHasGazeChanged(object sender, RoutedEventArgs e)
         {
             var stackPanel = sender as StackPanel;
@@ -84,6 +99,5 @@ namespace EyexAAC
 
             Application.Current.Shutdown();
         }
-
     }
 }

@@ -1,0 +1,7 @@
+C:\Projects\Eyex-AAC\source\EyeXFramework\bin\Debug\EyeXFramework.dll
+C:\Projects\Eyex-AAC\source\EyeXFramework\bin\Debug\EyeXFramework.pdb
+C:\Projects\Eyex-AAC\source\EyeXFramework\bin\Debug\Tobii.EyeX.Client.Net20.dll
+C:\Projects\Eyex-AAC\source\EyeXFramework\bin\Debug\Tobii.EyeX.Client.Net20.xml
+C:\Projects\Eyex-AAC\source\EyeXFramework\obj\Debug\EyeXFramework.csprojResolveAssemblyReference.cache
+C:\Projects\Eyex-AAC\source\EyeXFramework\obj\Debug\EyeXFramework.dll
+C:\Projects\Eyex-AAC\source\EyeXFramework\obj\Debug\EyeXFramework.pdb
