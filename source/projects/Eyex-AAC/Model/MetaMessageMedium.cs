@@ -9,8 +9,9 @@ namespace EyexAAC.Model
 {
     class MetaMessageMedium : MessageMedium
     {
+       // public virtual ICollection<MessageMedium> MessageMediumList { get; set; }
         public List<MessageMedium> MessageMediumList { get; set; }
-        public MetaMessageMedium() : base() { }
+        public MetaMessageMedium() : base(){}
         public MetaMessageMedium(string name, BitmapImage image) : base(name, image)
         {
             MessageMediumList = new List<MessageMedium>();
@@ -20,6 +21,13 @@ namespace EyexAAC.Model
         {
             messageMedium.Type = "sub";
             MessageMediumList.Add(messageMedium);
+        }
+        public void initializeImages()
+        {
+            foreach (MessageMedium messageMedium in MessageMediumList)
+            {
+                messageMedium.initializeImage();
+            }
         }
     }
 }

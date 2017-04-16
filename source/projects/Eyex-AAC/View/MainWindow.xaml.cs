@@ -25,7 +25,7 @@ namespace EyexAAC
         public MainWindow()
         {
             InitializeComponent();
-          /*  using (var ctx = new MessageMediumContext())
+           /* using (var ctx = new MessageMediumContext())
             {
                 MessageMedium asd = new MessageMedium("no", LoadImage("no.jpg"));
                 ctx.MessageMediums.Add(asd);
@@ -38,7 +38,7 @@ namespace EyexAAC
             List<MessageMedium> MessageMediumsToDisplay;
             using (var ctx = new MessageMediumContext())
             {
-                var msgs = ctx.MessageMediums.Where(b => b.Type == "main").ToList();
+                var msgs = ctx.MessageMediums.Where(c => c.Type == "main").ToList();
                 MessageMediumsToDisplay = msgs;
 
                 foreach (MessageMedium messageMedium in MessageMediumsToDisplay)
@@ -88,12 +88,13 @@ namespace EyexAAC
                     if (messageMedium.IsItMeta==true)
                     {
                         Console.WriteLine("Meta object, containing:");
-                        var metaMessageMedium = ctx.MetaMessageMediums.FirstOrDefault(c => c.Id == id);
-                        /*foreach (MessageMedium msg in metaMessageMedium.MessageMediumList)
+                        var metaMessageMedium = ctx.MetaMessageMediums.Include(c=>c.MessageMediumList).SingleOrDefault(c => c.Id == id);
+                        metaMessageMedium.initializeImages();
+                        MessageMediums.ItemsSource = metaMessageMedium.MessageMediumList;
+                       /* foreach (MessageMedium msg in metaMessageMedium.MessageMediumList)
                         {
                             Console.WriteLine(msg.Name);
                         }*/
-                        //MetaMessageMedium metaMessageMedium = (MetaMessageMedium)messageMedium;
                     }
                 }
 
