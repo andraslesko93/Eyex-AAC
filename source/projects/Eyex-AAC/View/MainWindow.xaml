@@ -49,8 +49,11 @@
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Content="Settings" />
-        <ListView x:Name="MessageMediums" Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Click="Settings_Button_Click" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Content="Settings" />
+            <Button Click="Add_New_Button_Click" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Content="New" />
+        </StackPanel>
+        <ListView x:Name="MessageMediums" Loaded="MessageMediums_Loaded" Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
             <ListView.ItemsPanel >
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="5" HorizontalAlignment="Center"/>

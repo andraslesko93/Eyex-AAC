@@ -16,7 +16,7 @@ namespace EyexAAC.Model
         {
             MessageMediumList = new List<MessageMedium>();
             this.Action = "meta";
-            MessageMedium goBack = new MessageMedium("go back", "go_back.jpg");
+            MessageMedium goBack = new MessageMedium("go back", "pack://application:,,,/Resources/Images/go_back.jpg");
             goBack.Action = "goBack";
             AddElement(goBack);
         }

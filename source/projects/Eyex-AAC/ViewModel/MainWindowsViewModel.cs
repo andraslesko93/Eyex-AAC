@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Windows.Media.Imaging;
+using System.ComponentModel;
 
 namespace EyexAAC.ViewModel
 {
@@ -58,7 +59,6 @@ namespace EyexAAC.ViewModel
                     if (messageMedium.ImageAsByte != null)
                     {
                         messageMedium.InitializeImage();
-                        Console.WriteLine("asd");
                     }
                 }
                 return messageMediums;
@@ -105,21 +105,6 @@ namespace EyexAAC.ViewModel
                 context.BasicMessageMediums.Add(new BasicMessageMedium("no", "newspaper.jpg"));
                 context.SaveChanges();
             }
-            /* this.FamilyMessageMediums.ItemsSource = new MessageMedium[]
-             {
-             new MessageMedium{Name="no", ImageData=LoadImage("no.jpg")},
-             new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
-             new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
-             new MessageMedium{Name="Card 6", ImageData=LoadImage("newspaper.jpg")}
-             };
-             this.BasicMessageMediums.ItemsSource = new MessageMedium[]
-             {
-             new MessageMedium{Name="no", ImageData=LoadImage("no.jpg")},
-             new MessageMedium{Name="yes", ImageData=LoadImage("yes.jpg")},
-             new MessageMedium{Name="nachos", ImageData=LoadImage("nachos.jpg")},
-             new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
-             };
-            */
         }
     }
     

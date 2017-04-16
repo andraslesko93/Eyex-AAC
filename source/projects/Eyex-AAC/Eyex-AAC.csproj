@@ -80,6 +80,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\AddNewMessageMedium.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -92,7 +96,11 @@
     <Compile Include="Model\FamilyMessageMedium.cs" />
     <Compile Include="Model\MessageMediumContext.cs" />
     <Compile Include="Model\MetaMessageMedium.cs" />
+    <Compile Include="ViewModel\AddNewMessageMediumViewModel.cs" />
     <Compile Include="ViewModel\MainWindowsViewModel.cs" />
+    <Compile Include="View\AddNewMessageMedium.xaml.cs">
+      <DependentUpon>AddNewMessageMedium.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

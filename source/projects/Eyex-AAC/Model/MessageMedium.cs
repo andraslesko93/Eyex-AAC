@@ -59,7 +59,7 @@ namespace EyexAAC.Model
         }
         private BitmapImage LoadImage(string filename)
         {
-            return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/" + filename));
+            return new BitmapImage(new Uri(filename));
         }
     }
 }

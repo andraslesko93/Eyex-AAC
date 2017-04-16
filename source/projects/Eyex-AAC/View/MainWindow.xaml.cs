@@ -15,6 +15,7 @@ namespace EyexAAC
     using System.Windows.Media.Imaging;
     using System.Data.Entity;
     using System.Linq;
+    using View;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -38,7 +39,6 @@ namespace EyexAAC
             FamilyMessageMediums.ItemsSource = FamilyMessageMediumList;
             BasicMessageMediums.ItemsSource = BasicMessageMediumList;
         }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
            
@@ -78,6 +78,24 @@ namespace EyexAAC
             base.OnClosed(e);
 
             Application.Current.Shutdown();
+        }
+
+        private void Settings_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Add_New_Button_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewMessageMedium addMessageMedium = new AddNewMessageMedium(this);
+            addMessageMedium.ShowDialog();
+        }
+
+        private void MessageMediums_Loaded(object sender, RoutedEventArgs e)
+        {
+            /*MainWindowsViewModel Model = new MainWindowsViewModel();
+            Model.MessageMediums = Model.GetMessageMediums();*/
+            
         }
     }
 }
