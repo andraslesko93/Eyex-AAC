@@ -12,12 +12,15 @@ namespace EyexAAC.ViewModel
     class MainWindowsViewModel
     {
         private MessageMediumContext _messageMediumContext = new MessageMediumContext();
-        public MainWindowsViewModel() { }
+        public MainWindowsViewModel()
+        {
+            //AddInitData();
+        }
         public List<MessageMedium> GetMessageMediums()
         {
             using (var context = new MessageMediumContext())
             {
-                var messageMediums = context.MessageMediums.Where(c => c.Type == "main").ToList();
+                var messageMediums = context.MessageMediums.Where(c => c.IsSubMessage == false && c.Type == "default").ToList();
                 foreach (MessageMedium messageMedium in messageMediums)
                 {
                     if (messageMedium.ImageAsByte != null)
@@ -28,6 +31,40 @@ namespace EyexAAC.ViewModel
                 return messageMediums;
             }
         }
+
+       public List<MessageMedium> GetFamilyMessageMediums()
+        {
+            using (var context = new MessageMediumContext())
+            {
+                var messageMediums = context.MessageMediums.Where(c => c.IsSubMessage == false && c.Type == "family").ToList();
+                foreach (MessageMedium messageMedium in messageMediums)
+                {
+                    if (messageMedium.ImageAsByte != null)
+                    {
+                        messageMedium.InitializeImage();
+                    }
+                }
+                return messageMediums;
+            }
+        }
+
+        public List<MessageMedium> GetBasicMessageMediums()
+        {
+            using (var context = new MessageMediumContext())
+            {
+                var messageMediums = context.MessageMediums.Where(c => c.IsSubMessage == false && c.Type == "basic").ToList();
+                foreach (MessageMedium messageMedium in messageMediums)
+                {
+                    if (messageMedium.ImageAsByte != null)
+                    {
+                        messageMedium.InitializeImage();
+                        Console.WriteLine("asd");
+                    }
+                }
+                return messageMediums;
+            }
+        }
+
         public MessageMedium GetMessageMediumById(int id)
         {
             using (var context = new MessageMediumContext())
@@ -53,13 +90,20 @@ namespace EyexAAC.ViewModel
         {
             using (var context = new MessageMediumContext())
             {
-                 MessageMedium msg = new MessageMedium("no", "no.jpg");
-                 context.MessageMediums.Add(msg);
-                 MetaMessageMedium meta = new MetaMessageMedium("foods", "nachos.jpg");
-                 meta.AddElement(new MessageMedium("nachos", "nachos.jpg"));
-                 meta.AddElement(new MessageMedium("paper", "newspaper.jpg"));
-                 context.MetaMessageMediums.Add(meta);
-                 context.SaveChanges();
+                MessageMedium msg = new MessageMedium("no", "no.jpg");
+                context.MessageMediums.Add(msg);
+                MetaMessageMedium meta = new MetaMessageMedium("foods", "nachos.jpg");
+                meta.AddElement(new MessageMedium("nachos", "nachos.jpg"));
+                meta.AddElement(new MessageMedium("paper", "newspaper.jpg"));
+                context.MetaMessageMediums.Add(meta);
+                context.FamilyMessageMediums.Add(new FamilyMessageMedium("no", "no.jpg"));
+                context.FamilyMessageMediums.Add(new FamilyMessageMedium("yes", "yes.jpg"));
+                context.FamilyMessageMediums.Add(new FamilyMessageMedium("no", "nachos.jpg"));
+                context.BasicMessageMediums.Add(new BasicMessageMedium("no", "no.jpg"));
+                context.BasicMessageMediums.Add(new BasicMessageMedium("yes", "yes.jpg"));
+                context.BasicMessageMediums.Add(new BasicMessageMedium("no", "nachos.jpg"));
+                context.BasicMessageMediums.Add(new BasicMessageMedium("no", "newspaper.jpg"));
+                context.SaveChanges();
             }
             /* this.FamilyMessageMediums.ItemsSource = new MessageMedium[]
              {

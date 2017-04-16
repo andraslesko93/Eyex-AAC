@@ -11,5 +11,7 @@ namespace EyexAAC.Model
     {
         public DbSet<MessageMedium> MessageMediums { get; set; }
         public DbSet<MetaMessageMedium> MetaMessageMediums { get; set; }
+        public DbSet<FamilyMessageMedium> FamilyMessageMediums { get; set; }
+        public DbSet<BasicMessageMedium> BasicMessageMediums { get; set; }
     }
 }

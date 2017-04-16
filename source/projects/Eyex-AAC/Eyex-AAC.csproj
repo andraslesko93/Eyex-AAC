@@ -88,6 +88,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\BasicMessageMedium.cs" />
+    <Compile Include="Model\FamilyMessageMedium.cs" />
     <Compile Include="Model\MessageMediumContext.cs" />
     <Compile Include="Model\MetaMessageMedium.cs" />
     <Compile Include="ViewModel\MainWindowsViewModel.cs" />
@@ -117,6 +119,8 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\EyexAAC.Model.BasicMessageMedium.datasource" />
+    <None Include="Properties\DataSources\EyexAAC.Model.FamilyMessageMedium.datasource" />
     <None Include="Properties\DataSources\EyexAAC.Model.MessageMedium.datasource" />
     <None Include="Properties\DataSources\EyexAAC.Model.MetaMessageMedium.datasource" />
     <None Include="Properties\Settings.settings">

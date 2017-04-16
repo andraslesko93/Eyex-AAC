@@ -22,7 +22,7 @@ namespace EyexAAC.Model
         }
         public void AddElement(MessageMedium messageMedium)
         {
-            messageMedium.Type = "sub";
+            messageMedium.IsSubMessage = true;
             MessageMediumList.Add(messageMedium);
         }
         public void InitializeImages()

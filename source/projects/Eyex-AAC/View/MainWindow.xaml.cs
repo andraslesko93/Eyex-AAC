@@ -23,12 +23,20 @@ namespace EyexAAC
     {
         private MainWindowsViewModel mainWindowViewModel = new MainWindowsViewModel();
         List<MessageMedium> MessageMediumList;
+        List<MessageMedium> FamilyMessageMediumList;
+        List<MessageMedium> BasicMessageMediumList;
+
         public MainWindow()
         {
             InitializeComponent();
-            mainWindowViewModel.AddInitData();
+
             MessageMediumList = mainWindowViewModel.GetMessageMediums();
+            FamilyMessageMediumList = mainWindowViewModel.GetFamilyMessageMediums();
+            BasicMessageMediumList = mainWindowViewModel.GetBasicMessageMediums();
+
             MessageMediums.ItemsSource = MessageMediumList;
+            FamilyMessageMediums.ItemsSource = FamilyMessageMediumList;
+            BasicMessageMediums.ItemsSource = BasicMessageMediumList;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
