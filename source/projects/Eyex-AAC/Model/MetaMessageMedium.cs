@@ -22,11 +22,11 @@ namespace EyexAAC.Model
             messageMedium.Type = "sub";
             MessageMediumList.Add(messageMedium);
         }
-        public void initializeImages()
+        public void InitializeImages()
         {
             foreach (MessageMedium messageMedium in MessageMediumList)
             {
-                messageMedium.initializeImage();
+                messageMedium.InitializeImage();
             }
         }
     }

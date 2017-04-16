@@ -90,7 +90,7 @@
     </Compile>
     <Compile Include="Model\MessageMediumContext.cs" />
     <Compile Include="Model\MetaMessageMedium.cs" />
-    <Compile Include="ViewModel\MessageMediumViewModel.cs" />
+    <Compile Include="ViewModel\MainWindowsViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

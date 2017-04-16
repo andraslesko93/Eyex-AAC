@@ -28,7 +28,7 @@ namespace EyexAAC.Model
             this.Type = "main";
             this.IsItMeta = false;
         }
-        public void initializeImage()
+        public void InitializeImage()
         {
             if (ImageAsByte != null)
             {
