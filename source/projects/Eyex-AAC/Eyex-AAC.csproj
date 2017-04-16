@@ -130,6 +130,7 @@
       <Link>Tobii.EyeX.Client.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Images\go_back.jpg" />
     <Resource Include="Resources\Images\nachos.jpg" />
     <Resource Include="Resources\Images\newspaper.jpg" />
     <Resource Include="Resources\Images\no.jpg" />

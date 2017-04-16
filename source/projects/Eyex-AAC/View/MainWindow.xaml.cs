@@ -22,11 +22,13 @@ namespace EyexAAC
     public partial class MainWindow : Window
     {
         private MainWindowsViewModel mainWindowViewModel = new MainWindowsViewModel();
+        List<MessageMedium> MessageMediumList;
         public MainWindow()
         {
             InitializeComponent();
             mainWindowViewModel.AddInitData();
-            MessageMediums.ItemsSource = mainWindowViewModel.GetMessageMediums();
+            MessageMediumList = mainWindowViewModel.GetMessageMediums();
+            MessageMediums.ItemsSource = MessageMediumList;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -41,10 +43,13 @@ namespace EyexAAC
             if (hasGaze)
             {
                 MessageMedium messageMedium = mainWindowViewModel.GetMessageMediumById((int)stackPanel.Tag);
-                if (messageMedium.IsItMeta)
+                if (messageMedium.Action == "meta")
                 {
-                    //TODO: Store items
                     MessageMediums.ItemsSource = mainWindowViewModel.GetMetaMessageMediumList(messageMedium);
+                }
+                else if (messageMedium.Action == "goBack")
+                {
+                    MessageMediums.ItemsSource = MessageMediumList;
                 }
                 else
                 {

@@ -44,7 +44,8 @@ namespace EyexAAC.ViewModel
             {
                 var metaMessageMedium = context.MetaMessageMediums.Include(c => c.MessageMediumList).SingleOrDefault(c => c.Id == messageMedium.Id);
                 metaMessageMedium.InitializeImages();
-                return metaMessageMedium.MessageMediumList;   
+                return metaMessageMedium.MessageMediumList;  
+                 
             }
         }
 
@@ -52,11 +53,11 @@ namespace EyexAAC.ViewModel
         {
             using (var context = new MessageMediumContext())
             {
-                 MessageMedium msg = new MessageMedium("no", LoadImage("no.jpg"));
+                 MessageMedium msg = new MessageMedium("no", "no.jpg");
                  context.MessageMediums.Add(msg);
-                 MetaMessageMedium meta = new MetaMessageMedium("foods", LoadImage("nachos.jpg"));
-                 meta.AddElement(new MessageMedium("nachos", LoadImage("nachos.jpg")));
-                 meta.AddElement(new MessageMedium("paper", LoadImage("newspaper.jpg")));
+                 MetaMessageMedium meta = new MetaMessageMedium("foods", "nachos.jpg");
+                 meta.AddElement(new MessageMedium("nachos", "nachos.jpg"));
+                 meta.AddElement(new MessageMedium("paper", "newspaper.jpg"));
                  context.MetaMessageMediums.Add(meta);
                  context.SaveChanges();
             }
@@ -75,10 +76,6 @@ namespace EyexAAC.ViewModel
              new MessageMedium{Name="newspaper", ImageData=LoadImage("newspaper.jpg")},
              };
             */
-        }
-        private BitmapImage LoadImage(string filename)
-        {
-            return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/" + filename));
         }
     }
     

@@ -18,15 +18,14 @@ namespace EyexAAC.Model
         [NotMapped]
         public BitmapImage Image { get; set; }
         public string Type { get; set; } //main or sub
-        public bool IsItMeta { get; set; }
+        public string Action { get; set; }
         public MessageMedium(){}
-        public MessageMedium(string name, BitmapImage image)
+        public MessageMedium(string name, string image)
         {
             this.Name = name;
-            this.Image = image;
-            this.ImageAsByte = BitmapImageToByte(image);
+            this.Image = LoadImage(image);
+            this.ImageAsByte = BitmapImageToByte(Image);
             this.Type = "main";
-            this.IsItMeta = false;
         }
         public void InitializeImage()
         {
@@ -56,6 +55,9 @@ namespace EyexAAC.Model
                 return image;
             }
         }
-
+        private BitmapImage LoadImage(string filename)
+        {
+            return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/" + filename));
+        }
     }
 }

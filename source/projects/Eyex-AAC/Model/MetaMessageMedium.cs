@@ -12,10 +12,13 @@ namespace EyexAAC.Model
        // public virtual ICollection<MessageMedium> MessageMediumList { get; set; }
         public List<MessageMedium> MessageMediumList { get; set; }
         public MetaMessageMedium() : base(){}
-        public MetaMessageMedium(string name, BitmapImage image) : base(name, image)
+        public MetaMessageMedium(string name, string image) : base(name, image)
         {
             MessageMediumList = new List<MessageMedium>();
-            this.IsItMeta = true;
+            this.Action = "meta";
+            MessageMedium goBack = new MessageMedium("go back", "go_back.jpg");
+            goBack.Action = "goBack";
+            AddElement(goBack);
         }
         public void AddElement(MessageMedium messageMedium)
         {
