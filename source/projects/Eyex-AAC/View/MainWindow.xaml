@@ -5,98 +5,13 @@
 <Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:eyeX="clr-namespace:EyeXFramework.Wpf;assembly=EyeXFramework"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Model="clr-namespace:EyexAAC.Model" mc:Ignorable="d" x:Class="EyexAAC.MainWindow"
-        KeyDown="Window_KeyDown"
-        Title="MainWindow" WindowStartupLocation="CenterScreen"  WindowState="Maximized" Loaded="Window_Loaded">
-    <Window.Resources>
-        <Style x:Key="EyeXGazeAwareElement" TargetType="{x:Type FrameworkElement}">
-            <Setter Property="eyeX:Behavior.GazeAware" Value="True" />
-            <Setter Property="eyeX:Behavior.GazeAwareDelay" Value="250" />
-        </Style>
 
-        <Style x:Key="EyeXGazeAwareListViewItem" BasedOn="{StaticResource EyeXGazeAwareElement}" TargetType="{x:Type ListViewItem}">
-            <Setter Property="Margin" Value="20,20,20,20" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Focusable" Value="False"/>
-            <Style.Triggers>
-                <Trigger Property="eyeX:Behavior.HasGaze" Value="true">
-                    <Setter Property="Background" Value="LightBlue"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="EyeXGazeAwareSelect" TargetType="{x:Type StackPanel}">
-            <Setter Property="Margin" Value="10,10,10,10" />
-            <Setter Property="eyeX:Behavior.GazeAware" Value="True" />
-            <Setter Property="eyeX:Behavior.GazeAwareDelay" Value="1000" />
-            <EventSetter Event="eyeX:Behavior.HasGazeChanged" Handler="MessegaMedium_OnHasGazeChanged" />
-            <Style.Triggers>
-                <Trigger Property="eyeX:Behavior.HasGaze" Value="true">
-                    <Setter Property="Background" Value="Green"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:Model="clr-namespace:EyexAAC.Model" mc:Ignorable="d" x:Class="EyexAAC.MainWindow"
+        xmlns:views = "clr-namespace:EyexAAC.View"
+        Title="MainWindow" WindowStartupLocation="CenterScreen"  WindowState="Maximized">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*" />
-            <ColumnDefinition Width="1*" />
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Click="Settings_Button_Click" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Content="Settings" />
-            <Button Click="Add_New_Button_Click" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Content="New" />
-        </StackPanel>
-        <ListView x:Name="MessageMediums" Loaded="MessageMediums_Loaded" Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
-            <ListView.ItemsPanel >
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="5" HorizontalAlignment="Center"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Id}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
-                        <Image Source="{Binding Image}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="193" Height="164" Margin="10,10,10,10"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        
-        <ListView x:Name="FamilyMessageMediums" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
-            <ListView.ItemsPanel >
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="1" HorizontalAlignment="Center"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Id}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
-                        <Image Source="{Binding Image}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="193" Height="164" Margin="10,10,10,10"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <ListView x:Name="BasicMessageMediums" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
-            <ListView.ItemsPanel >
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="5" HorizontalAlignment="Center"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Id}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
-                        <Image Source="{Binding Image}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="193" Height="164" Margin="10,10,10,10"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        
+        <views:MessageMediumView x:Name="MessageMediumViewControl" Loaded="MessageMediumViewControl_Loaded"/>
     </Grid>
-
 </Window>

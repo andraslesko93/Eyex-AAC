@@ -7,19 +7,44 @@ using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.IO;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace EyexAAC.Model
 {
-    class MessageMedium
+    class MessageMedium: INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private string name;
+        private BitmapImage image;
+
         public int Id { get; set; }
-        public string Name { get; set; }
+
         public byte[] ImageAsByte { get; set; }
-        [NotMapped]
-        public BitmapImage Image { get; set; }
         public bool IsSubMessage { get; set; } //main or sub
         public string Type { get; set; }
         public string Action { get; set; }
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                name = value;
+                RaisePropertyChanged("Name");
+            }
+        }
+        [NotMapped]
+        public BitmapImage Image
+        {
+            get{ return image; }
+            set
+            {
+                image = value;
+                RaisePropertyChanged("Image");
+            }
+        }
+
+
         public MessageMedium(){}
         public MessageMedium(string name, string image)
         {
@@ -61,5 +86,14 @@ namespace EyexAAC.Model
         {
             return new BitmapImage(new Uri(filename));
         }
+        private void RaisePropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
+        }
+
+
     }
 }
