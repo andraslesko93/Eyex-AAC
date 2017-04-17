@@ -14,10 +14,10 @@ namespace EyexAAC.Model
         public MetaMessageMedium() : base(){}
         public MetaMessageMedium(string name, string image) : base(name, image)
         {
+            Type = "meta";
             MessageMediumList = new List<MessageMedium>();
-            this.Action = "meta";
             MessageMedium goBack = new MessageMedium("go back", "pack://application:,,,/Resources/Images/go_back.jpg");
-            goBack.Action = "goBack";
+            goBack.Type = "goBack"; //A special goBack MessageMedium to navigate.
             AddElement(goBack);
         }
         public void AddElement(MessageMedium messageMedium)

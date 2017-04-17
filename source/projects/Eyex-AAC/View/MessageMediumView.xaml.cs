@@ -38,14 +38,14 @@ namespace EyexAAC.View
                 messageMediumViewModel.performActionOnMessageMedium((int)stackPanel.Tag);
             }
         }
-        private void Settings_Button_Click(object sender, RoutedEventArgs e)
+        private void Manage_Button_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
         private void Add_New_Button_Click(object sender, RoutedEventArgs e)
         {
-            AddNewMessageMedium addMessageMedium = new AddNewMessageMedium();
+            AddNewMMView addMessageMedium = new AddNewMMView();
             addMessageMedium.ShowDialog();
         }
     }

@@ -48,7 +48,7 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Click="Settings_Button_Click" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Content="Settings" />
+            <Button Click="Manage_Button_Click" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Content="Manage" />
             <Button Click="Add_New_Button_Click" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Content="New" />
         </StackPanel>
 

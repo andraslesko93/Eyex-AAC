@@ -13,7 +13,8 @@ namespace EyexAAC.ViewModel
 {
     class MessageMediumViewModel
     {
-        private List<MessageMedium> messageMediumsCache;
+        private static List<MessageMedium> messageMediumsCache;
+        private static bool isMetaOpen = false;
         public static ObservableCollection<MessageMedium> MessageMediums
         {
             get;
@@ -29,10 +30,10 @@ namespace EyexAAC.ViewModel
             get;
             set;
         }
-
+        public MessageMediumViewModel(){}
         public void LoadMessageMediums()
         {
-           // AddInitData();
+            //AddInitData();
 
             MessageMediums = new ObservableCollection<MessageMedium>();
             GetMessageMediums().ToList().ForEach(MessageMediums.Add);
@@ -43,6 +44,18 @@ namespace EyexAAC.ViewModel
             BasicMessageMediums = new ObservableCollection<BasicMessageMedium>();
             GetBasicMessageMediums().ToList().ForEach(BasicMessageMediums.Add);
         }
+        public int addNewMessageMedium(string name, string type, string filePath)
+        {
+            switch (type)
+            {
+                case "Family":
+                    return AddFamilyMessageMediums(new FamilyMessageMedium(name, filePath));
+                case "Basic":
+                    return AddBasicMessageMediums(new BasicMessageMedium(name, filePath));
+                default:
+                    return AddMessageMediums(new MessageMedium(name, filePath));
+            }
+        }
         public int AddMessageMediums(MessageMedium messageMedium)
         {
             int returnCode = 0;
@@ -51,7 +64,14 @@ namespace EyexAAC.ViewModel
                 context.MessageMediums.Add(messageMedium);
                 returnCode = context.SaveChanges();
             }
-            MessageMediums.Add(messageMedium);
+            if (isMetaOpen == true)
+            {
+                messageMediumsCache.Add(messageMedium);
+            }
+            else
+            {
+                MessageMediums.Add(messageMedium);
+            }
             return returnCode;
         }
 
@@ -79,16 +99,11 @@ namespace EyexAAC.ViewModel
             return returnCode;
         }
 
-        private MessageMediumContext _messageMediumContext = new MessageMediumContext();
-        public MessageMediumViewModel()
-        {
-
-        }
-       public List<MessageMedium> GetMessageMediums()
+        public List<MessageMedium> GetMessageMediums()
         {
             using (var context = new MessageMediumContext())
             {
-                var messageMediums = context.MessageMediums.Where(c => c.IsSubMessage == false && c.Type == "default").ToList();
+                var messageMediums = context.MessageMediums.Where(c => c.IsSubMessage == false && (c.Type == "default" || c.Type=="meta")).ToList();
                 foreach (MessageMedium messageMedium in messageMediums)
                 {
                     if (messageMedium.ImageAsByte != null)
@@ -99,7 +114,7 @@ namespace EyexAAC.ViewModel
                 return messageMediums;
             }
         }
-       public List<FamilyMessageMedium> GetFamilyMessageMediums()
+        public List<FamilyMessageMedium> GetFamilyMessageMediums()
         {
             using (var context = new MessageMediumContext())
             {
@@ -114,7 +129,6 @@ namespace EyexAAC.ViewModel
                 return messageMediums;
             }
         }
-
         public List<BasicMessageMedium> GetBasicMessageMediums()
         {
             using (var context = new MessageMediumContext())
@@ -133,17 +147,19 @@ namespace EyexAAC.ViewModel
         internal void performActionOnMessageMedium(int id)
         {
             MessageMedium messageMedium = GetMessageMediumById(id);
-            if (messageMedium.Action == "meta")
+            if (messageMedium.Type == "meta")
             {
                 messageMediumsCache = new List<MessageMedium>();
                 MessageMediums.ToList().ForEach(messageMediumsCache.Add);
                 MessageMediums.Clear();
                 GetMetaMessageMediumList(messageMedium).ToList().ForEach(MessageMediums.Add);
+                isMetaOpen = true;
             }
-            else if (messageMedium.Action == "goBack")
+            else if (messageMedium.Type == "goBack")
             {
                 MessageMediums.Clear();
                 messageMediumsCache.ToList().ForEach(MessageMediums.Add);
+                isMetaOpen = false;
             }
             else
             {
@@ -151,7 +167,6 @@ namespace EyexAAC.ViewModel
                 //TODO: Use a reader library instead.
             }
         }
-
         private MessageMedium GetMessageMediumById(int id)
         {
             using (var context = new MessageMediumContext())
@@ -161,7 +176,6 @@ namespace EyexAAC.ViewModel
                 return messageMedium;
             }
         }
-        
         private List<MessageMedium> GetMetaMessageMediumList(MessageMedium messageMedium)
         {
             using (var context = new MessageMediumContext())
@@ -172,7 +186,6 @@ namespace EyexAAC.ViewModel
                  
             }
         }
-
         public void AddInitData()
         {
             BasicMessageMedium msg1 = new
