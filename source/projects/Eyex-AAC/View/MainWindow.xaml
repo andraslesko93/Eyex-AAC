@@ -11,7 +11,25 @@
         xmlns:Model="clr-namespace:EyexAAC.Model" mc:Ignorable="d" x:Class="EyexAAC.MainWindow"
         xmlns:views = "clr-namespace:EyexAAC.View"
         Title="MainWindow" WindowStartupLocation="CenterScreen"  WindowState="Maximized">
+
     <Grid>
-        <views:MessageMediumView x:Name="MessageMediumViewControl" Loaded="MessageMediumViewControl_Loaded"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Click="Manage_Button_Click" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Content="Manage" />
+            <Button Click="Add_New_Button_Click" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Content="New" />
+        </StackPanel>
+
+        <views:MessageMediumView x:Name="MessageMediumViewControl" Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Loaded="MessageMediumViewControl_Loaded"/>
+        <views:FamilyMessageMediumView x:Name="FamilyMessageMediumViewControl" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Loaded="FamilyMessageMediumViewControl_Loaded"/>
+        <views:BasicMessageMediumView x:Name="BasicMessageMediumViewControl" Grid.Row="2" Grid.Column="0" Loaded="BasicMessageMediumViewControl_Loaded"/>
     </Grid>
+
 </Window>

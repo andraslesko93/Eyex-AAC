@@ -1,5 +1,4 @@
-﻿using EyexAAC.Model;
-using EyexAAC.ViewModel;
+﻿using EyexAAC.ViewModel;
 using EyeXFramework.Wpf;
 using System;
 using System.Collections.Generic;
@@ -19,25 +18,23 @@ using System.Windows.Shapes;
 namespace EyexAAC.View
 {
     /// <summary>
-    /// Interaction logic for MessageMediumView.xaml
+    /// Interaction logic for FamilyMessageMediumView.xaml
     /// </summary>
-    public partial class MessageMediumView : UserControl
+    public partial class FamilyMessageMediumView : UserControl
     {
-        private MessageMediumViewModel messageMediumViewModel = new MessageMediumViewModel();
-        public MessageMediumView()
+        private FamilyMessageMediumViewModel messageMediumViewModel = new FamilyMessageMediumViewModel();
+        public FamilyMessageMediumView()
         {
             InitializeComponent();
         }
-
         private void MessegaMedium_OnHasGazeChanged(object sender, RoutedEventArgs e)
         {
             var stackPanel = sender as StackPanel;
             var hasGaze = stackPanel.GetHasGaze();
             if (hasGaze)
             {
-                messageMediumViewModel.performActionOnMessageMedium((int)stackPanel.Tag);
+                messageMediumViewModel.performActionOnFamilyMessageMedium((int)stackPanel.Tag);
             }
         }
-        
     }
 }

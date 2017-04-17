@@ -20,41 +20,12 @@ namespace EyexAAC.ViewModel
             get;
             set;
         }
-        public static ObservableCollection<FamilyMessageMedium> FamilyMessageMediums
-        {
-            get;
-            set;
-        }
-        public static ObservableCollection<BasicMessageMedium> BasicMessageMediums
-        {
-            get;
-            set;
-        }
         public MessageMediumViewModel(){}
         public void LoadMessageMediums()
         {
             //AddInitData();
-
             MessageMediums = new ObservableCollection<MessageMedium>();
             GetMessageMediums().ToList().ForEach(MessageMediums.Add);
-
-            FamilyMessageMediums = new ObservableCollection<FamilyMessageMedium>();
-            GetFamilyMessageMediums().ToList().ForEach(FamilyMessageMediums.Add);
-
-            BasicMessageMediums = new ObservableCollection<BasicMessageMedium>();
-            GetBasicMessageMediums().ToList().ForEach(BasicMessageMediums.Add);
-        }
-        public int addNewMessageMedium(string name, string type, string filePath)
-        {
-            switch (type)
-            {
-                case "Family":
-                    return AddFamilyMessageMediums(new FamilyMessageMedium(name, filePath));
-                case "Basic":
-                    return AddBasicMessageMediums(new BasicMessageMedium(name, filePath));
-                default:
-                    return AddMessageMediums(new MessageMedium(name, filePath));
-            }
         }
         public int AddMessageMediums(MessageMedium messageMedium)
         {
@@ -74,31 +45,6 @@ namespace EyexAAC.ViewModel
             }
             return returnCode;
         }
-
-        public int AddFamilyMessageMediums(FamilyMessageMedium familyMessageMedium)
-        {
-            int returnCode = 0;
-            using (var context = new MessageMediumContext())
-            {
-                context.FamilyMessageMediums.Add(familyMessageMedium);
-                returnCode = context.SaveChanges();
-            }
-            FamilyMessageMediums.Add(familyMessageMedium);
-            return returnCode;
-        }
-
-        public int AddBasicMessageMediums(BasicMessageMedium basicMessageMedium)
-        {
-            int returnCode = 0;
-            using (var context = new MessageMediumContext())
-            {
-                context.BasicMessageMediums.Add(basicMessageMedium);
-                returnCode = context.SaveChanges();
-            }
-            BasicMessageMediums.Add(basicMessageMedium);
-            return returnCode;
-        }
-
         public List<MessageMedium> GetMessageMediums()
         {
             using (var context = new MessageMediumContext())
@@ -114,44 +60,19 @@ namespace EyexAAC.ViewModel
                 return messageMediums;
             }
         }
-        public List<FamilyMessageMedium> GetFamilyMessageMediums()
-        {
-            using (var context = new MessageMediumContext())
-            {
-                var messageMediums = context.FamilyMessageMediums.Where(c => c.IsSubMessage == false).ToList();
-                foreach (MessageMedium messageMedium in messageMediums)
-                {
-                    if (messageMedium.ImageAsByte != null)
-                    {
-                        messageMedium.InitializeImage();
-                    }
-                }
-                return messageMediums;
-            }
-        }
-        public List<BasicMessageMedium> GetBasicMessageMediums()
-        {
-            using (var context = new MessageMediumContext())
-            {
-                var messageMediums = context.BasicMessageMediums.Where(c => c.IsSubMessage == false).ToList();
-                foreach (MessageMedium messageMedium in messageMediums)
-                {
-                    if (messageMedium.ImageAsByte != null)
-                    {
-                        messageMedium.InitializeImage();
-                    }
-                }
-                return messageMediums;
-            }
-        }
         internal void performActionOnMessageMedium(int id)
         {
-            MessageMedium messageMedium = GetMessageMediumById(id);
+            MessageMedium messageMedium = GetMessageMediumFromCollectionById(id);
             if (messageMedium.Type == "meta")
             {
                 messageMediumsCache = new List<MessageMedium>();
                 MessageMediums.ToList().ForEach(messageMediumsCache.Add);
                 MessageMediums.Clear();
+
+                MessageMedium goBack = new MessageMedium("go back", "pack://application:,,,/Resources/Images/go_back.jpg");
+                goBack.Type = "goBack"; //A special goBack MessageMedium to navigate.
+                MessageMediums.Add(goBack);
+
                 GetMetaMessageMediumList(messageMedium).ToList().ForEach(MessageMediums.Add);
                 isMetaOpen = true;
             }
@@ -167,6 +88,15 @@ namespace EyexAAC.ViewModel
                 //TODO: Use a reader library instead.
             }
         }
+
+        private MessageMedium GetMessageMediumFromCollectionById(int id)
+        {   
+            var messageMedium = MessageMediums.FirstOrDefault(c => c.Id == id);
+            messageMedium.InitializeImage();
+            return messageMedium;   
+        }
+
+        /*
         private MessageMedium GetMessageMediumById(int id)
         {
             using (var context = new MessageMediumContext())
@@ -175,7 +105,7 @@ namespace EyexAAC.ViewModel
                 messageMedium.InitializeImage();
                 return messageMedium;
             }
-        }
+        }*/
         private List<MessageMedium> GetMetaMessageMediumList(MessageMedium messageMedium)
         {
             using (var context = new MessageMediumContext())
@@ -192,17 +122,18 @@ namespace EyexAAC.ViewModel
                 BasicMessageMedium("no", "pack://application:,,,/Resources/Images/no.jpg");
             BasicMessageMedium msg2 = new
                 BasicMessageMedium("yes", "pack://application:,,,/Resources/Images/yes.jpg");
-
             MessageMedium msg3 = new
-               MessageMedium("no", "pack://application:,,,/Resources/Images/no.jpg");
+               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg");
+            MessageMedium msg38 = new
+               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg");
             MessageMedium msg4 = new
-                MessageMedium("yes", "pack://application:,,,/Resources/Images/yes.jpg");
-
+                MessageMedium("ye5s", "pack://application:,,,/Resources/Images/yes.jpg");
             FamilyMessageMedium msg5 = new
                FamilyMessageMedium("no", "pack://application:,,,/Resources/Images/no.jpg");
             FamilyMessageMedium msg6 = new
                 FamilyMessageMedium("yes", "pack://application:,,,/Resources/Images/yes.jpg");
-
+            FamilyMessageMedium msg9 = new
+               FamilyMessageMedium("yes", "pack://application:,,,/Resources/Images/nachos.jpg");
             MetaMessageMedium msg7 = new
               MetaMessageMedium("foods", "pack://application:,,,/Resources/Images/nachos.jpg");
             msg7.AddElement(msg3);
@@ -213,10 +144,10 @@ namespace EyexAAC.ViewModel
             {
                 context.BasicMessageMediums.Add(msg1);
                 context.BasicMessageMediums.Add(msg2);
-                context.MessageMediums.Add(msg3);
-                context.MessageMediums.Add(msg4);
+                context.MessageMediums.Add(msg38);
                 context.FamilyMessageMediums.Add(msg5);
                 context.FamilyMessageMediums.Add(msg6);
+                context.FamilyMessageMediums.Add(msg9);
                 context.MetaMessageMediums.Add(msg7);
                 context.SaveChanges();
             }

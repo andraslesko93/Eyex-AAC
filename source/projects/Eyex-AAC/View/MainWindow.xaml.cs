@@ -27,8 +27,19 @@ namespace EyexAAC
         {
             MessageMediumViewModel messageMediumViewModelObject = new MessageMediumViewModel();
             messageMediumViewModelObject.LoadMessageMediums();
-
             MessageMediumViewControl.DataContext = messageMediumViewModelObject;
+        }
+        private void FamilyMessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            FamilyMessageMediumViewModel messageMediumViewModelObject = new FamilyMessageMediumViewModel();
+            messageMediumViewModelObject.LoadFamilyMessageMediums();
+            FamilyMessageMediumViewControl.DataContext = messageMediumViewModelObject;
+        }
+        private void BasicMessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            BasicMessageMediumViewModel messageMediumViewModelObject = new BasicMessageMediumViewModel();
+            messageMediumViewModelObject.LoadBasicMessageMediums();
+            BasicMessageMediumViewControl.DataContext = messageMediumViewModelObject;
         }
 
         protected override void OnClosed(EventArgs e)
@@ -36,6 +47,16 @@ namespace EyexAAC
             base.OnClosed(e);
 
             Application.Current.Shutdown();
+        }
+        private void Manage_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Add_New_Button_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewMMView addMessageMedium = new AddNewMMView();
+            addMessageMedium.ShowDialog();
         }
     }
 }

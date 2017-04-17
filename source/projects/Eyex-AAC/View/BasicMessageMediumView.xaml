@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="EyexAAC.View.MessageMediumView"
+﻿<UserControl x:Class="EyexAAC.View.BasicMessageMediumView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -38,7 +38,7 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <ListView ItemsSource="{Binding Path=MessageMediums}" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
+        <ListView ItemsSource="{Binding Path=BasicMessageMediums}"  HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
             <ListView.ItemsPanel >
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="5" HorizontalAlignment="Center"/>

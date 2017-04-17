@@ -10,8 +10,8 @@ namespace EyexAAC.View
     /// </summary>
     public partial class AddNewMMView : Window
     {
-        private MessageMediumViewModel messageMediumViewModel = 
-            new MessageMediumViewModel();
+        private AddNewMMViewModel addNewMMViewModel = 
+            new AddNewMMViewModel();
 
         public AddNewMMView()
         {
@@ -30,7 +30,8 @@ namespace EyexAAC.View
         }
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            int returnCode = messageMediumViewModel.addNewMessageMedium(name.Text, comboBox.Text, filePath.Text);
+            int returnCode = addNewMMViewModel.addNewMessageMedium(name.Text, comboBox.Text, filePath.Text);
+
             if (returnCode > 0)
             {
                 infoMessage.Content= "Successfully saved a message medium.";
