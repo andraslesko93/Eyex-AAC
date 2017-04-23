@@ -24,6 +24,7 @@ namespace EyexAAC.View
     public partial class MessageMediumView : UserControl
     {
         private MessageMediumViewModel messageMediumViewModel = new MessageMediumViewModel();
+
         public MessageMediumView()
         {
             InitializeComponent();
@@ -38,6 +39,6 @@ namespace EyexAAC.View
                 messageMediumViewModel.performActionOnMessageMedium((int)stackPanel.Tag);
             }
         }
-        
+
     }
 }

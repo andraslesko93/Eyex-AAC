@@ -19,21 +19,20 @@ namespace EyexAAC
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MessageMediumViewModel messageMediumViewModelObject;
+        public double WindowHeight { get; set; }
+        public double WindowWidth { get; set; }
         public MainWindow()
         {
+            WindowHeight = SystemParameters.PrimaryScreenHeight;
+            WindowWidth = SystemParameters.PrimaryScreenWidth;
             InitializeComponent();
         }
         private void MessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
         {
-            MessageMediumViewModel messageMediumViewModelObject = new MessageMediumViewModel();
+            messageMediumViewModelObject = new MessageMediumViewModel();
             messageMediumViewModelObject.LoadMessageMediums();
             MessageMediumViewControl.DataContext = messageMediumViewModelObject;
-        }
-        private void FamilyMessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            FamilyMessageMediumViewModel messageMediumViewModelObject = new FamilyMessageMediumViewModel();
-            messageMediumViewModelObject.LoadFamilyMessageMediums();
-            FamilyMessageMediumViewControl.DataContext = messageMediumViewModelObject;
         }
         private void BasicMessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -57,6 +56,11 @@ namespace EyexAAC
         {
             AddNewMMView addMessageMedium = new AddNewMMView();
             addMessageMedium.ShowDialog();
+        }
+
+        private void Scroll_OnHasGazeChanged(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("y");
         }
     }
 }

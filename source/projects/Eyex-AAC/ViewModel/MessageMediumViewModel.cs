@@ -8,11 +8,18 @@ using System.Data.Entity;
 using System.Windows.Media.Imaging;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Media;
+using System.Globalization;
 
 namespace EyexAAC.ViewModel
 {
     class MessageMediumViewModel
     {
+        public int MaxRowCount { get; set; }
+        public int MaxColumnCount { get; set; }
+        public int ImageWidth { get; set; }
+        public int ImageHeight { get; set; }
         private static List<MessageMedium> messageMediumsCache;
         private static bool isMetaOpen = false;
         public static ObservableCollection<MessageMedium> MessageMediums
@@ -20,10 +27,17 @@ namespace EyexAAC.ViewModel
             get;
             set;
         }
-        public MessageMediumViewModel(){}
+        public MessageMediumViewModel()
+        {
+
+            ImageWidth = 193;
+            ImageHeight = 163; 
+            MaxColumnCount = maxColumnCalculator();
+            MaxRowCount = maxRowCalculator();
+        }
         public void LoadMessageMediums()
         {
-            //AddInitData();
+           // AddInitData();
             MessageMediums = new ObservableCollection<MessageMedium>();
             GetMessageMediums().ToList().ForEach(MessageMediums.Add);
         }
@@ -151,6 +165,22 @@ namespace EyexAAC.ViewModel
                 context.MetaMessageMediums.Add(msg7);
                 context.SaveChanges();
             }
+        }
+        private int maxRowCalculator()
+        {
+            double screenHeight = SystemParameters.PrimaryScreenHeight;
+
+            //Decrease the screenHeight by the bottom row's height
+            screenHeight = screenHeight - (ImageHeight + 100);
+            return (int)screenHeight / (ImageHeight + 100);
+        }
+        private int maxColumnCalculator()
+        {
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+            //Decrease by the 2 scroll buttom's width
+            screenWidth -= 160;
+            double result = screenWidth / (ImageWidth + 80);
+            return (int)result;
         }
     }
     

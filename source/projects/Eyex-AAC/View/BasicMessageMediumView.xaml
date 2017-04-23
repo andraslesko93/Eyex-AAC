@@ -38,10 +38,10 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <ListView ItemsSource="{Binding Path=BasicMessageMediums}"  HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
+        <ListView ItemsSource="{Binding Path=BasicMessageMediums}"  HorizontalAlignment="Center" VerticalAlignment="Center" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
             <ListView.ItemsPanel >
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="5" HorizontalAlignment="Center"/>
+                    <UniformGrid Rows="1" HorizontalAlignment="Center"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
