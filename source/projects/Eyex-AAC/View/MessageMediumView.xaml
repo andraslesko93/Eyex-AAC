@@ -38,7 +38,7 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <ListView ItemsSource="{Binding Path=MessageMediums}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
+        <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Path=MessageMediums}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
             <ListView.ItemsPanel >
                 <ItemsPanelTemplate>
                     <UniformGrid Rows="{Binding MaxRowCount}" Columns="{Binding MaxColumnCount}" HorizontalAlignment="Center"/>

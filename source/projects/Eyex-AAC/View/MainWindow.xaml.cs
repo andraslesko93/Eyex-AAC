@@ -26,6 +26,7 @@ namespace EyexAAC
         {
             WindowHeight = SystemParameters.PrimaryScreenHeight;
             WindowWidth = SystemParameters.PrimaryScreenWidth;
+            Console.WriteLine("-----------------"+WindowHeight + "-----------" + WindowWidth);
             InitializeComponent();
         }
         private void MessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
