@@ -14,35 +14,67 @@ using System.Globalization;
 
 namespace EyexAAC.ViewModel
 {
-    class MessageMediumViewModel
+    class MessageMediumViewModel : INotifyPropertyChanged
     {
+        private static List<MessageMedium> messageMediumsCache;
+        private static bool isMetaOpen = false;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public int MaxRowCount { get; set; }
         public int MaxColumnCount { get; set; }
         public int ImageWidth { get; set; }
         public int ImageHeight { get; set; }
-        private static List<MessageMedium> messageMediumsCache;
-        private static bool isMetaOpen = false;
-        public static ObservableCollection<MessageMedium> MessageMediums
+        public static int CurrentPageNumber { get; set; }
+
+        private static Boolean _isPreviousPageButtonEnabled;
+        private static Boolean _isNextPageButtonEnabled;
+        public Boolean IsPreviousPageButtonEnabled
         {
-            get;
-            set;
+            get { return _isPreviousPageButtonEnabled; }
+            set
+            {
+                _isPreviousPageButtonEnabled= value;
+                RaisePropertyChanged("IsPreviousPageButtonEnabled");
+            }
         }
+
+
+        public Boolean IsNextPageButtonEnabled
+        {
+            
+            get { return _isNextPageButtonEnabled; }
+            set
+            {
+                _isNextPageButtonEnabled = value;
+                RaisePropertyChanged("IsNextPageButtonEnabled");
+            }
+        }
+
+        public static ObservableCollection<MessageMedium> MessageMediums{ get; set; }
+
         public MessageMediumViewModel()
         {
-
             ImageWidth = 193;
-            ImageHeight = 163; 
+            ImageHeight = 163;
             MaxColumnCount = maxColumnCalculator();
             MaxRowCount = maxRowCalculator();
+            CurrentPageNumber = 1;
+
         }
         public void LoadMessageMediums()
         {
-           // AddInitData();
+            AddInitData();
             MessageMediums = new ObservableCollection<MessageMedium>();
-            GetMessageMediums().ToList().ForEach(MessageMediums.Add);
+            loadMessageMediumsByPageNumber();
+            //Have to call here:
+            previousPageButtonStateCalculator();
+            nextPageButtonStateCalculator();
         }
         public int AddMessageMediums(MessageMedium messageMedium)
         {
+            Console.WriteLine("prev but state " + IsPreviousPageButtonEnabled);
+            Console.WriteLine("next but state " + IsNextPageButtonEnabled);
             int returnCode = 0;
             using (var context = new MessageMediumContext())
             {
@@ -57,6 +89,7 @@ namespace EyexAAC.ViewModel
             {
                 MessageMediums.Add(messageMedium);
             }
+            nextPageButtonStateCalculator();
             return returnCode;
         }
         public List<MessageMedium> GetMessageMediums()
@@ -182,6 +215,88 @@ namespace EyexAAC.ViewModel
             double result = screenWidth / (ImageWidth + 80);
             return (int)result;
         }
+
+        private void loadMessageMediumsByPageNumber()
+        {
+            int maxElementCountOnAPage = MaxColumnCount * MaxRowCount;
+            int indexFrom = (CurrentPageNumber-1)*maxElementCountOnAPage;
+            int indexTo = CurrentPageNumber * maxElementCountOnAPage;
+            MessageMediums.Clear();
+            List<MessageMedium> messageMediums = GetMessageMediums();
+            for (; (indexFrom < indexTo && indexFrom<messageMediums.Count()); indexFrom++)
+            {
+                MessageMediums.Add(messageMediums[indexFrom]);
+            }
+        }
+
+        public void nextPage()
+        {
+            Console.WriteLine("next but state " + IsNextPageButtonEnabled);
+            Console.WriteLine("prev but state " + IsPreviousPageButtonEnabled);
+            if (IsNextPageButtonEnabled == false)
+            {
+                return;
+            }
+            CurrentPageNumber++;
+            previousPageButtonStateCalculator();
+            nextPageButtonStateCalculator();
+            loadMessageMediumsByPageNumber();
+            Console.WriteLine("Pagenumber" + CurrentPageNumber);
+        }
+
+        public void previousPage()
+        {
+            Console.WriteLine("next but state " + IsNextPageButtonEnabled);
+            Console.WriteLine("prev but state " + IsPreviousPageButtonEnabled);
+            if (IsPreviousPageButtonEnabled == false)
+            {
+                return;
+            }
+            if (CurrentPageNumber > 1)
+            {
+                CurrentPageNumber--;
+                previousPageButtonStateCalculator();
+                nextPageButtonStateCalculator();
+                loadMessageMediumsByPageNumber();
+            }
+            Console.WriteLine("Pagenumber " + CurrentPageNumber);
+        }
+
+
+        private void nextPageButtonStateCalculator()
+        {
+            Console.WriteLine("Element count " + GetMessageMediums().Count());
+            Console.WriteLine("faszom " + CurrentPageNumber * (MaxColumnCount * MaxRowCount));
+            if (GetMessageMediums().Count() > CurrentPageNumber*(MaxColumnCount * MaxRowCount))
+            {
+                IsNextPageButtonEnabled = true;
+            }
+            else
+            {
+                IsNextPageButtonEnabled = false;
+            }
+        }
+
+        private void previousPageButtonStateCalculator()
+        {
+            if (CurrentPageNumber <= 1)
+            {
+                IsPreviousPageButtonEnabled = false;
+            }
+            else
+            {
+                IsPreviousPageButtonEnabled = true;
+            }
+        }
+
+        private void RaisePropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
+        }
+
     }
     
 }

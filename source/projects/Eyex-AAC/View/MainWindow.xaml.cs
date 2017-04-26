@@ -13,6 +13,7 @@ namespace EyexAAC
     using EyexAAC.Model;
     using System.Collections.Generic;
     using View;
+    using System.ComponentModel;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -34,6 +35,7 @@ namespace EyexAAC
             messageMediumViewModelObject = new MessageMediumViewModel();
             messageMediumViewModelObject.LoadMessageMediums();
             MessageMediumViewControl.DataContext = messageMediumViewModelObject;
+            this.DataContext = messageMediumViewModelObject;
         }
         private void BasicMessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -61,7 +63,30 @@ namespace EyexAAC
 
         private void Scroll_OnHasGazeChanged(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("y");
+            var stackPanel = sender as StackPanel;
+            var hasGaze = stackPanel.GetHasGaze();
+            if (hasGaze)
+            {
+                string type = (string)stackPanel.Tag;
+                if (type == "next")
+                {
+                    messageMediumViewModelObject.nextPage();
+                }
+                else if (type == "previous")
+                {
+                    messageMediumViewModelObject.previousPage();
+                }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            messageMediumViewModelObject.nextPage();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            messageMediumViewModelObject.previousPage();
         }
     }
 }

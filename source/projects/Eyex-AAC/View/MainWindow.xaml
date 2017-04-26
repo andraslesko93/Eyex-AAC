@@ -46,34 +46,66 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="EyeXGazePreviousButtonStyle" TargetType="Label">
+            <Setter Property="Margin" Value="0,0,0,7"/>
+            <Setter Property="FontSize" Value="60"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsPreviousPageButtonEnabled}" Value="False">
+                    <Setter Property="Foreground" Value="LightGray"/>
+                    <Setter Property="Content" Value="{Binding  IsPreviousPageButtonEnabled}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsPreviousPageButtonEnabled}" Value="True">
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="Content" Value="{Binding  IsPreviousPageButtonEnabled}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EyeXGazeNextButtonStyle" TargetType="Label">
+            <Setter Property="Margin" Value="0,0,0,7"/>
+            <Setter Property="FontSize" Value="60"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsNextPageButtonEnabled}" Value="False">
+                    <Setter Property="Foreground" Value="LightGray"/>
+                    <Setter Property="Content" Value="{Binding  IsNextPageButtonEnabled}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsNextPageButtonEnabled}" Value="True">
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="Content" Value="{Binding  IsNextPageButtonEnabled}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
     </Window.Resources>
     <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}" Grid.Row="1" Margin ="7,0,0,0" Grid.Column="0">
-                <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="Left" >
-                    <Label FontSize="60" Content="&lt;" Margin="0,0,0,7"/>
-                </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}" Grid.Row="1" Margin ="7,0,0,0" Grid.Column="0">
+            <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="previous" >
+                <Label Content="&lt;" Style="{StaticResource EyeXGazePreviousButtonStyle}"/>
+                <Button Click="Button_Click_1">prev</Button>
             </StackPanel>
-            <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Grid.Row="1" Margin="0,0,7,0" Grid.Column="2" >
-                <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="Right">
-                    <Label FontSize="60" Content="&gt;" Margin="0,0,0,7"/>
-                </StackPanel>
+        </StackPanel>
+        <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Grid.Row="1" Margin="0,0,7,0" Grid.Column="2" >
+            <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="next">
+                <Label Content="&gt;" Style="{StaticResource EyeXGazeNextButtonStyle}"/>
+                <Button Click="Button_Click">next</Button>
             </StackPanel>
-
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
+        </StackPanel>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
                 <Button Click="Manage_Button_Click" Grid.Row="0"  Margin="5,5,5,5" Content="Manage" />
-                <Button Click="Add_New_Button_Click" Grid.Row="0" Margin="5,5,5,5" Content="New" />
-            </StackPanel>
-            <views:MessageMediumView x:Name="MessageMediumViewControl" Grid.Row="1" Grid.Column="1" Loaded="MessageMediumViewControl_Loaded"/>
-            <views:BasicMessageMediumView  x:Name="BasicMessageMediumViewControl" Grid.Row="2" Grid.Column="1" Loaded="BasicMessageMediumViewControl_Loaded"/>
+            <Button Click="Add_New_Button_Click" Grid.Row="0" Margin="5,5,5,5" Content="New" />
+        </StackPanel>
+        <views:MessageMediumView x:Name="MessageMediumViewControl" Grid.Row="1" Grid.Column="1" Loaded="MessageMediumViewControl_Loaded"/>
+        <views:BasicMessageMediumView  x:Name="BasicMessageMediumViewControl" Grid.Row="2" Grid.Column="1" Loaded="BasicMessageMediumViewControl_Loaded"/>
         </Grid>
 </Window>
