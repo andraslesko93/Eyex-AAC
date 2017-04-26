@@ -10,7 +10,7 @@ namespace EyexAAC.ViewModel
 {
     class BasicMessageMediumViewModel
     {
-        public static ObservableCollection<BasicMessageMedium> BasicMessageMediums
+        public static ObservableCollection<MessageMedium> BasicMessageMediums
         {
             get;
             set;
@@ -19,27 +19,27 @@ namespace EyexAAC.ViewModel
 
         public void LoadBasicMessageMediums()
         {
-            BasicMessageMediums = new ObservableCollection<BasicMessageMedium>();
+            BasicMessageMediums = new ObservableCollection<MessageMedium>();
             GetBasicMessageMediums().ToList().ForEach(BasicMessageMediums.Add);
         }
         
-        public int AddBasicMessageMediums(BasicMessageMedium basicMessageMedium)
+        public int AddBasicMessageMediums(MessageMedium basicMessageMedium)
         {
             int returnCode = 0;
             using (var context = new MessageMediumContext())
             {
-                context.BasicMessageMediums.Add(basicMessageMedium);
+                context.MessageMediums.Add(basicMessageMedium);
                 returnCode = context.SaveChanges();
             }
             BasicMessageMediums.Add(basicMessageMedium);
             return returnCode;
         }
 
-        public List<BasicMessageMedium> GetBasicMessageMediums()
+        public List<MessageMedium> GetBasicMessageMediums()
         {
             using (var context = new MessageMediumContext())
             {
-                var messageMediums = context.BasicMessageMediums.Where(c => c.IsSubMessage == false).ToList();
+                var messageMediums = context.MessageMediums.Where(c => c.IsSubMessage == false && c.Type == "basic").ToList();
                 foreach (MessageMedium messageMedium in messageMediums)
                 {
                     if (messageMedium.ImageAsByte != null)
@@ -53,11 +53,11 @@ namespace EyexAAC.ViewModel
        
         internal void performActionOnBasicMessageMedium(int id)
         {
-            BasicMessageMedium messageMedium = GetBasicMessageMediumFromCollectionById(id);
+            MessageMedium messageMedium = GetBasicMessageMediumFromCollectionById(id);
             Console.WriteLine(messageMedium.Name);
             //TODO: Use a reader library instead. 
         }
-        private BasicMessageMedium GetBasicMessageMediumFromCollectionById(int id)
+        private MessageMedium GetBasicMessageMediumFromCollectionById(int id)
         {
             var messageMedium = BasicMessageMediums.FirstOrDefault(c => c.Id == id);
             messageMedium.InitializeImage();

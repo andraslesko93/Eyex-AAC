@@ -44,6 +44,7 @@ namespace EyexAAC.Model
 
 
         public MessageMedium(){}
+
         public MessageMedium(string name, string image)
         {
             Name = name;
@@ -51,6 +52,15 @@ namespace EyexAAC.Model
             ImageAsByte = BitmapImageToByte(Image);
             IsSubMessage = false;
             Type = "default";
+        }
+
+        public MessageMedium(string name, string image, string type)
+        {
+            Name = name;
+            Image = LoadImage(image);
+            ImageAsByte = BitmapImageToByte(Image);
+            IsSubMessage = false;
+            Type = type;
         }
         public void InitializeImage()
         {

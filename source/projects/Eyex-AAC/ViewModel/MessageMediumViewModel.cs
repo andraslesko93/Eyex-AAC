@@ -26,7 +26,6 @@ namespace EyexAAC.ViewModel
         public int ImageWidth { get; set; }
         public int ImageHeight { get; set; }
         public static int CurrentPageNumber { get; set; }
-
         private static Boolean _isPreviousPageButtonEnabled;
         private static Boolean _isNextPageButtonEnabled;
         public Boolean IsPreviousPageButtonEnabled
@@ -38,8 +37,6 @@ namespace EyexAAC.ViewModel
                 RaisePropertyChanged("IsPreviousPageButtonEnabled");
             }
         }
-
-
         public Boolean IsNextPageButtonEnabled
         {
             
@@ -50,9 +47,7 @@ namespace EyexAAC.ViewModel
                 RaisePropertyChanged("IsNextPageButtonEnabled");
             }
         }
-
         public static ObservableCollection<MessageMedium> MessageMediums{ get; set; }
-
         public MessageMediumViewModel()
         {
             ImageWidth = 193;
@@ -73,8 +68,6 @@ namespace EyexAAC.ViewModel
         }
         public int AddMessageMediums(MessageMedium messageMedium)
         {
-            Console.WriteLine("prev but state " + IsPreviousPageButtonEnabled);
-            Console.WriteLine("next but state " + IsNextPageButtonEnabled);
             int returnCode = 0;
             using (var context = new MessageMediumContext())
             {
@@ -116,7 +109,7 @@ namespace EyexAAC.ViewModel
                 MessageMediums.ToList().ForEach(messageMediumsCache.Add);
                 MessageMediums.Clear();
 
-                MessageMedium goBack = new MessageMedium("go back", "pack://application:,,,/Resources/Images/go_back.jpg");
+                MessageMedium goBack = new MessageMedium("go back", "pack://application:,,,/Resources/Images/go_back.jpg", "default");
                 goBack.Type = "goBack"; //A special goBack MessageMedium to navigate.
                 MessageMediums.Add(goBack);
 
@@ -165,22 +158,16 @@ namespace EyexAAC.ViewModel
         }
         public void AddInitData()
         {
-            BasicMessageMedium msg1 = new
-                BasicMessageMedium("no", "pack://application:,,,/Resources/Images/no.jpg");
-            BasicMessageMedium msg2 = new
-                BasicMessageMedium("yes", "pack://application:,,,/Resources/Images/yes.jpg");
+            MessageMedium msg1 = new
+               MessageMedium("no", "pack://application:,,,/Resources/Images/no.jpg", "basic");
+            MessageMedium msg2 = new
+               MessageMedium("yes", "pack://application:,,,/Resources/Images/yes.jpg", "basic");
             MessageMedium msg3 = new
-               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg");
+               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg", "default");
             MessageMedium msg38 = new
-               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg");
+               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg", "default");
             MessageMedium msg4 = new
-                MessageMedium("ye5s", "pack://application:,,,/Resources/Images/yes.jpg");
-            FamilyMessageMedium msg5 = new
-               FamilyMessageMedium("no", "pack://application:,,,/Resources/Images/no.jpg");
-            FamilyMessageMedium msg6 = new
-                FamilyMessageMedium("yes", "pack://application:,,,/Resources/Images/yes.jpg");
-            FamilyMessageMedium msg9 = new
-               FamilyMessageMedium("yes", "pack://application:,,,/Resources/Images/nachos.jpg");
+               MessageMedium("ye5s", "pack://application:,,,/Resources/Images/yes.jpg", "default");
             MetaMessageMedium msg7 = new
               MetaMessageMedium("foods", "pack://application:,,,/Resources/Images/nachos.jpg");
             msg7.AddElement(msg3);
@@ -189,12 +176,9 @@ namespace EyexAAC.ViewModel
 
             using (var context = new MessageMediumContext())
             {
-                context.BasicMessageMediums.Add(msg1);
-                context.BasicMessageMediums.Add(msg2);
+                context.MessageMediums.Add(msg1);
+                context.MessageMediums.Add(msg2);
                 context.MessageMediums.Add(msg38);
-                context.FamilyMessageMediums.Add(msg5);
-                context.FamilyMessageMediums.Add(msg6);
-                context.FamilyMessageMediums.Add(msg9);
                 context.MetaMessageMediums.Add(msg7);
                 context.SaveChanges();
             }
@@ -231,8 +215,6 @@ namespace EyexAAC.ViewModel
 
         public void nextPage()
         {
-            Console.WriteLine("next but state " + IsNextPageButtonEnabled);
-            Console.WriteLine("prev but state " + IsPreviousPageButtonEnabled);
             if (IsNextPageButtonEnabled == false)
             {
                 return;
@@ -241,13 +223,10 @@ namespace EyexAAC.ViewModel
             previousPageButtonStateCalculator();
             nextPageButtonStateCalculator();
             loadMessageMediumsByPageNumber();
-            Console.WriteLine("Pagenumber" + CurrentPageNumber);
         }
 
         public void previousPage()
         {
-            Console.WriteLine("next but state " + IsNextPageButtonEnabled);
-            Console.WriteLine("prev but state " + IsPreviousPageButtonEnabled);
             if (IsPreviousPageButtonEnabled == false)
             {
                 return;
@@ -259,14 +238,11 @@ namespace EyexAAC.ViewModel
                 nextPageButtonStateCalculator();
                 loadMessageMediumsByPageNumber();
             }
-            Console.WriteLine("Pagenumber " + CurrentPageNumber);
         }
 
 
         private void nextPageButtonStateCalculator()
         {
-            Console.WriteLine("Element count " + GetMessageMediums().Count());
-            Console.WriteLine("faszom " + CurrentPageNumber * (MaxColumnCount * MaxRowCount));
             if (GetMessageMediums().Count() > CurrentPageNumber*(MaxColumnCount * MaxRowCount))
             {
                 IsNextPageButtonEnabled = true;

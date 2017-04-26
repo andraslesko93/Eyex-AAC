@@ -14,15 +14,12 @@ namespace EyexAAC.ViewModel
         {
             switch (type)
             {
-                case "Family":
-                    FamilyMessageMediumViewModel familyMessageMediumViewModel = new FamilyMessageMediumViewModel();
-                    return familyMessageMediumViewModel.AddFamilyMessageMediums(new FamilyMessageMedium(name, filePath));
                 case "Basic":
                     BasicMessageMediumViewModel basicMessageMediumViewModel = new BasicMessageMediumViewModel();
-                    return basicMessageMediumViewModel.AddBasicMessageMediums(new BasicMessageMedium(name, filePath));
+                    return basicMessageMediumViewModel.AddBasicMessageMediums(new MessageMedium(name, filePath, "basic"));
                 default:
                     MessageMediumViewModel messageMediumViewModel = new MessageMediumViewModel();
-                    return messageMediumViewModel.AddMessageMediums(new MessageMedium(name, filePath));
+                    return messageMediumViewModel.AddMessageMediums(new MessageMedium(name, filePath, "default"));
             }
         }
     }
