@@ -21,13 +21,9 @@ namespace EyexAAC
     public partial class MainWindow : Window
     {
         private MessageMediumViewModel messageMediumViewModelObject;
-        public double WindowHeight { get; set; }
-        public double WindowWidth { get; set; }
         public MainWindow()
         {
-            WindowHeight = SystemParameters.PrimaryScreenHeight;
-            WindowWidth = SystemParameters.PrimaryScreenWidth;
-            Console.WriteLine("-----------------"+WindowHeight + "-----------" + WindowWidth);
+            Console.WriteLine("--------------------");
             InitializeComponent();
         }
         private void MessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)

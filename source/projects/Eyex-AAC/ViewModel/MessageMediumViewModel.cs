@@ -19,27 +19,22 @@ namespace EyexAAC.ViewModel
     {
         private static List<MessageMedium> messageMediumsCache;
         private static bool isMetaOpen = false;
-        public int MaxRowCount { get; set; }
-        public int MaxColumnCount { get; set; }
-        public int ImageWidth { get; set; }
-        public int ImageHeight { get; set; }
+
        
         public static ObservableCollection<MessageMedium> MessageMediums{ get; set; }
         public static TurnPageUtil TurnPageUtil { get; set; }
+
+        public RenderUtil RenderUtil { get; set; }
         public MessageMediumViewModel()
         {
-            ImageWidth = 193;
-            ImageHeight = 163;
-            MaxColumnCount = maxColumnCalculator();
-            MaxRowCount = maxRowCalculator();
+            
         }
         public void LoadMessageMediums()
         {
-            Console.WriteLine("-----------------------"+MaxRowCount);
-            TurnPageUtil = new TurnPageUtil(MaxRowCount, MaxColumnCount, GetMessageMediums());
-           // AddInitData();
+            AddInitData();
+            RenderUtil = new RenderUtil();
+            TurnPageUtil = new TurnPageUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, GetMessageMediums());
             MessageMediums = new ObservableCollection<MessageMedium>();
-
             TurnPageUtil.loadMessageMediumsByPageNumber(MessageMediums);
             //Have to call here:
             TurnPageUtil.previousPageButtonStateCalculator();
@@ -61,6 +56,7 @@ namespace EyexAAC.ViewModel
             {
                 MessageMediums.Add(messageMedium);
             }
+            TurnPageUtil.addToMessageCache(messageMedium);
             TurnPageUtil.nextPageButtonStateCalculator();
             return returnCode;
         }
@@ -151,22 +147,6 @@ namespace EyexAAC.ViewModel
                 context.SaveChanges();
             }
         }
-        private int maxRowCalculator()
-        {
-            double screenHeight = SystemParameters.PrimaryScreenHeight;
-
-            //Decrease the screenHeight by the bottom row's height
-            screenHeight = screenHeight - (ImageHeight + 100);
-            return (int)screenHeight / (ImageHeight + 100);
-        }
-        private int maxColumnCalculator()
-        {
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            //Decrease by the 2 scroll buttom's width
-            screenWidth -= 160;
-            double result = screenWidth / (ImageWidth + 80);
-            return (int)result;
-        }
         public void nextPage()
         {
             TurnPageUtil.nextPage(MessageMediums);
@@ -176,7 +156,6 @@ namespace EyexAAC.ViewModel
         {
             TurnPageUtil.previousPage(MessageMediums);
         }
-
 
     }
     

@@ -82,7 +82,7 @@
     </ApplicationDefinition>
     <Compile Include="ViewModel\AddNewMMViewModel.cs" />
     <Compile Include="ViewModel\BasicMessageMediumViewModel.cs" />
-    <Compile Include="ViewModel\Utils\RenderMessageMediumUtility.cs" />
+    <Compile Include="ViewModel\Utils\RenderUtil.cs" />
     <Compile Include="ViewModel\Utils\TurnPageUtil.cs" />
     <Compile Include="View\BasicMessageMediumView.xaml.cs">
       <DependentUpon>BasicMessageMediumView.xaml</DependentUpon>

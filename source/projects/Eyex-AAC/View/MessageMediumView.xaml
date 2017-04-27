@@ -41,7 +41,7 @@
         <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Path=MessageMediums}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
             <ListView.ItemsPanel >
                 <ItemsPanelTemplate>
-                    <UniformGrid Rows="{Binding MaxRowCount}" Columns="{Binding MaxColumnCount}" HorizontalAlignment="Center"/>
+                    <UniformGrid Rows="{Binding RenderUtil.MaxRowCount}" Columns="{Binding RenderUtil.MaxColumnCount}" HorizontalAlignment="Center"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
@@ -49,8 +49,8 @@
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Path = Id, Mode=OneWay}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
                         <Image Source="{Binding Path = Image, Mode=OneWay}" 
                                HorizontalAlignment="Center" VerticalAlignment="Center" 
-                               Width="{Binding Path=DataContext.ImageWidth, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
-                               Height="{Binding Path=DataContext.ImageHeight, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                               Width="{Binding Path=DataContext.RenderUtil.ImageWidth, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                               Height="{Binding Path=DataContext.RenderUtil.ImageHeight, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
                                Margin="10,10,10,10"/>
                     </StackPanel>
                 </DataTemplate>

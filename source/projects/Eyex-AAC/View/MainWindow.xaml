@@ -11,8 +11,8 @@
         xmlns:Model="clr-namespace:EyexAAC.Model" mc:Ignorable="d" x:Class="EyexAAC.MainWindow"
         xmlns:views = "clr-namespace:EyexAAC.View"
         Title="MainWindow" WindowStartupLocation="CenterScreen" WindowState="Maximized"
-        MinHeight="{Binding WindowHeight}" 
-        MinWidth="{Binding WindowWidth}"
+        MinHeight="{Binding RenderUtil.WindowHeight}" 
+        MinWidth="{Binding RenderUtil.WindowWidth}"
         xmlns:eyeX="clr-namespace:EyeXFramework.Wpf;assembly=EyeXFramework"
     >
     <Window.Resources>

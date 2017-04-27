@@ -12,7 +12,6 @@ namespace EyexAAC.ViewModel.Utils
     class TurnPageUtil : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
         public int MaxRowCount { get; set; }
         public int MaxColumnCount { get; set; }
         public static int CurrentPageNumber { get; set; }
@@ -116,6 +115,11 @@ namespace EyexAAC.ViewModel.Utils
             {
                 MessageMediums.Add(MessageMediumCache[indexFrom]);
             }
+        }
+
+        public void addToMessageCache(MessageMedium messageMedium)
+        {
+            MessageMediumCache.Add(messageMedium);
         }
 
     }
