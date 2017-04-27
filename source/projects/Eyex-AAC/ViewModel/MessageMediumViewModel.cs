@@ -11,60 +11,39 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
 using System.Globalization;
+using EyexAAC.ViewModel.Utils;
 
 namespace EyexAAC.ViewModel
 {
-    class MessageMediumViewModel : INotifyPropertyChanged
+    class MessageMediumViewModel
     {
         private static List<MessageMedium> messageMediumsCache;
         private static bool isMetaOpen = false;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public int MaxRowCount { get; set; }
         public int MaxColumnCount { get; set; }
         public int ImageWidth { get; set; }
         public int ImageHeight { get; set; }
-        public static int CurrentPageNumber { get; set; }
-        private static Boolean _isPreviousPageButtonEnabled;
-        private static Boolean _isNextPageButtonEnabled;
-        public Boolean IsPreviousPageButtonEnabled
-        {
-            get { return _isPreviousPageButtonEnabled; }
-            set
-            {
-                _isPreviousPageButtonEnabled= value;
-                RaisePropertyChanged("IsPreviousPageButtonEnabled");
-            }
-        }
-        public Boolean IsNextPageButtonEnabled
-        {
-            
-            get { return _isNextPageButtonEnabled; }
-            set
-            {
-                _isNextPageButtonEnabled = value;
-                RaisePropertyChanged("IsNextPageButtonEnabled");
-            }
-        }
+       
         public static ObservableCollection<MessageMedium> MessageMediums{ get; set; }
+        public static TurnPageUtil TurnPageUtil { get; set; }
         public MessageMediumViewModel()
         {
             ImageWidth = 193;
             ImageHeight = 163;
             MaxColumnCount = maxColumnCalculator();
             MaxRowCount = maxRowCalculator();
-            CurrentPageNumber = 1;
-
         }
         public void LoadMessageMediums()
         {
-            AddInitData();
+            Console.WriteLine("-----------------------"+MaxRowCount);
+            TurnPageUtil = new TurnPageUtil(MaxRowCount, MaxColumnCount, GetMessageMediums());
+           // AddInitData();
             MessageMediums = new ObservableCollection<MessageMedium>();
-            loadMessageMediumsByPageNumber();
+
+            TurnPageUtil.loadMessageMediumsByPageNumber(MessageMediums);
             //Have to call here:
-            previousPageButtonStateCalculator();
-            nextPageButtonStateCalculator();
+            TurnPageUtil.previousPageButtonStateCalculator();
+            TurnPageUtil.nextPageButtonStateCalculator();
         }
         public int AddMessageMediums(MessageMedium messageMedium)
         {
@@ -82,7 +61,7 @@ namespace EyexAAC.ViewModel
             {
                 MessageMediums.Add(messageMedium);
             }
-            nextPageButtonStateCalculator();
+            TurnPageUtil.nextPageButtonStateCalculator();
             return returnCode;
         }
         public List<MessageMedium> GetMessageMediums()
@@ -135,17 +114,6 @@ namespace EyexAAC.ViewModel
             messageMedium.InitializeImage();
             return messageMedium;   
         }
-
-        /*
-        private MessageMedium GetMessageMediumById(int id)
-        {
-            using (var context = new MessageMediumContext())
-            {
-                var messageMedium = context.MessageMediums.FirstOrDefault(c => c.Id == id);
-                messageMedium.InitializeImage();
-                return messageMedium;
-            }
-        }*/
         private List<MessageMedium> GetMetaMessageMediumList(MessageMedium messageMedium)
         {
             using (var context = new MessageMediumContext())
@@ -199,79 +167,16 @@ namespace EyexAAC.ViewModel
             double result = screenWidth / (ImageWidth + 80);
             return (int)result;
         }
-
-        private void loadMessageMediumsByPageNumber()
-        {
-            int maxElementCountOnAPage = MaxColumnCount * MaxRowCount;
-            int indexFrom = (CurrentPageNumber-1)*maxElementCountOnAPage;
-            int indexTo = CurrentPageNumber * maxElementCountOnAPage;
-            MessageMediums.Clear();
-            List<MessageMedium> messageMediums = GetMessageMediums();
-            for (; (indexFrom < indexTo && indexFrom<messageMediums.Count()); indexFrom++)
-            {
-                MessageMediums.Add(messageMediums[indexFrom]);
-            }
-        }
-
         public void nextPage()
         {
-            if (IsNextPageButtonEnabled == false)
-            {
-                return;
-            }
-            CurrentPageNumber++;
-            previousPageButtonStateCalculator();
-            nextPageButtonStateCalculator();
-            loadMessageMediumsByPageNumber();
+            TurnPageUtil.nextPage(MessageMediums);
         }
 
         public void previousPage()
         {
-            if (IsPreviousPageButtonEnabled == false)
-            {
-                return;
-            }
-            if (CurrentPageNumber > 1)
-            {
-                CurrentPageNumber--;
-                previousPageButtonStateCalculator();
-                nextPageButtonStateCalculator();
-                loadMessageMediumsByPageNumber();
-            }
+            TurnPageUtil.previousPage(MessageMediums);
         }
 
-
-        private void nextPageButtonStateCalculator()
-        {
-            if (GetMessageMediums().Count() > CurrentPageNumber*(MaxColumnCount * MaxRowCount))
-            {
-                IsNextPageButtonEnabled = true;
-            }
-            else
-            {
-                IsNextPageButtonEnabled = false;
-            }
-        }
-
-        private void previousPageButtonStateCalculator()
-        {
-            if (CurrentPageNumber <= 1)
-            {
-                IsPreviousPageButtonEnabled = false;
-            }
-            else
-            {
-                IsPreviousPageButtonEnabled = true;
-            }
-        }
-
-        private void RaisePropertyChanged(string property)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
-        }
 
     }
     

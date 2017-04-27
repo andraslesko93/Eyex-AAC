@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace EyexAAC.ViewModel.Utils
 {
-    class RenderMessageMedium
+    class RenderMessageMediumUtility
     {
+
     }
 }
