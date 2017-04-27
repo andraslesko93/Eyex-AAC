@@ -20,25 +20,20 @@ namespace EyexAAC.ViewModel
         private static List<MessageMedium> messageMediumsCache;
         private static bool isMetaOpen = false;
 
-       
         public static ObservableCollection<MessageMedium> MessageMediums{ get; set; }
         public static TurnPageUtil TurnPageUtil { get; set; }
+        public static RenderUtil RenderUtil { get; set; }
 
-        public RenderUtil RenderUtil { get; set; }
-        public MessageMediumViewModel()
-        {
-            
-        }
+        public MessageMediumViewModel(){ }
         public void LoadMessageMediums()
         {
-            AddInitData();
+           // AddInitData();
             RenderUtil = new RenderUtil();
             TurnPageUtil = new TurnPageUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, GetMessageMediums());
             MessageMediums = new ObservableCollection<MessageMedium>();
-            TurnPageUtil.loadMessageMediumsByPageNumber(MessageMediums);
-            //Have to call here:
-            TurnPageUtil.previousPageButtonStateCalculator();
-            TurnPageUtil.nextPageButtonStateCalculator();
+            TurnPageUtil.LoadMessageMediumsByPageNumber(MessageMediums);
+            TurnPageUtil.PreviousPageButtonStateCalculator();
+            TurnPageUtil.NextPageButtonStateCalculator();
         }
         public int AddMessageMediums(MessageMedium messageMedium)
         {
@@ -56,8 +51,8 @@ namespace EyexAAC.ViewModel
             {
                 MessageMediums.Add(messageMedium);
             }
-            TurnPageUtil.addToMessageCache(messageMedium);
-            TurnPageUtil.nextPageButtonStateCalculator();
+            TurnPageUtil.AddToMessageCache(messageMedium);
+            TurnPageUtil.NextPageButtonStateCalculator();
             return returnCode;
         }
         public List<MessageMedium> GetMessageMediums()
@@ -75,27 +70,16 @@ namespace EyexAAC.ViewModel
                 return messageMediums;
             }
         }
-        internal void performActionOnMessageMedium(int id)
+        public void PerformActionOnMessageMedium(int id)
         {
             MessageMedium messageMedium = GetMessageMediumFromCollectionById(id);
             if (messageMedium.Type == "meta")
             {
-                messageMediumsCache = new List<MessageMedium>();
-                MessageMediums.ToList().ForEach(messageMediumsCache.Add);
-                MessageMediums.Clear();
-
-                MessageMedium goBack = new MessageMedium("go back", "pack://application:,,,/Resources/Images/go_back.jpg", "default");
-                goBack.Type = "goBack"; //A special goBack MessageMedium to navigate.
-                MessageMediums.Add(goBack);
-
-                GetMetaMessageMediumList(messageMedium).ToList().ForEach(MessageMediums.Add);
-                isMetaOpen = true;
+                OpenMetaMessageMedium(messageMedium);
             }
             else if (messageMedium.Type == "goBack")
             {
-                MessageMediums.Clear();
-                messageMediumsCache.ToList().ForEach(MessageMediums.Add);
-                isMetaOpen = false;
+                CloseMetaMessageMedium();
             }
             else
             {
@@ -103,7 +87,6 @@ namespace EyexAAC.ViewModel
                 //TODO: Use a reader library instead.
             }
         }
-
         private MessageMedium GetMessageMediumFromCollectionById(int id)
         {   
             var messageMedium = MessageMediums.FirstOrDefault(c => c.Id == id);
@@ -128,35 +111,68 @@ namespace EyexAAC.ViewModel
                MessageMedium("yes", "pack://application:,,,/Resources/Images/yes.jpg", "basic");
             MessageMedium msg3 = new
                MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg", "default");
-            MessageMedium msg38 = new
+            MessageMedium msg5 = new
                MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg", "default");
             MessageMedium msg4 = new
                MessageMedium("ye5s", "pack://application:,,,/Resources/Images/yes.jpg", "default");
-            MetaMessageMedium msg7 = new
+
+            MetaMessageMedium meta1 = new
               MetaMessageMedium("foods", "pack://application:,,,/Resources/Images/nachos.jpg");
-            msg7.AddElement(msg3);
-            msg7.AddElement(msg4);
 
-
+            for (int i = 0; i < 20; i++) {
+                MessageMedium msg = new MessageMedium(i.ToString(), "pack://application:,,,/Resources/Images/yes.jpg", "default");
+                meta1.AddElement(msg);
+            }
             using (var context = new MessageMediumContext())
             {
                 context.MessageMediums.Add(msg1);
                 context.MessageMediums.Add(msg2);
-                context.MessageMediums.Add(msg38);
-                context.MetaMessageMediums.Add(msg7);
+                context.MessageMediums.Add(msg3);
+                context.MessageMediums.Add(msg4);
+                context.MessageMediums.Add(msg5); ;
+                context.MetaMessageMediums.Add(meta1);
                 context.SaveChanges();
             }
         }
-        public void nextPage()
+        public void NextPage()
         {
-            TurnPageUtil.nextPage(MessageMediums);
+            TurnPageUtil.NextPage(MessageMediums);
+        }
+        public void PreviousPage()
+        {
+            TurnPageUtil.PreviousPage(MessageMediums);
         }
 
-        public void previousPage()
+        public void OpenMetaMessageMedium(MessageMedium messageMedium)
         {
-            TurnPageUtil.previousPage(MessageMediums);
+            messageMediumsCache = new List<MessageMedium>();
+            MessageMediums.ToList().ForEach(messageMediumsCache.Add);
+            MessageMediums.Clear();
+
+            List<MessageMedium> messageMediumList = new List<MessageMedium>();
+            MessageMedium goBack = new MessageMedium("go back", "pack://application:,,,/Resources/Images/go_back.jpg", "default");
+            goBack.Type = "goBack";
+            messageMediumList.Add(goBack);
+            GetMetaMessageMediumList(messageMedium).ToList().ForEach(messageMediumList.Add);
+            initNewTurnPageUtil(messageMediumList);
+            isMetaOpen = true;
         }
 
+        public void CloseMetaMessageMedium()
+        {
+            MessageMediums.Clear();
+            initNewTurnPageUtil(messageMediumsCache);
+            isMetaOpen = false;
+        }
+        
+        
+        public void initNewTurnPageUtil(List<MessageMedium> messageMediumList)
+        {
+            TurnPageUtil = new TurnPageUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, messageMediumList);
+            TurnPageUtil.LoadMessageMediumsByPageNumber(MessageMediums);
+            TurnPageUtil.PreviousPageButtonStateCalculator();
+            TurnPageUtil.NextPageButtonStateCalculator();
+        }
     }
     
 }

@@ -44,19 +44,19 @@ namespace EyexAAC.ViewModel.Utils
             MaxColumnCount = maxColumnCount;
         }
 
-        public void nextPage(ObservableCollection<MessageMedium> MessageMediums)
+        public void NextPage(ObservableCollection<MessageMedium> MessageMediums)
         {
             if (IsNextPageButtonEnabled == false)
             {
                 return;
             }
             CurrentPageNumber++;
-            previousPageButtonStateCalculator();
-            nextPageButtonStateCalculator();
-            loadMessageMediumsByPageNumber(MessageMediums);
+            PreviousPageButtonStateCalculator();
+            NextPageButtonStateCalculator();
+            LoadMessageMediumsByPageNumber(MessageMediums);
         }
 
-        public void previousPage(ObservableCollection<MessageMedium> MessageMediums)
+        public void PreviousPage(ObservableCollection<MessageMedium> MessageMediums)
         {
             if (IsPreviousPageButtonEnabled == false)
             {
@@ -65,14 +65,14 @@ namespace EyexAAC.ViewModel.Utils
             if (CurrentPageNumber > 1)
             {
                 CurrentPageNumber--;
-                previousPageButtonStateCalculator();
-                nextPageButtonStateCalculator();
-                loadMessageMediumsByPageNumber(MessageMediums);
+                PreviousPageButtonStateCalculator();
+                NextPageButtonStateCalculator();
+                LoadMessageMediumsByPageNumber(MessageMediums);
             }
         }
 
 
-        public void nextPageButtonStateCalculator()
+        public void NextPageButtonStateCalculator()
         {
             if (MessageMediumCache.Count() > CurrentPageNumber * (MaxColumnCount * MaxRowCount))
             {
@@ -84,7 +84,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public void previousPageButtonStateCalculator()
+        public void PreviousPageButtonStateCalculator()
         {
             if (CurrentPageNumber <= 1)
             {
@@ -104,7 +104,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public void loadMessageMediumsByPageNumber(ObservableCollection<MessageMedium> MessageMediums)
+        public void LoadMessageMediumsByPageNumber(ObservableCollection<MessageMedium> MessageMediums)
         {
             int maxElementCountOnAPage = MaxColumnCount * MaxRowCount;
             int indexFrom = (CurrentPageNumber - 1) * maxElementCountOnAPage;
@@ -117,7 +117,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public void addToMessageCache(MessageMedium messageMedium)
+        public void AddToMessageCache(MessageMedium messageMedium)
         {
             MessageMediumCache.Add(messageMedium);
         }

@@ -66,23 +66,23 @@ namespace EyexAAC
                 string type = (string)stackPanel.Tag;
                 if (type == "next")
                 {
-                    messageMediumViewModelObject.nextPage();
+                    messageMediumViewModelObject.NextPage();
                 }
                 else if (type == "previous")
                 {
-                    messageMediumViewModelObject.previousPage();
+                    messageMediumViewModelObject.PreviousPage();
                 }
             }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            messageMediumViewModelObject.nextPage();
+            messageMediumViewModelObject.NextPage();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            messageMediumViewModelObject.previousPage();
+            messageMediumViewModelObject.PreviousPage();
         }
     }
 }

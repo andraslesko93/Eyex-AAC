@@ -36,7 +36,7 @@ namespace EyexAAC.View
             var hasGaze = stackPanel.GetHasGaze();
             if (hasGaze)
             {
-                messageMediumViewModel.performActionOnMessageMedium((int)stackPanel.Tag);
+                messageMediumViewModel.PerformActionOnMessageMedium((int)stackPanel.Tag);
             }
         }
 
