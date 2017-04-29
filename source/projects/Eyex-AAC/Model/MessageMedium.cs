@@ -20,7 +20,7 @@ namespace EyexAAC.Model
 
         public int Id { get; set; }
         public byte[] ImageAsByte { get; set; }
-        public string Type { get; set; }
+        public MessageMediumType Type { get; set; }
         public string Name
         {
             get { return name; }
@@ -53,10 +53,9 @@ namespace EyexAAC.Model
             Image = LoadImage(image);
             ImageAsByte = BitmapImageToByte(Image);
             Children = new List<MessageMedium>();
-            Type = "default";
         }
 
-        public MessageMedium(string name, string image, string type)
+        public MessageMedium(string name, string image, MessageMediumType type)
         {
             Name = name;
             Image = LoadImage(image);
@@ -71,7 +70,6 @@ namespace EyexAAC.Model
                 Image = ByteToBitmapImage(ImageAsByte);
             }
         }
-
         public byte[] BitmapImageToByte(BitmapImage image)
         {
             MemoryStream memStream = new MemoryStream();
@@ -107,4 +105,10 @@ namespace EyexAAC.Model
             Children.Add(messageMedium);
         }
     }
+
+    enum MessageMediumType {
+        table=0, //default value
+        basic,
+        goBack
+    };
 }

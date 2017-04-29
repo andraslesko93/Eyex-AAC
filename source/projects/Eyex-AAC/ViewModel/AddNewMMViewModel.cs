@@ -16,10 +16,10 @@ namespace EyexAAC.ViewModel
             {
                 case "Basic":
                     BasicMessageMediumViewModel basicMessageMediumViewModel = new BasicMessageMediumViewModel();
-                    return basicMessageMediumViewModel.AddBasicMessageMediums(new MessageMedium(name, filePath, "basic"));
+                    return basicMessageMediumViewModel.AddBasicMessageMediums(new MessageMedium(name, filePath, MessageMediumType.basic));
                 default:
                     MessageMediumViewModel messageMediumViewModel = new MessageMediumViewModel();
-                    return messageMediumViewModel.AddMessageMediums(new MessageMedium(name, filePath, "default"));
+                    return messageMediumViewModel.AddMessageMediums(new MessageMedium(name, filePath));
             }
         }
     }

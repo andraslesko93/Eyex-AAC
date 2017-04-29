@@ -50,7 +50,7 @@ namespace EyexAAC.ViewModel
         {
             using (var context = new MessageMediumContext())
             {
-                var messageMediums= context.MessageMediums.Include(c => c.Children).Where(c => c.Parent == null).ToList();
+                var messageMediums= context.MessageMediums.Include(c => c.Children).Where(c => c.Parent == null && (c.Type==MessageMediumType.table)).ToList();
                 foreach (MessageMedium messageMedium in messageMediums)
                 {
                     if (messageMedium.ImageAsByte != null)
@@ -68,7 +68,7 @@ namespace EyexAAC.ViewModel
             {
                 MoveDownALevel(messageMedium);
             }
-            else if (messageMedium.Type == "goBack")
+            else if (messageMedium.Type == MessageMediumType.goBack)
             {
                 MoveUpALevel();
             }
@@ -84,7 +84,6 @@ namespace EyexAAC.ViewModel
             messageMedium.InitializeImage();
             return messageMedium;   
         }
-
         private MessageMedium GetMessageMediumById(int id)
         {
             using (var context = new MessageMediumContext())
@@ -112,18 +111,18 @@ namespace EyexAAC.ViewModel
                 return children;
             }
         }
-        public void AddInitData()
+        private void AddInitData()
         {
             MessageMedium msg1 = new
-               MessageMedium("no", "pack://application:,,,/Resources/Images/no.jpg", "basic");
+               MessageMedium("no", "pack://application:,,,/Resources/Images/no.jpg", MessageMediumType.basic);
             MessageMedium msg2 = new
-               MessageMedium("yes", "pack://application:,,,/Resources/Images/yes.jpg", "basic");
+               MessageMedium("yes", "pack://application:,,,/Resources/Images/yes.jpg", MessageMediumType.basic);
             MessageMedium msg3 = new
-               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg", "default");
+               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg");
             MessageMedium msg5 = new
-               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg", "default");
+               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg");
             MessageMedium msg4 = new
-               MessageMedium("ye5s", "pack://application:,,,/Resources/Images/yes.jpg", "default");
+               MessageMedium("ye5s", "pack://application:,,,/Resources/Images/yes.jpg");
 
             MessageMedium meta1 = new MessageMedium("foods", "pack://application:,,,/Resources/Images/nachos.jpg");
 
@@ -155,8 +154,7 @@ namespace EyexAAC.ViewModel
         {
             PageManagerUtil.PreviousPage(MessageMediums);
         }
-
-        public void MoveDownALevel(MessageMedium messageMedium)
+        private void MoveDownALevel(MessageMedium messageMedium)
         {
             MessageMediums.Clear();
             setTurnPageUtilScope(addBackMessageMediumToList(GetChildren(messageMedium)));
@@ -164,14 +162,12 @@ namespace EyexAAC.ViewModel
         private List<MessageMedium> addBackMessageMediumToList(List<MessageMedium> list)
         {
             List<MessageMedium> messageMediumList = new List<MessageMedium>();
-            MessageMedium goBack = new MessageMedium("go back", "pack://application:,,,/Resources/Images/go_back.jpg", "default");
-            goBack.Type = "goBack";
+            MessageMedium goBack = new MessageMedium("go back", "pack://application:,,,/Resources/Images/go_back.jpg", MessageMediumType.goBack);
             messageMediumList.Add(goBack);
             list.ForEach(messageMediumList.Add);
             return messageMediumList;
         }
-
-        public void MoveUpALevel()
+        private void MoveUpALevel()
         {
             MessageMedium element = MessageMediums.Last();
             //element.Parent does not contain reference to elements's grandparent, so we have to make another query.
@@ -187,9 +183,8 @@ namespace EyexAAC.ViewModel
             {
                 setTurnPageUtilScope(GetRootMessageMediums());
             }
-        }
-        
-        public void setTurnPageUtilScope(List<MessageMedium> messageMediumList)
+        }      
+        private void setTurnPageUtilScope(List<MessageMedium> messageMediumList)
         {
             PageManagerUtil.NewDataScope(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, messageMediumList);
             PageManagerUtil.LoadMessageMediumsByPageNumber(MessageMediums);
@@ -203,5 +198,4 @@ namespace EyexAAC.ViewModel
         }
 
     }
-    
 }
