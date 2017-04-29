@@ -21,7 +21,7 @@ namespace EyexAAC.ViewModel
         private static bool isMetaOpen = false;
 
         public static ObservableCollection<MessageMedium> MessageMediums{ get; set; }
-        public static TurnPageUtil TurnPageUtil { get; set; }
+        public static PageManagerUtil PageManagerUtil { get; set; }
         public static RenderUtil RenderUtil { get; set; }
 
         public MessageMediumViewModel(){ }
@@ -29,11 +29,11 @@ namespace EyexAAC.ViewModel
         {
            // AddInitData();
             RenderUtil = new RenderUtil();
-            TurnPageUtil = new TurnPageUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, GetMessageMediums());
+            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, GetMessageMediums());
             MessageMediums = new ObservableCollection<MessageMedium>();
-            TurnPageUtil.LoadMessageMediumsByPageNumber(MessageMediums);
-            TurnPageUtil.PreviousPageButtonStateCalculator();
-            TurnPageUtil.NextPageButtonStateCalculator();
+            PageManagerUtil.LoadMessageMediumsByPageNumber(MessageMediums);
+            PageManagerUtil.PreviousPageButtonStateCalculator();
+            PageManagerUtil.NextPageButtonStateCalculator();
         }
         public int AddMessageMediums(MessageMedium messageMedium)
         {
@@ -51,8 +51,8 @@ namespace EyexAAC.ViewModel
             {
                 MessageMediums.Add(messageMedium);
             }
-            TurnPageUtil.AddToMessageCache(messageMedium);
-            TurnPageUtil.NextPageButtonStateCalculator();
+            PageManagerUtil.AddToMessageCache(messageMedium);
+            PageManagerUtil.NextPageButtonStateCalculator();
             return returnCode;
         }
         public List<MessageMedium> GetMessageMediums()
@@ -136,18 +136,17 @@ namespace EyexAAC.ViewModel
         }
         public void NextPage()
         {
-            TurnPageUtil.NextPage(MessageMediums);
+            PageManagerUtil.NextPage(MessageMediums);
         }
         public void PreviousPage()
         {
-            TurnPageUtil.PreviousPage(MessageMediums);
+            PageManagerUtil.PreviousPage(MessageMediums);
         }
 
         public void OpenMetaMessageMedium(MessageMedium messageMedium)
         {
             messageMediumsCache = new List<MessageMedium>();
-            messageMediumsCache = TurnPageUtil.MessageMediumCache;
-            //ITT el kéne a turner managertől az elemeneteket.
+            messageMediumsCache = PageManagerUtil.MessageMediumCache;
             MessageMediums.Clear();
 
             List<MessageMedium> messageMediumList = new List<MessageMedium>();
@@ -169,15 +168,15 @@ namespace EyexAAC.ViewModel
         
         public void initNewTurnPageUtil(List<MessageMedium> messageMediumList)
         {
-            TurnPageUtil.NewDataScope(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, messageMediumList);
-            TurnPageUtil.LoadMessageMediumsByPageNumber(MessageMediums);
-            TurnPageUtil.PreviousPageButtonStateCalculator();
-            TurnPageUtil.NextPageButtonStateCalculator();
+            PageManagerUtil.NewDataScope(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, messageMediumList);
+            PageManagerUtil.LoadMessageMediumsByPageNumber(MessageMediums);
+            PageManagerUtil.PreviousPageButtonStateCalculator();
+            PageManagerUtil.NextPageButtonStateCalculator();
         }
 
         public void logStatus()
         {
-            TurnPageUtil.logStatus();
+            PageManagerUtil.logStatus();
         }
     }
     

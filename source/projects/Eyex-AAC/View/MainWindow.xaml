@@ -51,13 +51,13 @@
             <Setter Property="FontSize" Value="60"/>
             <Setter Property="Foreground" Value="Black"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding TurnPageUtil.IsPreviousPageButtonEnabled}" Value="False">
+                <DataTrigger Binding="{Binding PageManagerUtil.IsPreviousPageButtonEnabled}" Value="False">
                     <Setter Property="Foreground" Value="LightGray"/>
-                    <Setter Property="Content" Value="{Binding  TurnPageUtil.IsPreviousPageButtonEnabled}"/>
+                    <Setter Property="Content" Value="{Binding  PageManagerUtil.IsPreviousPageButtonEnabled}"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding TurnPageUtil.IsPreviousPageButtonEnabled}" Value="True">
+                <DataTrigger Binding="{Binding PageManagerUtil.IsPreviousPageButtonEnabled}" Value="True">
                     <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Content" Value="{Binding  TurnPageUtil.IsPreviousPageButtonEnabled}"/>
+                    <Setter Property="Content" Value="{Binding  PageManagerUtil.IsPreviousPageButtonEnabled}"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -66,13 +66,13 @@
             <Setter Property="Margin" Value="0,0,0,7"/>
             <Setter Property="FontSize" Value="60"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding TurnPageUtil.IsNextPageButtonEnabled}" Value="False">
+                <DataTrigger Binding="{Binding PageManagerUtil.IsNextPageButtonEnabled}" Value="False">
                     <Setter Property="Foreground" Value="LightGray"/>
-                    <Setter Property="Content" Value="{Binding  TurnPageUtil.IsNextPageButtonEnabled}"/>
+                    <Setter Property="Content" Value="{Binding  PageManagerUtil.IsNextPageButtonEnabled}"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding TurnPageUtil.IsNextPageButtonEnabled}" Value="True">
+                <DataTrigger Binding="{Binding PageManagerUtil.IsNextPageButtonEnabled}" Value="True">
                     <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Content" Value="{Binding  TurnPageUtil.IsNextPageButtonEnabled}"/>
+                    <Setter Property="Content" Value="{Binding  PageManagerUtil.IsNextPageButtonEnabled}"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>

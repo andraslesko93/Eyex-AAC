@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EyexAAC.ViewModel.Utils
 {
-    class TurnPageUtil : INotifyPropertyChanged
+    class PageManagerUtil : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public int MaxRowCount { get; set; }
@@ -36,7 +36,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
         public List<MessageMedium> MessageMediumCache { get; set; }
-        public TurnPageUtil(int maxRowCount, int maxColumnCount, List<MessageMedium> messageMedium)
+        public PageManagerUtil(int maxRowCount, int maxColumnCount, List<MessageMedium> messageMedium)
         {
             MessageMediumCache = messageMedium;
             CurrentPageNumber = 1;
