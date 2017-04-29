@@ -84,5 +84,10 @@ namespace EyexAAC
         {
             messageMediumViewModelObject.PreviousPage();
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            messageMediumViewModelObject.logStatus();
+        }
     }
 }

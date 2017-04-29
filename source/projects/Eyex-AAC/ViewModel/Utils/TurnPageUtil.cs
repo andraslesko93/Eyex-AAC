@@ -15,8 +15,8 @@ namespace EyexAAC.ViewModel.Utils
         public int MaxRowCount { get; set; }
         public int MaxColumnCount { get; set; }
         public static int CurrentPageNumber { get; set; }
-        private static Boolean _isPreviousPageButtonEnabled;
-        private static Boolean _isNextPageButtonEnabled;
+        private Boolean _isPreviousPageButtonEnabled;
+        private Boolean _isNextPageButtonEnabled;
         public Boolean IsPreviousPageButtonEnabled
         {
             get { return _isPreviousPageButtonEnabled; }
@@ -122,5 +122,19 @@ namespace EyexAAC.ViewModel.Utils
             MessageMediumCache.Add(messageMedium);
         }
 
+        public void logStatus()
+        {
+            Console.WriteLine("next page state " + IsNextPageButtonEnabled);
+            Console.WriteLine("prev page state " + IsPreviousPageButtonEnabled);
+            Console.WriteLine("page nr " + CurrentPageNumber);
+            Console.WriteLine("element nr" + MessageMediumCache.Count());
+        }
+
+        public void NewDataScope(int maxRowCount, int maxColumnCount, List<MessageMedium> messageMediumList)
+        {
+            MessageMediumCache = messageMediumList;
+            MaxRowCount = maxRowCount;
+            MaxColumnCount = maxColumnCount;
+        }
     }
 }

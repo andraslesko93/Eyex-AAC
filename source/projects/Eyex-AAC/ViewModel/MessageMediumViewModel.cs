@@ -146,7 +146,8 @@ namespace EyexAAC.ViewModel
         public void OpenMetaMessageMedium(MessageMedium messageMedium)
         {
             messageMediumsCache = new List<MessageMedium>();
-            MessageMediums.ToList().ForEach(messageMediumsCache.Add);
+            messageMediumsCache = TurnPageUtil.MessageMediumCache;
+            //ITT el kéne a turner managertől az elemeneteket.
             MessageMediums.Clear();
 
             List<MessageMedium> messageMediumList = new List<MessageMedium>();
@@ -168,10 +169,15 @@ namespace EyexAAC.ViewModel
         
         public void initNewTurnPageUtil(List<MessageMedium> messageMediumList)
         {
-            TurnPageUtil = new TurnPageUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, messageMediumList);
+            TurnPageUtil.NewDataScope(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, messageMediumList);
             TurnPageUtil.LoadMessageMediumsByPageNumber(MessageMediums);
             TurnPageUtil.PreviousPageButtonStateCalculator();
             TurnPageUtil.NextPageButtonStateCalculator();
+        }
+
+        public void logStatus()
+        {
+            TurnPageUtil.logStatus();
         }
     }
     
