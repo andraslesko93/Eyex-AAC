@@ -110,7 +110,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\MessageMediumContext.cs" />
-    <Compile Include="Model\MetaMessageMedium.cs" />
     <Compile Include="ViewModel\MessageMediumViewModel.cs" />
     <Compile Include="View\AddNewMMView.xaml.cs">
       <DependentUpon>AddNewMMView.xaml</DependentUpon>
@@ -150,7 +149,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\EyexAAC.Model.MessageMedium.datasource" />
-    <None Include="Properties\DataSources\EyexAAC.Model.MetaMessageMedium.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

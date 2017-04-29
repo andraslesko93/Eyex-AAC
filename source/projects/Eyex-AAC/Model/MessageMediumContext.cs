@@ -10,6 +10,5 @@ namespace EyexAAC.Model
     class MessageMediumContext : DbContext
     {
         public DbSet<MessageMedium> MessageMediums { get; set; }
-        public DbSet<MetaMessageMedium> MetaMessageMediums { get; set; }
     }
 }

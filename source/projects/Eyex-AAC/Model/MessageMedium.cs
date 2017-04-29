@@ -20,7 +20,6 @@ namespace EyexAAC.Model
 
         public int Id { get; set; }
         public byte[] ImageAsByte { get; set; }
-        public bool IsSubMessage { get; set; }
         public string Type { get; set; }
         public string Name
         {
@@ -42,6 +41,9 @@ namespace EyexAAC.Model
             }
         }
 
+        public MessageMedium Parent { get; set; }
+
+        public List<MessageMedium> Children { get; set; }
 
         public MessageMedium(){}
 
@@ -50,7 +52,7 @@ namespace EyexAAC.Model
             Name = name;
             Image = LoadImage(image);
             ImageAsByte = BitmapImageToByte(Image);
-            IsSubMessage = false;
+            Children = new List<MessageMedium>();
             Type = "default";
         }
 
@@ -59,7 +61,7 @@ namespace EyexAAC.Model
             Name = name;
             Image = LoadImage(image);
             ImageAsByte = BitmapImageToByte(Image);
-            IsSubMessage = false;
+            Children = new List<MessageMedium>();
             Type = type;
         }
         public void InitializeImage()
@@ -96,12 +98,13 @@ namespace EyexAAC.Model
         }
         private void RaisePropertyChanged(string property)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
-
+        public void AddChild(MessageMedium messageMedium)
+        {
+            messageMedium.Parent = this;
+            Children.Add(messageMedium);
+        }
     }
 }

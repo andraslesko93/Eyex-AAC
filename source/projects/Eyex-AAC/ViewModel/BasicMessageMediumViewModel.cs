@@ -39,7 +39,7 @@ namespace EyexAAC.ViewModel
         {
             using (var context = new MessageMediumContext())
             {
-                var messageMediums = context.MessageMediums.Where(c => c.IsSubMessage == false && c.Type == "basic").ToList();
+                var messageMediums = context.MessageMediums.Where(c => c.Type == "basic").ToList();
                 foreach (MessageMedium messageMedium in messageMediums)
                 {
                     if (messageMedium.ImageAsByte != null)

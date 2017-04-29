@@ -14,10 +14,10 @@ namespace EyexAAC.ViewModel.Utils
         public event PropertyChangedEventHandler PropertyChanged;
         public int MaxRowCount { get; set; }
         public int MaxColumnCount { get; set; }
-        public static int CurrentPageNumber { get; set; }
-        private Boolean _isPreviousPageButtonEnabled;
-        private Boolean _isNextPageButtonEnabled;
-        public Boolean IsPreviousPageButtonEnabled
+        public int CurrentPageNumber { get; set; }
+        private bool _isPreviousPageButtonEnabled;
+        private bool _isNextPageButtonEnabled;
+        public bool IsPreviousPageButtonEnabled
         {
             get { return _isPreviousPageButtonEnabled; }
             set
@@ -26,7 +26,7 @@ namespace EyexAAC.ViewModel.Utils
                 RaisePropertyChanged("IsPreviousPageButtonEnabled");
             }
         }
-        public Boolean IsNextPageButtonEnabled
+        public bool IsNextPageButtonEnabled
         {
             get { return _isNextPageButtonEnabled; }
             set
@@ -98,10 +98,7 @@ namespace EyexAAC.ViewModel.Utils
 
         private void RaisePropertyChanged(string property)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
         public void LoadMessageMediumsByPageNumber(ObservableCollection<MessageMedium> MessageMediums)
@@ -135,6 +132,7 @@ namespace EyexAAC.ViewModel.Utils
             MessageMediumCache = messageMediumList;
             MaxRowCount = maxRowCount;
             MaxColumnCount = maxColumnCount;
+            CurrentPageNumber = 1;
         }
     }
 }

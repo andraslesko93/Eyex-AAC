@@ -17,9 +17,6 @@ namespace EyexAAC.ViewModel
 {
     class MessageMediumViewModel
     {
-        private static List<MessageMedium> messageMediumsCache;
-        private static bool isMetaOpen = false;
-
         public static ObservableCollection<MessageMedium> MessageMediums{ get; set; }
         public static PageManagerUtil PageManagerUtil { get; set; }
         public static RenderUtil RenderUtil { get; set; }
@@ -27,9 +24,9 @@ namespace EyexAAC.ViewModel
         public MessageMediumViewModel(){ }
         public void LoadMessageMediums()
         {
-           // AddInitData();
+            AddInitData();
             RenderUtil = new RenderUtil();
-            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, GetMessageMediums());
+            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, GetRootMessageMediums());
             MessageMediums = new ObservableCollection<MessageMedium>();
             PageManagerUtil.LoadMessageMediumsByPageNumber(MessageMediums);
             PageManagerUtil.PreviousPageButtonStateCalculator();
@@ -43,23 +40,17 @@ namespace EyexAAC.ViewModel
                 context.MessageMediums.Add(messageMedium);
                 returnCode = context.SaveChanges();
             }
-            if (isMetaOpen == true)
-            {
-                messageMediumsCache.Add(messageMedium);
-            }
-            else
-            {
-                MessageMediums.Add(messageMedium);
-            }
+            MessageMediums.Add(messageMedium);
+
             PageManagerUtil.AddToMessageCache(messageMedium);
             PageManagerUtil.NextPageButtonStateCalculator();
             return returnCode;
         }
-        public List<MessageMedium> GetMessageMediums()
+        public List<MessageMedium> GetRootMessageMediums()
         {
             using (var context = new MessageMediumContext())
             {
-                var messageMediums = context.MessageMediums.Where(c => c.IsSubMessage == false && (c.Type == "default" || c.Type=="meta")).ToList();
+                var messageMediums= context.MessageMediums.Include(c => c.Children).Where(c => c.Parent == null).ToList();
                 foreach (MessageMedium messageMedium in messageMediums)
                 {
                     if (messageMedium.ImageAsByte != null)
@@ -73,13 +64,13 @@ namespace EyexAAC.ViewModel
         public void PerformActionOnMessageMedium(int id)
         {
             MessageMedium messageMedium = GetMessageMediumFromCollectionById(id);
-            if (messageMedium.Type == "meta")
+            if (messageMedium.Children.Any())
             {
-                OpenMetaMessageMedium(messageMedium);
+                MoveDownALevel(messageMedium);
             }
             else if (messageMedium.Type == "goBack")
             {
-                CloseMetaMessageMedium();
+                MoveUpALevel();
             }
             else
             {
@@ -93,14 +84,32 @@ namespace EyexAAC.ViewModel
             messageMedium.InitializeImage();
             return messageMedium;   
         }
-        private List<MessageMedium> GetMetaMessageMediumList(MessageMedium messageMedium)
+
+        private MessageMedium GetMessageMediumById(int id)
         {
             using (var context = new MessageMediumContext())
             {
-                var metaMessageMedium = context.MetaMessageMediums.Include(c => c.MessageMediumList).SingleOrDefault(c => c.Id == messageMedium.Id);
-                metaMessageMedium.InitializeImages();
-                return metaMessageMedium.MessageMediumList;  
-                 
+                var messageMedium = context.MessageMediums.Include(c => c.Children).Include(c => c.Parent).SingleOrDefault(c => c.Id == id);
+                if (messageMedium.ImageAsByte != null)
+                {
+                    messageMedium.InitializeImage();
+                }
+                return messageMedium;
+            }
+        }
+        private List<MessageMedium> GetChildren(MessageMedium messageMedium)
+        {
+            using (var context = new MessageMediumContext())
+            {
+                var children = context.MessageMediums.Include(c => c.Children).Include(c =>c.Parent).Where(c => c.Parent.Id == messageMedium.Id).ToList();
+                foreach (MessageMedium child in children)
+                {
+                    if (child.ImageAsByte != null)
+                    {
+                        child.InitializeImage();
+                    }
+                }
+                return children;
             }
         }
         public void AddInitData()
@@ -116,12 +125,16 @@ namespace EyexAAC.ViewModel
             MessageMedium msg4 = new
                MessageMedium("ye5s", "pack://application:,,,/Resources/Images/yes.jpg", "default");
 
-            MetaMessageMedium meta1 = new
-              MetaMessageMedium("foods", "pack://application:,,,/Resources/Images/nachos.jpg");
+            MessageMedium meta1 = new MessageMedium("foods", "pack://application:,,,/Resources/Images/nachos.jpg");
 
-            for (int i = 0; i < 20; i++) {
-                MessageMedium msg = new MessageMedium(i.ToString(), "pack://application:,,,/Resources/Images/yes.jpg", "default");
-                meta1.AddElement(msg);
+            for (int i = 0; i < 20; i++)
+            {
+                MessageMedium msg = new MessageMedium(i.ToString(), "pack://application:,,,/Resources/Images/yes.jpg");
+                meta1.AddChild(msg);
+                for (int j = 0; j< 6; j++)
+                {
+                    msg.AddChild(new MessageMedium(j.ToString(), "pack://application:,,,/Resources/Images/no.jpg"));
+                }
             }
             using (var context = new MessageMediumContext())
             {
@@ -130,7 +143,7 @@ namespace EyexAAC.ViewModel
                 context.MessageMediums.Add(msg3);
                 context.MessageMediums.Add(msg4);
                 context.MessageMediums.Add(msg5); ;
-                context.MetaMessageMediums.Add(meta1);
+                context.MessageMediums.Add(meta1);
                 context.SaveChanges();
             }
         }
@@ -143,30 +156,40 @@ namespace EyexAAC.ViewModel
             PageManagerUtil.PreviousPage(MessageMediums);
         }
 
-        public void OpenMetaMessageMedium(MessageMedium messageMedium)
+        public void MoveDownALevel(MessageMedium messageMedium)
         {
-            messageMediumsCache = new List<MessageMedium>();
-            messageMediumsCache = PageManagerUtil.MessageMediumCache;
             MessageMediums.Clear();
-
+            setTurnPageUtilScope(addBackMessageMediumToList(GetChildren(messageMedium)));
+        }
+        private List<MessageMedium> addBackMessageMediumToList(List<MessageMedium> list)
+        {
             List<MessageMedium> messageMediumList = new List<MessageMedium>();
             MessageMedium goBack = new MessageMedium("go back", "pack://application:,,,/Resources/Images/go_back.jpg", "default");
             goBack.Type = "goBack";
             messageMediumList.Add(goBack);
-            GetMetaMessageMediumList(messageMedium).ToList().ForEach(messageMediumList.Add);
-            initNewTurnPageUtil(messageMediumList);
-            isMetaOpen = true;
+            list.ForEach(messageMediumList.Add);
+            return messageMediumList;
         }
 
-        public void CloseMetaMessageMedium()
+        public void MoveUpALevel()
         {
+            MessageMedium element = MessageMediums.Last();
+            //element.Parent does not contain reference to elements's grandparent, so we have to make another query.
+            //The parent object will contain the reference to grandparent.
+            MessageMedium parent = GetMessageMediumById(element.Parent.Id);
             MessageMediums.Clear();
-            initNewTurnPageUtil(messageMediumsCache);
-            isMetaOpen = false;
+            if (parent.Parent != null)
+            {
+                MessageMedium grandParent = GetMessageMediumById(parent.Parent.Id);
+                setTurnPageUtilScope(addBackMessageMediumToList(GetChildren(grandParent)));
+            }
+            else
+            {
+                setTurnPageUtilScope(GetRootMessageMediums());
+            }
         }
         
-        
-        public void initNewTurnPageUtil(List<MessageMedium> messageMediumList)
+        public void setTurnPageUtilScope(List<MessageMedium> messageMediumList)
         {
             PageManagerUtil.NewDataScope(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, messageMediumList);
             PageManagerUtil.LoadMessageMediumsByPageNumber(MessageMediums);
@@ -178,6 +201,7 @@ namespace EyexAAC.ViewModel
         {
             PageManagerUtil.logStatus();
         }
+
     }
     
 }
