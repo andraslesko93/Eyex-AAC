@@ -24,9 +24,9 @@ namespace EyexAAC.ViewModel
         public MessageMediumViewModel(){ }
         public void LoadMessageMediums()
         {
-            AddInitData();
+            //AddInitData();
             RenderUtil = new RenderUtil();
-            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, GetRootMessageMediums());
+            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, GetTableRootMessageMediums());
             MessageMediums = new ObservableCollection<MessageMedium>();
             PageManagerUtil.LoadMessageMediumsByPageNumber(MessageMediums);
             PageManagerUtil.PreviousPageButtonStateCalculator();
@@ -46,7 +46,7 @@ namespace EyexAAC.ViewModel
             PageManagerUtil.NextPageButtonStateCalculator();
             return returnCode;
         }
-        public List<MessageMedium> GetRootMessageMediums()
+        public List<MessageMedium> GetTableRootMessageMediums()
         {
             using (var context = new MessageMediumContext())
             {
@@ -181,7 +181,7 @@ namespace EyexAAC.ViewModel
             }
             else
             {
-                setTurnPageUtilScope(GetRootMessageMediums());
+                setTurnPageUtilScope(GetTableRootMessageMediums());
             }
         }      
         private void setTurnPageUtilScope(List<MessageMedium> messageMediumList)

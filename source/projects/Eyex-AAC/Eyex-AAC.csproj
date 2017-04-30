@@ -82,13 +82,15 @@
     </ApplicationDefinition>
     <Compile Include="ViewModel\AddNewMMViewModel.cs" />
     <Compile Include="ViewModel\BasicMessageMediumViewModel.cs" />
+    <Compile Include="ViewModel\ManageMessageMediumViewModel.cs" />
+    <Compile Include="ViewModel\Utils\MessageMediumProxyUtil.cs" />
     <Compile Include="ViewModel\Utils\RenderUtil.cs" />
     <Compile Include="ViewModel\Utils\PageManagerUtil.cs" />
     <Compile Include="View\BasicMessageMediumView.xaml.cs">
       <DependentUpon>BasicMessageMediumView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ManageItems.xaml.cs">
-      <DependentUpon>ManageItems.xaml</DependentUpon>
+    <Compile Include="View\ManageWindow.xaml.cs">
+      <DependentUpon>ManageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MessageMediumView.xaml.cs">
       <DependentUpon>MessageMediumView.xaml</DependentUpon>
@@ -118,7 +120,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\ManageItems.xaml">
+    <Page Include="View\ManageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

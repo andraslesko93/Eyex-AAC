@@ -31,7 +31,7 @@ namespace EyexAAC
             messageMediumViewModelObject = new MessageMediumViewModel();
             messageMediumViewModelObject.LoadMessageMediums();
             MessageMediumViewControl.DataContext = messageMediumViewModelObject;
-            this.DataContext = messageMediumViewModelObject;
+            DataContext = messageMediumViewModelObject;
         }
         private void BasicMessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -48,7 +48,8 @@ namespace EyexAAC
         }
         private void Manage_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            ManageWindow manageWindow = new ManageWindow();
+            manageWindow.ShowDialog();
         }
 
         private void Add_New_Button_Click(object sender, RoutedEventArgs e)
