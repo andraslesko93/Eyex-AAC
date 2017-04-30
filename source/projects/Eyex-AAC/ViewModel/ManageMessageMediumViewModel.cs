@@ -127,8 +127,13 @@ namespace EyexAAC.ViewModel
             }
             using (var context = new MessageMediumContext())
             {
-                var result = context.MessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
-                DeleteChildrenFromDB(result.Children);
+                var result = context.MessageMediums.Include(c => c.Children).SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
+                List<MessageMedium> deleteStack = new List<MessageMedium>();
+                DeleteChildrenFromDB(result.Children, context, deleteStack);
+                foreach (MessageMedium msg in deleteStack)
+                {
+                    context.MessageMediums.Remove(msg);
+                }
                 context.MessageMediums.Remove(result);
                 context.SaveChanges();
             }
@@ -140,7 +145,7 @@ namespace EyexAAC.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
-        private void DeleteChildrenFromDB(List<MessageMedium> messageMediumList)
+        private void DeleteChildrenFromDB(List<MessageMedium> messageMediumList, MessageMediumContext context, List<MessageMedium> deleteStack)
         {
             if (messageMediumList == null)
             {
@@ -148,13 +153,11 @@ namespace EyexAAC.ViewModel
             }
             foreach (MessageMedium msg in messageMediumList)
             {
-                DeleteChildrenFromDB(msg.Children);
-                using (var context = new MessageMediumContext())
-                {
-                    var result = context.MessageMediums.SingleOrDefault(c => c.Id == msg.Id);
-                    context.MessageMediums.Remove(result);
-                    context.SaveChanges();
-                }
+                var result = context.MessageMediums.Include(c => c.Children).SingleOrDefault(c => c.Id == msg.Id);
+                deleteStack.Add(result);
+                DeleteChildrenFromDB(msg.Children, context, deleteStack);
+                // context.MessageMediums.Remove(result);
+                //context.SaveChanges();
             }
         }
 

@@ -126,11 +126,11 @@ namespace EyexAAC.ViewModel
 
             MessageMedium meta1 = new MessageMedium("foods", "pack://application:,,,/Resources/Images/nachos.jpg");
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 10; i++)
             {
                 MessageMedium msg = new MessageMedium(i.ToString(), "pack://application:,,,/Resources/Images/yes.jpg");
                 meta1.AddChild(msg);
-                for (int j = 0; j< 6; j++)
+                for (int j = 0; j< 10; j++)
                 {
                     msg.AddChild(new MessageMedium(j.ToString(), "pack://application:,,,/Resources/Images/no.jpg"));
                 }
