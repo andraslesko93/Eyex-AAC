@@ -132,7 +132,9 @@ namespace EyexAAC.ViewModel
                 meta1.AddChild(msg);
                 for (int j = 0; j< 10; j++)
                 {
-                    msg.AddChild(new MessageMedium(j.ToString(), "pack://application:,,,/Resources/Images/no.jpg"));
+                    MessageMedium smsg = new MessageMedium(j.ToString(), "pack://application:,,,/Resources/Images/no.jpg");
+                    smsg.AddChild(new MessageMedium(j+34.ToString(), "pack://application:,,,/Resources/Images/no.jpg"));
+                    msg.AddChild(smsg);
                 }
             }
             using (var context = new MessageMediumContext())

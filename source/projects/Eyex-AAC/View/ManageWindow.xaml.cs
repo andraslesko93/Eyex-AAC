@@ -51,9 +51,9 @@ namespace EyexAAC.View
                 }
                 else
                 {
-                    EditorGrid.Visibility = System.Windows.Visibility.Visible;
-                    manageMessageMediumViewModel.SetMessageMediumToFocus(messageMedium);
+                    EditorGrid.Visibility = System.Windows.Visibility.Visible; 
                 }
+                manageMessageMediumViewModel.SetMessageMediumToFocus(messageMedium);
             }
         }
 
@@ -76,6 +76,12 @@ namespace EyexAAC.View
         private void Delete_Button_Click(object sender, RoutedEventArgs e)
         {
             manageMessageMediumViewModel.DeleteFocusedMesageMedium();
+        }
+
+        private void Add_Button_Click(object sender, RoutedEventArgs e)
+        {
+            EditorGrid.Visibility = System.Windows.Visibility.Visible;
+            manageMessageMediumViewModel.AddChildToFocusedMessageMedium();
         }
     }
 }

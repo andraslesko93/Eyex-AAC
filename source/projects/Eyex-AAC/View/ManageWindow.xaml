@@ -17,14 +17,14 @@
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="0" Grid.Column="0" VerticalAlignment="Stretch" Margin="0,5,0,5">
-            <Button Foreground="Green" Background="White"  Height="25" Width="25" FontSize="20" Margin="50,0,0,0" HorizontalAlignment="Left">
+            <Button Foreground="Green" Click="Add_Button_Click" Background="White"  Height="25" Width="25" FontSize="20" Margin="50,0,0,0" HorizontalAlignment="Left">
                 <TextBlock Margin="0,0,0,3" VerticalAlignment="Center" HorizontalAlignment="Center">+</TextBlock>
             </Button>
             <Button Foreground="Red" Click="Delete_Button_Click" Background="White" Height="25" Width="25" FontSize="20" Margin="0,0,50,0" HorizontalAlignment="Right">
                 <TextBlock Margin="0,0,0,2" VerticalAlignment="Center" HorizontalAlignment="Center">X</TextBlock>
             </Button>
         </Grid>
-        <TreeView x:Name="treeView" TreeViewItem.Selected="treeView_Selected" ItemsSource="{Binding Path = MessageMediums, Mode=TwoWay}" TreeViewItem.Expanded="TreeViewItem_Expanded" Grid.Row="1" Grid.Column="0">
+        <TreeView x:Name="treeView" TreeViewItem.Selected="treeView_Selected" ItemsSource="{Binding Path = MessageMediums}" TreeViewItem.Expanded="TreeViewItem_Expanded" Grid.Row="1" Grid.Column="0">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type local:MessageMedium}">
                     <TextBlock Text="{Binding Name}"/>
@@ -35,6 +35,9 @@
             <Grid x:Name="EditorGrid" Visibility="Hidden" Margin="50,50,50,50">
                 <StackPanel>
                     <StackPanel HorizontalAlignment="Left" Margin="0,0,0,20" >
+                        <Label Content="Parent's name:" FontSize="15" Margin="0,0,0,5" />
+                        <TextBox Text="{Binding Path = FocusedMessageMedium.Parent.Name, Mode=TwoWay}" Background="LightGray" IsReadOnly="True"  FontSize="15" Margin="5,0,0,10" MaxLines="1" Width="200"/>
+                        
                         <Label Content="Name:" FontSize="15" Margin="0,0,0,5" />
                         <TextBox x:Name="NameTextBox" Text="{Binding Path = FocusedMessageMedium.Name, Mode=TwoWay}" FontSize="15" Margin="5,0,0,10" MaxLines="1" Width="200"/>
                         <Label Content="Image preview:"  FontSize="15" Margin="0,0,0,5" />
