@@ -118,6 +118,16 @@ namespace EyexAAC.ViewModel
                     }
                     else
                     {
+                        if (FocusedMessageMedium.Parent.Type == MessageMediumType.root)
+                        {
+                            FocusedMessageMedium.Parent = null;
+                        }
+                        else
+                        {
+                            //get the parent.
+                            var parent=context.MessageMediums.Include(c => c.Children).SingleOrDefault(c => c.Id == FocusedMessageMedium.Parent.Id);
+                            parent.AddChild(FocusedMessageMedium);
+                        }
                         context.MessageMediums.Add(FocusedMessageMedium);
                     }
                     context.SaveChanges();
@@ -245,6 +255,10 @@ namespace EyexAAC.ViewModel
 
         public void AddChildToFocusedMessageMedium()
         {
+            if (FocusedMessageMedium == null)
+            {
+                return;
+            }
             MessageMedium parent = FocusedMessageMedium;
             FocusedMessageMedium = new MessageMedium();
             FocusedMessageMedium.Parent = parent;
