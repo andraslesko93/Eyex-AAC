@@ -60,6 +60,7 @@ namespace EyexAAC.View
         private void Save_Button_Click(object sender, RoutedEventArgs e)
         {
             manageMessageMediumViewModel.SaveFocusedMesageMedium();
+            InfoMessage.Content = "Successfully saved.";
         }
 
         private void Change_Button_Click(object sender, RoutedEventArgs e)
@@ -80,8 +81,17 @@ namespace EyexAAC.View
 
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
-            EditorGrid.Visibility = System.Windows.Visibility.Visible;
-            manageMessageMediumViewModel.AddChildToFocusedMessageMedium();
+            if (manageMessageMediumViewModel.IsFocusMessageMediumSetted())
+            {
+                EditorGrid.Visibility = System.Windows.Visibility.Visible;
+                manageMessageMediumViewModel.AddChildToFocusedMessageMedium();
+                InfoMessage.Content = "";
+            }
+            else
+            {
+                InfoMessage.Content = "Select a parent item first.";
+            }
+
         }
     }
 }

@@ -19,6 +19,7 @@ namespace EyexAAC.ViewModel
 
         private static MessageMedium TableRoot;
         private static MessageMedium BasicRoot;
+        private bool addInProggress = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -39,7 +40,7 @@ namespace EyexAAC.ViewModel
             TableRoot =  new MessageMedium("Table message mediums", MessageMediumType.root);
             BasicRoot =  new MessageMedium("Basic message mediums", MessageMediumType.root);
             MessageMediums = new ObservableCollection<MessageMedium>();
-            FocusedMessageMedium = new MessageMedium();
+           // FocusedMessageMedium = new MessageMedium();
             SetRootObjects();
         }
 
@@ -70,6 +71,7 @@ namespace EyexAAC.ViewModel
         public void SetMessageMediumToFocus(MessageMedium messageMedium)
         {
             FocusedMessageMedium = messageMedium;
+            addInProggress = false;
         }
         public void SaveFocusedMesageMedium()
         {
@@ -92,6 +94,13 @@ namespace EyexAAC.ViewModel
                             MessageMediumViewModel.MessageMediums.Add(FocusedMessageMedium);
                         }
                     }
+
+                    MessageMedium tableMessageMediumParent = MessageMediumViewModel.MessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Parent.Id);
+                    if (tableMessageMediumParent != null)
+                    {
+                        tableMessageMediumParent.AddChild(FocusedMessageMedium);
+                    }
+
                 }
                 else if(FocusedMessageMedium.Type == MessageMediumType.basic)
                 {
@@ -107,6 +116,8 @@ namespace EyexAAC.ViewModel
                         BasicMessageMediumViewModel.BasicMessageMediums.Add(FocusedMessageMedium);
                     }
                 }
+                // Refresh treeview
+               // RefreshTreeView();
                 //Save to db.
                 using (var context = new MessageMediumContext())
                 {
@@ -133,21 +144,22 @@ namespace EyexAAC.ViewModel
                     context.SaveChanges();
                 }
             }
-            
+
+            addInProggress = false;
         }
 
         public void DeleteFocusedMesageMedium()
         {
-            if (FocusedMessageMedium == null || FocusedMessageMedium.Type==MessageMediumType.root)
+            if (IsFocusMessageMediumSetted() || FocusedMessageMedium.Type==MessageMediumType.root)
             {
                 return;
             }
             DeleteFromApplicationContext();
             DeleteFromDb();
-            DeleteFromTreeView();
+            RefreshTreeView();
         }
 
-        private void DeleteFromTreeView()
+        private void RefreshTreeView()
         {
             if (FocusedMessageMedium.Parent.Type == MessageMediumType.root)
             {
@@ -253,12 +265,23 @@ namespace EyexAAC.ViewModel
         }
 
 
-        public void AddChildToFocusedMessageMedium()
+        public bool IsFocusMessageMediumSetted()
         {
             if (FocusedMessageMedium == null)
             {
+                return false;
+            }
+            return true;
+        }
+
+        public void AddChildToFocusedMessageMedium()
+        {
+            if (addInProggress == true)
+            {
                 return;
             }
+
+            addInProggress = true;
             MessageMedium parent = FocusedMessageMedium;
             FocusedMessageMedium = new MessageMedium();
             FocusedMessageMedium.Parent = parent;

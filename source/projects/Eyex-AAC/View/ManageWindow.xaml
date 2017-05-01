@@ -31,6 +31,9 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
+
+        <Label x:Name="InfoMessage" HorizontalAlignment="Center"  VerticalAlignment="Center" FontSize="15" Grid.Row="0" Grid.Column="1" ></Label>
+        
         <Border BorderBrush="Black" BorderThickness="0.5" Grid.Column="1" Grid.Row="1" >
             <Grid x:Name="EditorGrid" Visibility="Hidden" Margin="50,50,50,50">
                 <StackPanel>

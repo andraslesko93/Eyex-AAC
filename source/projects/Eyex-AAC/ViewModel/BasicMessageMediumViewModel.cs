@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,12 +11,18 @@ namespace EyexAAC.ViewModel
 {
     class BasicMessageMediumViewModel
     {
+        private SpeechSynthesizer synthesizer;
         public static ObservableCollection<MessageMedium> BasicMessageMediums
         {
             get;
             set;
         }
-        public BasicMessageMediumViewModel() { }
+        public BasicMessageMediumViewModel()
+        {
+            synthesizer = new SpeechSynthesizer();
+            synthesizer.Volume = 100;
+            synthesizer.Rate = -2;
+        }
 
         public void LoadBasicMessageMediums()
         {
@@ -54,7 +61,8 @@ namespace EyexAAC.ViewModel
         internal void performActionOnBasicMessageMedium(int id)
         {
             MessageMedium messageMedium = GetBasicMessageMediumFromCollectionById(id);
-            Console.WriteLine(messageMedium.Name);
+            synthesizer.SpeakAsync(messageMedium.Name);
+            //Console.WriteLine(messageMedium.Name);
             //TODO: Use a reader library instead. 
         }
         private MessageMedium GetBasicMessageMediumFromCollectionById(int id)

@@ -11,6 +11,8 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
 using System.Globalization;
+using System.Speech.Synthesis;
+
 using EyexAAC.ViewModel.Utils;
 
 namespace EyexAAC.ViewModel
@@ -21,10 +23,17 @@ namespace EyexAAC.ViewModel
         public static PageManagerUtil PageManagerUtil { get; set; }
         public static RenderUtil RenderUtil { get; set; }
 
-        public MessageMediumViewModel(){ }
+        private SpeechSynthesizer synthesizer;
+
+        public MessageMediumViewModel()
+        {
+            synthesizer = new SpeechSynthesizer();
+            synthesizer.Volume = 100;
+            synthesizer.Rate = -2;
+        }
         public void LoadMessageMediums()
         {
-            //AddInitData();
+            AddInitData();
             RenderUtil = new RenderUtil();
             PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, GetTableRootMessageMediums());
             MessageMediums = new ObservableCollection<MessageMedium>();
@@ -74,8 +83,8 @@ namespace EyexAAC.ViewModel
             }
             else
             {
-                Console.WriteLine(messageMedium.Name);
-                //TODO: Use a reader library instead.
+                synthesizer.SpeakAsync(messageMedium.Name);
+                //Console.WriteLine(messageMedium.Name);
             }
         }
         private MessageMedium GetMessageMediumFromCollectionById(int id)
