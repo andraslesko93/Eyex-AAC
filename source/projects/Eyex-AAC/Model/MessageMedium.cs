@@ -138,6 +138,22 @@ namespace EyexAAC.Model
             RaisePropertyChanged("Children");
             RaisePropertyChanged("HasChild");
         }
+
+        public MessageMedium Copy()
+        {
+            MessageMedium msg = new MessageMedium();
+            msg.Children = Children;
+            msg.HasChild = HasChild;
+            msg.Image = Image;
+            msg.ImageAsByte = ImageAsByte;
+            msg.Name = Name;
+            msg.Parent = Parent;
+            msg.Type = Type;
+            
+
+
+            return msg;
+        }
     }
 
     enum MessageMediumType {

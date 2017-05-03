@@ -1,4 +1,5 @@
 ﻿using EyexAAC.Model;
+using EyexAAC.ViewModel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,37 +28,9 @@ namespace EyexAAC.ViewModel
         public void LoadBasicMessageMediums()
         {
             BasicMessageMediums = new ObservableCollection<MessageMedium>();
-            GetBasicMessageMediums().ToList().ForEach(BasicMessageMediums.Add);
+            MessageMediumProxyUtil.GetBasicMessageMediums().ToList().ForEach(BasicMessageMediums.Add);
         }
-        
-        public int AddBasicMessageMediums(MessageMedium basicMessageMedium)
-        {
-            int returnCode = 0;
-            using (var context = new MessageMediumContext())
-            {
-                context.MessageMediums.Add(basicMessageMedium);
-                returnCode = context.SaveChanges();
-            }
-            BasicMessageMediums.Add(basicMessageMedium);
-            return returnCode;
-        }
-
-        public List<MessageMedium> GetBasicMessageMediums()
-        {
-            using (var context = new MessageMediumContext())
-            {
-                var messageMediums = context.MessageMediums.Where(c => c.Type == MessageMediumType.basic).ToList();
-                foreach (MessageMedium messageMedium in messageMediums)
-                {
-                    if (messageMedium.ImageAsByte != null)
-                    {
-                        messageMedium.InitializeImage();
-                    }
-                }
-                return messageMediums;
-            }
-        }
-       
+               
         internal void performActionOnBasicMessageMedium(int id)
         {
             MessageMedium messageMedium = GetBasicMessageMediumFromCollectionById(id);

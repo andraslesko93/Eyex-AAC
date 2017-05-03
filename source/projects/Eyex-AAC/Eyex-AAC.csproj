@@ -81,7 +81,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModel\AddNewMMViewModel.cs" />
     <Compile Include="ViewModel\BasicMessageMediumViewModel.cs" />
     <Compile Include="ViewModel\ManageMessageMediumViewModel.cs" />
     <Compile Include="ViewModel\Utils\MessageMediumProxyUtil.cs" />
@@ -96,10 +95,6 @@
     <Compile Include="View\MessageMediumView.xaml.cs">
       <DependentUpon>MessageMediumView.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\AddNewMMView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\BasicMessageMediumView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -114,9 +109,6 @@
     </Compile>
     <Compile Include="Model\MessageMediumContext.cs" />
     <Compile Include="ViewModel\MessageMediumViewModel.cs" />
-    <Compile Include="View\AddNewMMView.xaml.cs">
-      <DependentUpon>AddNewMMView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -163,6 +155,39 @@
       <Link>Tobii.EyeX.Client.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Images\demo images\basic\goodbye.jpg" />
+    <Resource Include="Resources\Images\demo images\basic\hello.jpg" />
+    <Resource Include="Resources\Images\demo images\basic\no.jpg" />
+    <Resource Include="Resources\Images\demo images\basic\thank you.jpg" />
+    <Resource Include="Resources\Images\demo images\basic\yes.jpg" />
+    <Resource Include="Resources\Images\demo images\cartoons.jpg" />
+    <Resource Include="Resources\Images\demo images\cat.jpg" />
+    <Resource Include="Resources\Images\demo images\foods\food.jpg" />
+    <Resource Include="Resources\Images\demo images\foods\hungry.jpg" />
+    <Resource Include="Resources\Images\demo images\foods\orange.jpg" />
+    <Resource Include="Resources\Images\demo images\foods\sandwich.jpg" />
+    <Resource Include="Resources\Images\demo images\foods\soup.jpg" />
+    <Resource Include="Resources\Images\demo images\foods\thirsty.jpg" />
+    <Resource Include="Resources\Images\demo images\game\ball.jpg" />
+    <Resource Include="Resources\Images\demo images\game\balloons.jpg" />
+    <Resource Include="Resources\Images\demo images\game\game.jpg" />
+    <Resource Include="Resources\Images\demo images\game\play.jpg" />
+    <Resource Include="Resources\Images\demo images\game\pool.jpg" />
+    <Resource Include="Resources\Images\demo images\many.jpg" />
+    <Resource Include="Resources\Images\demo images\movie.jpg" />
+    <Resource Include="Resources\Images\demo images\school\friend.jpg" />
+    <Resource Include="Resources\Images\demo images\school\paper.jpg" />
+    <Resource Include="Resources\Images\demo images\school\pen.jpg" />
+    <Resource Include="Resources\Images\demo images\school\pencil.jpg" />
+    <Resource Include="Resources\Images\demo images\school\school bag.jpg" />
+    <Resource Include="Resources\Images\demo images\school\school.jpg" />
+    <Resource Include="Resources\Images\demo images\school\study\book.jpg" />
+    <Resource Include="Resources\Images\demo images\school\study\computer.jpg" />
+    <Resource Include="Resources\Images\demo images\school\study\study.jpg" />
+    <Resource Include="Resources\Images\demo images\tired.jpg" />
+    <Resource Include="Resources\Images\demo images\today.jpg" />
+    <Resource Include="Resources\Images\demo images\toothbrush.jpg" />
+    <Resource Include="Resources\Images\demo images\yesterday.jpg" />
     <Resource Include="Resources\Images\meta_mark.jpg" />
     <Resource Include="Resources\Images\go_back.jpg" />
     <Resource Include="Resources\Images\nachos.jpg" />

@@ -52,12 +52,6 @@ namespace EyexAAC
             manageWindow.ShowDialog();
         }
 
-        private void Add_New_Button_Click(object sender, RoutedEventArgs e)
-        {
-            AddNewMMView addMessageMedium = new AddNewMMView();
-            addMessageMedium.ShowDialog();
-        }
-
         private void Scroll_OnHasGazeChanged(object sender, RoutedEventArgs e)
         {
             var stackPanel = sender as StackPanel;
@@ -76,19 +70,5 @@ namespace EyexAAC
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            messageMediumViewModelObject.NextPage();
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            messageMediumViewModelObject.PreviousPage();
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            messageMediumViewModelObject.logStatus();
-        }
     }
 }

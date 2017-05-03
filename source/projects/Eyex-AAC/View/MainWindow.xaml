@@ -92,20 +92,16 @@
         <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}" Grid.Row="1" Margin ="7,0,0,0" Grid.Column="0">
             <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="previous" >
                 <Label Content="&lt;" Style="{StaticResource EyeXGazePreviousButtonStyle}"/>
-                <Button Click="Button_Click_1">prev</Button>
             </StackPanel>
         </StackPanel>
         <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Grid.Row="1" Margin="0,0,7,0" Grid.Column="2" >
             <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="next">
                 <Label Content="&gt;" Style="{StaticResource EyeXGazeNextButtonStyle}"/>
-                <Button Click="Button_Click">next</Button>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
-            <Button Click="Manage_Button_Click" Grid.Row="0"  Margin="5,5,5,5" Content="Manage" />
-            <Button Click="Add_New_Button_Click" Grid.Row="0" Margin="5,5,5,5" Content="New" />
-            <Button Click="Button_Click_2" Grid.Row="0" Margin="5,5,5,5" Content="Debug" />
-            
+            <Button Click="Manage_Button_Click" Grid.Row="0" Background="White"  Margin="5,5,5,5" Content="Manage" />
+
         </StackPanel>
         <views:MessageMediumView x:Name="MessageMediumViewControl" Grid.Row="1" Grid.Column="1" Loaded="MessageMediumViewControl_Loaded"/>
         <views:BasicMessageMediumView  x:Name="BasicMessageMediumViewControl" Grid.Row="2" Grid.Column="1" Loaded="BasicMessageMediumViewControl_Loaded"/>

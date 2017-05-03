@@ -33,42 +33,13 @@ namespace EyexAAC.ViewModel
         }
         public void LoadMessageMediums()
         {
-            AddInitData();
+           //AddInitData();
             RenderUtil = new RenderUtil();
-            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, GetTableRootMessageMediums());
+            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, MessageMediumProxyUtil.GetTableRootMessageMediums());
             MessageMediums = new ObservableCollection<MessageMedium>();
             PageManagerUtil.LoadMessageMediumsByPageNumber(MessageMediums);
             PageManagerUtil.PreviousPageButtonStateCalculator();
             PageManagerUtil.NextPageButtonStateCalculator();
-        }
-        public int AddMessageMediums(MessageMedium messageMedium)
-        {
-            int returnCode = 0;
-            using (var context = new MessageMediumContext())
-            {
-                context.MessageMediums.Add(messageMedium);
-                returnCode = context.SaveChanges();
-            }
-            MessageMediums.Add(messageMedium);
-
-            PageManagerUtil.AddToMessageCache(messageMedium);
-            PageManagerUtil.NextPageButtonStateCalculator();
-            return returnCode;
-        }
-        public List<MessageMedium> GetTableRootMessageMediums()
-        {
-            using (var context = new MessageMediumContext())
-            {
-                var messageMediums= context.MessageMediums.Include(c => c.Children).Where(c => c.Parent == null && (c.Type==MessageMediumType.table)).ToList();
-                foreach (MessageMedium messageMedium in messageMediums)
-                {
-                    if (messageMedium.ImageAsByte != null)
-                    {
-                        messageMedium.InitializeImage();
-                    }
-                }
-                return messageMediums;
-            }
         }
         public void PerformActionOnMessageMedium(int id)
         {
@@ -105,55 +76,53 @@ namespace EyexAAC.ViewModel
                 return messageMedium;
             }
         }
-        private List<MessageMedium> GetChildren(MessageMedium messageMedium)
-        {
-            using (var context = new MessageMediumContext())
-            {
-                var children = context.MessageMediums.Include(c => c.Children).Include(c =>c.Parent).Where(c => c.Parent.Id == messageMedium.Id).ToList();
-                foreach (MessageMedium child in children)
-                {
-                    if (child.ImageAsByte != null)
-                    {
-                        child.InitializeImage();
-                    }
-                }
-                return children;
-            }
-        }
         private void AddInitData()
         {
-            MessageMedium msg1 = new
-               MessageMedium("no", "pack://application:,,,/Resources/Images/no.jpg", MessageMediumType.basic);
-            MessageMedium msg2 = new
-               MessageMedium("yes", "pack://application:,,,/Resources/Images/yes.jpg", MessageMediumType.basic);
-            MessageMedium msg3 = new
-               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg");
-            MessageMedium msg5 = new
-               MessageMedium("n3o", "pack://application:,,,/Resources/Images/newspaper.jpg");
-            MessageMedium msg4 = new
-               MessageMedium("ye5s", "pack://application:,,,/Resources/Images/yes.jpg");
-
-            MessageMedium meta1 = new MessageMedium("foods", "pack://application:,,,/Resources/Images/nachos.jpg");
-
-            for (int i = 0; i < 10; i++)
-            {
-                MessageMedium msg = new MessageMedium(i.ToString(), "pack://application:,,,/Resources/Images/yes.jpg");
-                meta1.AddChild(msg);
-                for (int j = 0; j< 10; j++)
-                {
-                    MessageMedium smsg = new MessageMedium(j.ToString(), "pack://application:,,,/Resources/Images/no.jpg");
-                    smsg.AddChild(new MessageMedium(j+34.ToString(), "pack://application:,,,/Resources/Images/no.jpg"));
-                    msg.AddChild(smsg);
-                }
-            }
             using (var context = new MessageMediumContext())
             {
-                context.MessageMediums.Add(msg1);
-                context.MessageMediums.Add(msg2);
-                context.MessageMediums.Add(msg3);
-                context.MessageMediums.Add(msg4);
-                context.MessageMediums.Add(msg5); ;
-                context.MessageMediums.Add(meta1);
+                context.MessageMediums.Add(new MessageMedium("cartoons", "pack://application:,,,/Resources/Images/demo images/cartoons.jpg"));
+                context.MessageMediums.Add(new MessageMedium("cat", "pack://application:,,,/Resources/Images/demo images/cat.jpg"));
+                context.MessageMediums.Add(new MessageMedium("many", "pack://application:,,,/Resources/Images/demo images/many.jpg"));
+                context.MessageMediums.Add(new MessageMedium("movie", "pack://application:,,,/Resources/Images/demo images/movie.jpg"));
+
+                MessageMedium foods = new MessageMedium("foods", "pack://application:,,,/Resources/Images/demo images/foods/food.jpg");
+                foods.AddChild(new MessageMedium("hungry", "pack://application:,,,/Resources/Images/demo images/foods/hungry.jpg"));
+                foods.AddChild(new MessageMedium("orange", "pack://application:,,,/Resources/Images/demo images/foods/orange.jpg"));
+                foods.AddChild(new MessageMedium("sandwich", "pack://application:,,,/Resources/Images/demo images/foods/sandwich.jpg"));
+                foods.AddChild(new MessageMedium("soup", "pack://application:,,,/Resources/Images/demo images/foods/soup.jpg"));
+                foods.AddChild(new MessageMedium("thirsty", "pack://application:,,,/Resources/Images/demo images/foods/thirsty.jpg"));
+                context.MessageMediums.Add(foods);
+
+                context.MessageMediums.Add(new MessageMedium("tired", "pack://application:,,,/Resources/Images/demo images/tired.jpg"));
+                context.MessageMediums.Add(new MessageMedium("today", "pack://application:,,,/Resources/Images/demo images/today.jpg"));
+                context.MessageMediums.Add(new MessageMedium("toothbrush", "pack://application:,,,/Resources/Images/demo images/toothbrush.jpg"));
+                context.MessageMediums.Add(new MessageMedium("today", "pack://application:,,,/Resources/Images/demo images/today.jpg"));
+                context.MessageMediums.Add(new MessageMedium("yesterday", "pack://application:,,,/Resources/Images/demo images/yesterday.jpg"));
+
+                MessageMedium games = new MessageMedium("games", "pack://application:,,,/Resources/Images/demo images/game/game.jpg");
+                games.AddChild(new MessageMedium("ball", "pack://application:,,,/Resources/Images/demo images/game/ball.jpg"));
+                games.AddChild(new MessageMedium("balloons", "pack://application:,,,/Resources/Images/demo images/game/balloons.jpg"));
+                games.AddChild(new MessageMedium("play", "pack://application:,,,/Resources/Images/demo images/game/play.jpg"));
+                games.AddChild(new MessageMedium("pool", "pack://application:,,,/Resources/Images/demo images/game/pool.jpg"));
+                context.MessageMediums.Add(games);
+
+                MessageMedium school = new MessageMedium("school", "pack://application:,,,/Resources/Images/demo images/school/school.jpg");
+                school.AddChild(new MessageMedium("friend", "pack://application:,,,/Resources/Images/demo images/school/friend.jpg"));
+                school.AddChild(new MessageMedium("paper", "pack://application:,,,/Resources/Images/demo images/school/paper.jpg"));
+                school.AddChild(new MessageMedium("pen", "pack://application:,,,/Resources/Images/demo images/school/pen.jpg"));
+                school.AddChild(new MessageMedium("pencil", "pack://application:,,,/Resources/Images/demo images/school/pencil.jpg"));
+                school.AddChild(new MessageMedium("school bag", "pack://application:,,,/Resources/Images/demo images/school/school bag.jpg"));
+                MessageMedium study = new MessageMedium("study", "pack://application:,,,/Resources/Images/demo images/school/study/study.jpg");
+                study.AddChild(new MessageMedium("computer", "pack://application:,,,/Resources/Images/demo images/school/study/computer.jpg"));
+                study.AddChild(new MessageMedium("book", "pack://application:,,,/Resources/Images/demo images/school/study/book.jpg"));
+                school.AddChild(study);
+                context.MessageMediums.Add(school);
+
+                context.MessageMediums.Add(new MessageMedium("hello", "pack://application:,,,/Resources/Images/demo images/basic/hello.jpg", MessageMediumType.basic));
+                context.MessageMediums.Add(new MessageMedium("goodbye", "pack://application:,,,/Resources/Images/demo images/basic/goodbye.jpg", MessageMediumType.basic));
+                context.MessageMediums.Add(new MessageMedium("yes", "pack://application:,,,/Resources/Images/demo images/basic/yes.jpg", MessageMediumType.basic));
+                context.MessageMediums.Add(new MessageMedium("no", "pack://application:,,,/Resources/Images/demo images/basic/no.jpg", MessageMediumType.basic));
+                context.MessageMediums.Add(new MessageMedium("thank you", "pack://application:,,,/Resources/Images/demo images/basic/thank you.jpg", MessageMediumType.basic));
                 context.SaveChanges();
             }
         }
@@ -168,7 +137,7 @@ namespace EyexAAC.ViewModel
         private void MoveDownALevel(MessageMedium messageMedium)
         {
             MessageMediums.Clear();
-            setTurnPageUtilScope(addBackMessageMediumToList(GetChildren(messageMedium)));
+            SetTurnPageUtilScope(addBackMessageMediumToList(MessageMediumProxyUtil.GetChildren(messageMedium)));
         }
         private List<MessageMedium> addBackMessageMediumToList(List<MessageMedium> list)
         {
@@ -188,14 +157,14 @@ namespace EyexAAC.ViewModel
             if (parent.Parent != null)
             {
                 MessageMedium grandParent = GetMessageMediumById(parent.Parent.Id);
-                setTurnPageUtilScope(addBackMessageMediumToList(GetChildren(grandParent)));
+                SetTurnPageUtilScope(addBackMessageMediumToList(MessageMediumProxyUtil.GetChildren(grandParent)));
             }
             else
             {
-                setTurnPageUtilScope(GetTableRootMessageMediums());
+                SetTurnPageUtilScope(MessageMediumProxyUtil.GetTableRootMessageMediums());
             }
         }      
-        private void setTurnPageUtilScope(List<MessageMedium> messageMediumList)
+        private void SetTurnPageUtilScope(List<MessageMedium> messageMediumList)
         {
             PageManagerUtil.NewDataScope(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, messageMediumList);
             PageManagerUtil.LoadMessageMediumsByPageNumber(MessageMediums);
@@ -203,10 +172,12 @@ namespace EyexAAC.ViewModel
             PageManagerUtil.NextPageButtonStateCalculator();
         }
 
+        /*
         public void logStatus()
         {
             PageManagerUtil.logStatus();
         }
+        */
 
     }
 }
