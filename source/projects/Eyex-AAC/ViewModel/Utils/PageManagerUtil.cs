@@ -15,8 +15,17 @@ namespace EyexAAC.ViewModel.Utils
         public int MaxRowCount { get; set; }
         public int MaxColumnCount { get; set; }
         public int CurrentPageNumber { get; set; }
+        public int CurrentPageLevel { get; set; }
+
+        public MessageMedium ParentMessenger { get; set; }
+        public ObservableCollection<MessageMedium> DisplayedMessengers { get; set; }
+
+        public List<MessageMedium> MessageMediumCache { get; set; }
+
+        private List<int> PageNumberStack { get; set; }
         private bool _isPreviousPageButtonEnabled;
         private bool _isNextPageButtonEnabled;
+        private bool _isMoveUpButtonEnabled;
         public bool IsPreviousPageButtonEnabled
         {
             get { return _isPreviousPageButtonEnabled; }
@@ -35,28 +44,40 @@ namespace EyexAAC.ViewModel.Utils
                 RaisePropertyChanged("IsNextPageButtonEnabled");
             }
         }
-        public List<MessageMedium> MessageMediumCache { get; set; }
-        public PageManagerUtil(int maxRowCount, int maxColumnCount, List<MessageMedium> messageMedium)
+        public bool IsMoveUpButtonEnabled
         {
-            MessageMediumCache = messageMedium;
-            CurrentPageNumber = 1;
-            MaxRowCount = maxRowCount;
-            MaxColumnCount = maxColumnCount;
+            get { return _isMoveUpButtonEnabled; }
+            set
+            {
+                _isMoveUpButtonEnabled = value;
+                RaisePropertyChanged("IsMoveUpButtonEnabled");
+            }
         }
 
-        public void NextPage(ObservableCollection<MessageMedium> MessageMediums)
+        public PageManagerUtil(int maxRowCount, int maxColumnCount, List<MessageMedium> messageMedium, ObservableCollection<MessageMedium> displayedMessageMediums)
+        {
+            MessageMediumCache = messageMedium;
+            ParentMessenger = new MessageMedium();
+            CurrentPageLevel = 0;
+            CurrentPageNumber = 1;
+            PageNumberStack = new List<int>();
+            MaxRowCount = maxRowCount;
+            MaxColumnCount = maxColumnCount;
+            DisplayedMessengers = displayedMessageMediums;
+            LoadMessengers();
+        }
+
+        public void NextPage()
         {
             if (IsNextPageButtonEnabled == false)
             {
                 return;
             }
             CurrentPageNumber++;
-            PreviousPageButtonStateCalculator();
-            NextPageButtonStateCalculator();
-            LoadMessageMediumsByPageNumber(MessageMediums);
+            LoadMessengers();
         }
 
-        public void PreviousPage(ObservableCollection<MessageMedium> MessageMediums)
+        public void PreviousPage()
         {
             if (IsPreviousPageButtonEnabled == false)
             {
@@ -65,12 +86,56 @@ namespace EyexAAC.ViewModel.Utils
             if (CurrentPageNumber > 1)
             {
                 CurrentPageNumber--;
-                PreviousPageButtonStateCalculator();
-                NextPageButtonStateCalculator();
-                LoadMessageMediumsByPageNumber(MessageMediums);
+                LoadMessengers();
             }
         }
 
+        public void MoveUpALevel()
+        {
+            if (!IsMoveUpButtonEnabled || CurrentPageLevel == 0 )
+            {
+                return;
+            }
+            //Set the current page number and remove it from the stack.
+            CurrentPageNumber = PageNumberStack.Last();
+            PageNumberStack.RemoveAt(PageNumberStack.Count - 1);
+
+            List<MessageMedium> newDataScope = new List<MessageMedium>();
+            if (ParentMessenger.Parent != null)
+            {
+                newDataScope = MessageMediumProxyUtil.GetChildren(ParentMessenger.Parent);
+                if (newDataScope.Any())
+                {
+                    NewDataScope(newDataScope);
+                    ParentMessenger = ParentMessenger.Parent;
+                    CurrentPageLevel--;
+                }
+                else
+                {
+                    //Parent got deleted
+                    CurrentPageLevel = 0;
+                    CurrentPageNumber = 1;
+                    PageNumberStack.Clear();
+                    NewDataScope(MessageMediumProxyUtil.GetTableRootMessageMediums());
+                }
+            }
+            else
+            {
+                //Parent is a root
+                CurrentPageLevel = 0;
+                NewDataScope(MessageMediumProxyUtil.GetTableRootMessageMediums());
+            }
+            Console.WriteLine("----------page nr stack size: " + PageNumberStack.Count());
+        }
+
+        public void MoveDownALevel(MessageMedium Parent, List<MessageMedium> Children)
+        {
+            ParentMessenger = Parent;
+            PageNumberStack.Add(CurrentPageNumber);
+            CurrentPageNumber = 1;
+            CurrentPageLevel++;
+            NewDataScope(Children);
+        }
 
         public void NextPageButtonStateCalculator()
         {
@@ -84,7 +149,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public void PreviousPageButtonStateCalculator()
+        private void PreviousPageButtonStateCalculator()
         {
             if (CurrentPageNumber <= 1)
             {
@@ -95,44 +160,55 @@ namespace EyexAAC.ViewModel.Utils
                 IsPreviousPageButtonEnabled = true;
             }
         }
+        private void MoveUpButtonStateCalculator()
+        {
+            if (CurrentPageLevel == 0)
+            {
+                IsMoveUpButtonEnabled = false;
+            }
+            else
+            {
+                IsMoveUpButtonEnabled = true;
+            }
+        }
+
 
         private void RaisePropertyChanged(string property)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
-        public void LoadMessageMediumsByPageNumber(ObservableCollection<MessageMedium> MessageMediums)
+        private void LoadMessengers()
         {
             int maxElementCountOnAPage = MaxColumnCount * MaxRowCount;
             int indexFrom = (CurrentPageNumber - 1) * maxElementCountOnAPage;
             int indexTo = CurrentPageNumber * maxElementCountOnAPage;
 
-            MessageMediums.Clear();
+            DisplayedMessengers.Clear();
             for (; (indexFrom < indexTo && indexFrom < MessageMediumCache.Count()); indexFrom++)
             {
-                MessageMediums.Add(MessageMediumCache[indexFrom]);
+                DisplayedMessengers.Add(MessageMediumCache[indexFrom]);
             }
+            CalculateButtonStates();
         }
 
-        public void AddToMessageCache(MessageMedium messageMedium)
+        public void AddToMessageMediumCache(MessageMedium messageMedium)
         {
             MessageMediumCache.Add(messageMedium);
+            NextPageButtonStateCalculator();
         }
 
-        public void logStatus()
-        {
-            Console.WriteLine("next page state " + IsNextPageButtonEnabled);
-            Console.WriteLine("prev page state " + IsPreviousPageButtonEnabled);
-            Console.WriteLine("page nr " + CurrentPageNumber);
-            Console.WriteLine("element nr" + MessageMediumCache.Count());
-        }
-
-        public void NewDataScope(int maxRowCount, int maxColumnCount, List<MessageMedium> messageMediumList)
+        private void NewDataScope(List<MessageMedium> messageMediumList)
         {
             MessageMediumCache = messageMediumList;
-            MaxRowCount = maxRowCount;
-            MaxColumnCount = maxColumnCount;
-            CurrentPageNumber = 1;
+            LoadMessengers();
+        }
+
+        private void CalculateButtonStates()
+        {
+            NextPageButtonStateCalculator();
+            PreviousPageButtonStateCalculator();
+            MoveUpButtonStateCalculator();
         }
     }
 }

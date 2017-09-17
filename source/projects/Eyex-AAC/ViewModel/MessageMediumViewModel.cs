@@ -33,13 +33,10 @@ namespace EyexAAC.ViewModel
         }
         public void LoadMessageMediums()
         {
-           //AddInitData();
+            AddInitData();
             RenderUtil = new RenderUtil();
-            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, MessageMediumProxyUtil.GetTableRootMessageMediums());
             MessageMediums = new ObservableCollection<MessageMedium>();
-            PageManagerUtil.LoadMessageMediumsByPageNumber(MessageMediums);
-            PageManagerUtil.PreviousPageButtonStateCalculator();
-            PageManagerUtil.NextPageButtonStateCalculator();
+            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, MessageMediumProxyUtil.GetTableRootMessageMediums(), MessageMediums);
         }
         public void PerformActionOnMessageMedium(int id)
         {
@@ -47,10 +44,6 @@ namespace EyexAAC.ViewModel
             if (messageMedium.Children.Any())
             {
                 MoveDownALevel(messageMedium);
-            }
-            else if (messageMedium.Type == MessageMediumType.goBack)
-            {
-                MoveUpALevel();
             }
             else
             {
@@ -128,56 +121,20 @@ namespace EyexAAC.ViewModel
         }
         public void NextPage()
         {
-            PageManagerUtil.NextPage(MessageMediums);
+            PageManagerUtil.NextPage();
         }
         public void PreviousPage()
         {
-            PageManagerUtil.PreviousPage(MessageMediums);
+            PageManagerUtil.PreviousPage();
         }
         private void MoveDownALevel(MessageMedium messageMedium)
         {
-            MessageMediums.Clear();
-            SetTurnPageUtilScope(addBackMessageMediumToList(MessageMediumProxyUtil.GetChildren(messageMedium)));
-        }
-        private List<MessageMedium> addBackMessageMediumToList(List<MessageMedium> list)
-        {
-            List<MessageMedium> messageMediumList = new List<MessageMedium>();
-            MessageMedium goBack = new MessageMedium("go back", "pack://application:,,,/Resources/Images/go_back.jpg", MessageMediumType.goBack);
-            messageMediumList.Add(goBack);
-            list.ForEach(messageMediumList.Add);
-            return messageMediumList;
-        }
-        private void MoveUpALevel()
-        {
-            MessageMedium element = MessageMediums.Last();
-            //element.Parent does not contain reference to elements's grandparent, so we have to make another query.
-            //The parent object will contain the reference to grandparent.
-            MessageMedium parent = GetMessageMediumById(element.Parent.Id);
-            MessageMediums.Clear();
-            if (parent.Parent != null)
-            {
-                MessageMedium grandParent = GetMessageMediumById(parent.Parent.Id);
-                SetTurnPageUtilScope(addBackMessageMediumToList(MessageMediumProxyUtil.GetChildren(grandParent)));
-            }
-            else
-            {
-                SetTurnPageUtilScope(MessageMediumProxyUtil.GetTableRootMessageMediums());
-            }
-        }      
-        private void SetTurnPageUtilScope(List<MessageMedium> messageMediumList)
-        {
-            PageManagerUtil.NewDataScope(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, messageMediumList);
-            PageManagerUtil.LoadMessageMediumsByPageNumber(MessageMediums);
-            PageManagerUtil.PreviousPageButtonStateCalculator();
-            PageManagerUtil.NextPageButtonStateCalculator();
+           PageManagerUtil.MoveDownALevel(messageMedium, MessageMediumProxyUtil.GetChildren(messageMedium));
         }
 
-        /*
-        public void logStatus()
+        public void MoveUpALevel()
         {
-            PageManagerUtil.logStatus();
+            PageManagerUtil.MoveUpALevel();
         }
-        */
-
     }
 }

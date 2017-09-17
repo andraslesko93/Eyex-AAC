@@ -10,7 +10,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:Model="clr-namespace:EyexAAC.Model" mc:Ignorable="d" x:Class="EyexAAC.MainWindow"
         xmlns:views = "clr-namespace:EyexAAC.View"
-        Title="MainWindow" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Title="EyeX AAC" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         MinHeight="{Binding RenderUtil.WindowHeight}" 
         MinWidth="{Binding RenderUtil.WindowWidth}"
         xmlns:eyeX="clr-namespace:EyeXFramework.Wpf;assembly=EyeXFramework"
@@ -34,7 +34,7 @@
             </Style.Triggers>
         </Style>
         <Style x:Key="EyeXGazeAwareSelectScrollButton" TargetType="{x:Type StackPanel}">
-            <Setter Property="Margin" Value="7,7,7,7"/>
+            <Setter Property="Margin" Value="5,5,5,5"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="eyeX:Behavior.GazeAware" Value="True" />
@@ -76,34 +76,64 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        
-    </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}" Grid.Row="1" Margin ="7,0,0,0" Grid.Column="0">
-            <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="previous" >
-                <Label Content="&lt;" Style="{StaticResource EyeXGazePreviousButtonStyle}"/>
-            </StackPanel>
-        </StackPanel>
-        <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Grid.Row="1" Margin="0,0,7,0" Grid.Column="2" >
-            <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="next">
-                <Label Content="&gt;" Style="{StaticResource EyeXGazeNextButtonStyle}"/>
-            </StackPanel>
-        </StackPanel>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
-            <Button Click="Manage_Button_Click" Grid.Row="0" Background="White"  Margin="5,5,5,5" Content="Manage" />
 
-        </StackPanel>
-        <views:MessageMediumView x:Name="MessageMediumViewControl" Grid.Row="1" Grid.Column="1" Loaded="MessageMediumViewControl_Loaded"/>
-        <views:BasicMessageMediumView  x:Name="BasicMessageMediumViewControl" Grid.Row="2" Grid.Column="1" Loaded="BasicMessageMediumViewControl_Loaded"/>
+        <Style x:Key="EyeXGazeUpButtonStyle" TargetType="Label">
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding PageManagerUtil.IsMoveUpButtonEnabled}" Value="False">
+                    <Setter Property="Foreground" Value="LightGray"/>
+                    <Setter Property="Content" Value="{Binding  PageManagerUtil.IsMoveUpButtonEnabled}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding PageManagerUtil.IsMoveUpButtonEnabled}" Value="True">
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="Content" Value="{Binding  PageManagerUtil.IsMoveUpButtonEnabled}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}" Grid.Row="1" Margin ="7,0,0,0" Grid.Column="0">
+                <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="previous" >
+                    <Label Content="&lt;" Style="{StaticResource EyeXGazePreviousButtonStyle}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Grid.Row="1" Margin="0,0,7,0" Grid.Column="2" >
+                <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="next">
+                    <Label Content="&gt;" Style="{StaticResource EyeXGazeNextButtonStyle}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
+                <Button Click="Manage_Button_Click" Grid.Row="0" Background="White"  Margin="5,5,5,5" Content="Manage" />
+
+            </StackPanel>
+            <views:MessageMediumView x:Name="MessageMediumViewControl" Grid.Row="1" Grid.Column="1" Loaded="MessageMediumViewControl_Loaded"/>
+            <views:BasicMessageMediumView  x:Name="BasicMessageMediumViewControl" Grid.Row="2" Grid.Column="1" Loaded="BasicMessageMediumViewControl_Loaded"/>
         </Grid>
+
+        
+        <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Margin ="7,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="up" >
+                <Label Content="&lt;&lt;" Style="{StaticResource EyeXGazeUpButtonStyle}"/>
+            </StackPanel>
+        </StackPanel>
+
+
+    </Grid>
 </Window>

@@ -58,6 +58,19 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
+        public static MessageMedium GetMessageMediumById(int id)
+        {
+            using (var context = new MessageMediumContext())
+            {
+                var messageMedium = context.MessageMediums.Include(c => c.Children).Include(c => c.Parent).SingleOrDefault(c => c.Id == id);
+                if (messageMedium.ImageAsByte != null)
+                {
+                    messageMedium.InitializeImage();
+                }
+                return messageMedium;
+            }
+        }
+
 
     }
 

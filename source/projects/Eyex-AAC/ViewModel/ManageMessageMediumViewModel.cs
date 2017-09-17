@@ -40,7 +40,6 @@ namespace EyexAAC.ViewModel
             TableRoot =  new MessageMedium("Table message mediums", MessageMediumType.root);
             BasicRoot =  new MessageMedium("Basic message mediums", MessageMediumType.root);
             MessageMediums = new ObservableCollection<MessageMedium>();
-           // FocusedMessageMedium = new MessageMedium();
             SetRootObjects();
         }
 
@@ -88,42 +87,59 @@ namespace EyexAAC.ViewModel
         {
             if (FocusedMessageMedium.Type == MessageMediumType.table)
             {
-                MessageMedium tableMessageMedium = MessageMediumViewModel.MessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
-                if (tableMessageMedium != null)
-                {
-                    //It is not a subtype of meta object on the communication table, so we can access to it.
-                    tableMessageMedium.Name = FocusedMessageMedium.Name;
-                    tableMessageMedium.Image = FocusedMessageMedium.Image;
-                }
-                else
-                {
-                    if (FocusedMessageMedium.Parent.Type == MessageMediumType.root)
-                    {
-
-                        MessageMediumViewModel.MessageMediums.Add(FocusedMessageMedium);
-                    }
-                }
-
-                MessageMedium tableMessageMediumParent = MessageMediumViewModel.MessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Parent.Id);
-                if (tableMessageMediumParent != null)
-                {
-                    tableMessageMediumParent.AddChild(FocusedMessageMedium);
-                }
-
+                HandleTableMessageMediums();
             }
             else if (FocusedMessageMedium.Type == MessageMediumType.basic)
             {
-                MessageMedium basicMessageMedium = BasicMessageMediumViewModel.BasicMessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
+                HandleBasicMessageMediums();
+            }
+        }
 
-                if (basicMessageMedium != null)
+        private void HandleBasicMessageMediums()
+        {
+            MessageMedium basicMessageMedium = BasicMessageMediumViewModel.BasicMessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
+
+            if (basicMessageMedium != null)
+            {
+                basicMessageMedium.Name = FocusedMessageMedium.Name;
+                basicMessageMedium.Image = FocusedMessageMedium.Image;
+            }
+            else
+            {
+                BasicMessageMediumViewModel.BasicMessageMediums.Add(FocusedMessageMedium);
+            }
+        }
+
+        private void HandleTableMessageMediums()
+        {
+            MessageMedium tableMessageMedium = MessageMediumViewModel.MessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
+            //Does it exists in the current context?
+            if (tableMessageMedium != null)
+            {
+                //It is not a subtype of meta object on the communication table, so we can access to it.
+                tableMessageMedium.Name = FocusedMessageMedium.Name;
+                tableMessageMedium.Image = FocusedMessageMedium.Image;
+            }
+            else
+            {
+                MessageMedium currentElement = MessageMediumViewModel.MessageMediums.Last();
+
+                if (FocusedMessageMedium.Parent.Type == MessageMediumType.root && currentElement.Parent == null)
                 {
-                    basicMessageMedium.Name = FocusedMessageMedium.Name;
-                    basicMessageMedium.Image = FocusedMessageMedium.Image;
+                    MessageMediumViewModel.MessageMediums.Add(FocusedMessageMedium);
+                    MessageMediumViewModel.PageManagerUtil.AddToMessageMediumCache(FocusedMessageMedium);
                 }
-                else
+                else if(FocusedMessageMedium.Parent.Id==currentElement.Parent.Id)
                 {
-                    BasicMessageMediumViewModel.BasicMessageMediums.Add(FocusedMessageMedium);
+                    MessageMediumViewModel.MessageMediums.Add(FocusedMessageMedium);
+                    MessageMediumViewModel.PageManagerUtil.AddToMessageMediumCache(FocusedMessageMedium);
                 }
+            }
+            //Add to parent.
+            MessageMedium tableMessageMediumParent = MessageMediumViewModel.MessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Parent.Id);
+            if (tableMessageMediumParent != null)
+            {
+                tableMessageMediumParent.AddChild(FocusedMessageMedium);
             }
         }
 
@@ -156,7 +172,6 @@ namespace EyexAAC.ViewModel
                     FocusedMessageMedium.Id = messageMediumToSave.Id;
                 }
                 
-                Console.WriteLine(FocusedMessageMedium.Parent.Type);
             }
         }
 
@@ -169,6 +184,7 @@ namespace EyexAAC.ViewModel
             DeleteFromApplicationContext();
             DeleteFromDb();
             RefreshTreeView();
+            MessageMediumViewModel.PageManagerUtil.NextPageButtonStateCalculator();
         }
 
         private void RefreshTreeView()
@@ -221,6 +237,7 @@ namespace EyexAAC.ViewModel
             if (FocusedMessageMedium.Type == MessageMediumType.table)
             {
                 MessageMediumViewModel.MessageMediums.Remove(MessageMediumViewModel.MessageMediums.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
+                MessageMediumViewModel.PageManagerUtil.MessageMediumCache.Remove(MessageMediumViewModel.PageManagerUtil.MessageMediumCache.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
             }
             else if (FocusedMessageMedium.Type == MessageMediumType.basic)
             {

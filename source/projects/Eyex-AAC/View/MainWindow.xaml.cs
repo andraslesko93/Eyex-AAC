@@ -21,9 +21,12 @@ namespace EyexAAC
     public partial class MainWindow : Window
     {
         private MessageMediumViewModel messageMediumViewModelObject;
+
+        private static readonly string UP_A_LEVEL_EVENT = "up";
+        private static readonly string NEXT_PAGE_EVENT = "next";
+        private static readonly string PREVIOUS_PAGE_EVENT = "previous";
         public MainWindow()
         {
-            Console.WriteLine("--------------------");
             InitializeComponent();
         }
         private void MessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
@@ -59,13 +62,18 @@ namespace EyexAAC
             if (hasGaze)
             {
                 string type = (string)stackPanel.Tag;
-                if (type == "next")
+                if (type.Equals(NEXT_PAGE_EVENT))
                 {
                     messageMediumViewModelObject.NextPage();
                 }
-                else if (type == "previous")
+                else if (type.Equals(PREVIOUS_PAGE_EVENT))
                 {
                     messageMediumViewModelObject.PreviousPage();
+                }
+
+                else if (type.Equals(UP_A_LEVEL_EVENT))
+                {
+                    messageMediumViewModelObject.MoveUpALevel();
                 }
             }
         }
