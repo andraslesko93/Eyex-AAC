@@ -103,7 +103,7 @@ namespace EyexAAC.ViewModel.Utils
             List<MessageMedium> newDataScope = new List<MessageMedium>();
             if (ParentMessenger.Parent != null)
             {
-                newDataScope = MessageMediumProxyUtil.GetChildren(ParentMessenger.Parent);
+                newDataScope = DatabaseContext.GetChildren(ParentMessenger.Parent);
                 if (newDataScope.Any())
                 {
                     NewDataScope(newDataScope);
@@ -116,16 +116,15 @@ namespace EyexAAC.ViewModel.Utils
                     CurrentPageLevel = 0;
                     CurrentPageNumber = 1;
                     PageNumberStack.Clear();
-                    NewDataScope(MessageMediumProxyUtil.GetTableRootMessageMediums());
+                    NewDataScope(DatabaseContext.GetTableRootMessageMediums());
                 }
             }
             else
             {
                 //Parent is a root
                 CurrentPageLevel = 0;
-                NewDataScope(MessageMediumProxyUtil.GetTableRootMessageMediums());
+                NewDataScope(DatabaseContext.GetTableRootMessageMediums());
             }
-            Console.WriteLine("----------page nr stack size: " + PageNumberStack.Count());
         }
 
         public void MoveDownALevel(MessageMedium Parent, List<MessageMedium> Children)

@@ -49,18 +49,18 @@ namespace EyexAAC.ViewModel
             {
                 return;
             }
-            messageMedium.Children = MessageMediumProxyUtil.GetChildren(messageMedium);
+            messageMedium.Children = DatabaseContext.GetChildren(messageMedium);
         }
 
         private void SetRootObjects()
         {       
-            foreach (MessageMedium msg in MessageMediumProxyUtil.GetTableRootMessageMediums())
+            foreach (MessageMedium msg in DatabaseContext.GetTableRootMessageMediums())
             {
                  TableRoot.AddChild(msg);
             }
             MessageMediums.Add(TableRoot);
 
-            foreach (MessageMedium msg in MessageMediumProxyUtil.GetBasicMessageMediums())
+            foreach (MessageMedium msg in DatabaseContext.GetBasicMessageMediums())
             {
                 BasicRoot.AddChild(msg);
             }
@@ -112,7 +112,7 @@ namespace EyexAAC.ViewModel
 
         private void HandleTableMessageMediums()
         {
-            MessageMedium tableMessageMedium = MessageMediumViewModel.MessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
+            MessageMedium tableMessageMedium = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
             //Does it exists in the current context?
             if (tableMessageMedium != null)
             {
@@ -122,21 +122,21 @@ namespace EyexAAC.ViewModel
             }
             else
             {
-                MessageMedium currentElement = MessageMediumViewModel.MessageMediums.Last();
+                MessageMedium currentElement = ApplicationContext.Instance.Messengers.Last();
 
                 if (FocusedMessageMedium.Parent.Type == MessageMediumType.root && currentElement.Parent == null)
                 {
-                    MessageMediumViewModel.MessageMediums.Add(FocusedMessageMedium);
+                    ApplicationContext.Instance.Messengers.Add(FocusedMessageMedium);
                     MessageMediumViewModel.PageManagerUtil.AddToMessageMediumCache(FocusedMessageMedium);
                 }
                 else if(FocusedMessageMedium.Parent.Id==currentElement.Parent.Id)
                 {
-                    MessageMediumViewModel.MessageMediums.Add(FocusedMessageMedium);
+                    ApplicationContext.Instance.Messengers.Add(FocusedMessageMedium);
                     MessageMediumViewModel.PageManagerUtil.AddToMessageMediumCache(FocusedMessageMedium);
                 }
             }
             //Add to parent.
-            MessageMedium tableMessageMediumParent = MessageMediumViewModel.MessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Parent.Id);
+            MessageMedium tableMessageMediumParent = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessageMedium.Parent.Id);
             if (tableMessageMediumParent != null)
             {
                 tableMessageMediumParent.AddChild(FocusedMessageMedium);
@@ -194,7 +194,7 @@ namespace EyexAAC.ViewModel
                 if (FocusedMessageMedium.Parent.Name == "Table message mediums")
                 {
                     TableRoot.Children = new List<MessageMedium>();
-                    TableRoot.Children = MessageMediumProxyUtil.GetTableRootMessageMediums();
+                    TableRoot.Children = DatabaseContext.GetTableRootMessageMediums();
                     foreach (MessageMedium child in TableRoot.Children)
                     {
                         child.Parent = TableRoot;
@@ -203,7 +203,7 @@ namespace EyexAAC.ViewModel
                 else if (FocusedMessageMedium.Parent.Name == "Basic message mediums")
                 {
                     BasicRoot.Children = new List<MessageMedium>();
-                    BasicRoot.Children = MessageMediumProxyUtil.GetBasicMessageMediums();
+                    BasicRoot.Children = DatabaseContext.GetBasicMessageMediums();
                     foreach (MessageMedium child in BasicRoot.Children)
                     {
                         child.Parent = BasicRoot;
@@ -236,7 +236,7 @@ namespace EyexAAC.ViewModel
         {
             if (FocusedMessageMedium.Type == MessageMediumType.table)
             {
-                MessageMediumViewModel.MessageMediums.Remove(MessageMediumViewModel.MessageMediums.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
+                ApplicationContext.Instance.Messengers.Remove(ApplicationContext.Instance.Messengers.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
                 MessageMediumViewModel.PageManagerUtil.MessageMediumCache.Remove(MessageMediumViewModel.PageManagerUtil.MessageMediumCache.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
             }
             else if (FocusedMessageMedium.Type == MessageMediumType.basic)

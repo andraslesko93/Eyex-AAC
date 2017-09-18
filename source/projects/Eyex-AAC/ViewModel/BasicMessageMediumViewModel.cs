@@ -28,7 +28,7 @@ namespace EyexAAC.ViewModel
         public void LoadBasicMessageMediums()
         {
             BasicMessageMediums = new ObservableCollection<MessageMedium>();
-            MessageMediumProxyUtil.GetBasicMessageMediums().ToList().ForEach(BasicMessageMediums.Add);
+            DatabaseContext.GetBasicMessageMediums().ToList().ForEach(BasicMessageMediums.Add);
         }
                
         internal void performActionOnBasicMessageMedium(int id)

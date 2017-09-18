@@ -60,7 +60,7 @@
         -->
     </UserControl.Resources>
     <Grid>
-        <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Path=MessageMediums}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
+        <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Path=Messengers}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
             <ListView.ItemsPanel >
                 <ItemsPanelTemplate>
                     <UniformGrid Rows="{Binding RenderUtil.MaxRowCount}" Columns="{Binding RenderUtil.MaxColumnCount}" HorizontalAlignment="Stretch"/>

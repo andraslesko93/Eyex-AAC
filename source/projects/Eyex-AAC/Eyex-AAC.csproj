@@ -81,9 +81,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\Utils\ApplicationContext.cs" />
     <Compile Include="ViewModel\BasicMessageMediumViewModel.cs" />
     <Compile Include="ViewModel\ManageMessageMediumViewModel.cs" />
-    <Compile Include="ViewModel\Utils\MessageMediumProxyUtil.cs" />
+    <Compile Include="ViewModel\Utils\DatabaseContext.cs" />
     <Compile Include="ViewModel\Utils\RenderUtil.cs" />
     <Compile Include="ViewModel\Utils\PageManagerUtil.cs" />
     <Compile Include="View\BasicMessageMediumView.xaml.cs">

@@ -19,7 +19,7 @@ namespace EyexAAC.ViewModel
 {
     class MessageMediumViewModel
     {
-        public static ObservableCollection<MessageMedium> MessageMediums{ get; set; }
+        public static ObservableCollection<MessageMedium> Messengers{ get; set; }
         public static PageManagerUtil PageManagerUtil { get; set; }
         public static RenderUtil RenderUtil { get; set; }
 
@@ -35,12 +35,12 @@ namespace EyexAAC.ViewModel
         {
             AddInitData();
             RenderUtil = new RenderUtil();
-            MessageMediums = new ObservableCollection<MessageMedium>();
-            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, MessageMediumProxyUtil.GetTableRootMessageMediums(), MessageMediums);
+            Messengers = ApplicationContext.Instance.Messengers;
+            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, DatabaseContext.GetTableRootMessageMediums(), Messengers);
         }
         public void PerformActionOnMessageMedium(int id)
         {
-            MessageMedium messageMedium = GetMessageMediumFromCollectionById(id);
+            MessageMedium messageMedium = ApplicationContext.Instance.GetMessageMediumFromApplicationContextById(id);
             if (messageMedium.Children.Any())
             {
                 MoveDownALevel(messageMedium);
@@ -49,24 +49,6 @@ namespace EyexAAC.ViewModel
             {
                 synthesizer.SpeakAsync(messageMedium.Name);
                 //Console.WriteLine(messageMedium.Name);
-            }
-        }
-        private MessageMedium GetMessageMediumFromCollectionById(int id)
-        {   
-            var messageMedium = MessageMediums.FirstOrDefault(c => c.Id == id);
-            messageMedium.InitializeImage();
-            return messageMedium;   
-        }
-        private MessageMedium GetMessageMediumById(int id)
-        {
-            using (var context = new MessageMediumContext())
-            {
-                var messageMedium = context.MessageMediums.Include(c => c.Children).Include(c => c.Parent).SingleOrDefault(c => c.Id == id);
-                if (messageMedium.ImageAsByte != null)
-                {
-                    messageMedium.InitializeImage();
-                }
-                return messageMedium;
             }
         }
         private void AddInitData()
@@ -129,7 +111,7 @@ namespace EyexAAC.ViewModel
         }
         private void MoveDownALevel(MessageMedium messageMedium)
         {
-           PageManagerUtil.MoveDownALevel(messageMedium, MessageMediumProxyUtil.GetChildren(messageMedium));
+           PageManagerUtil.MoveDownALevel(messageMedium, DatabaseContext.GetChildren(messageMedium));
         }
 
         public void MoveUpALevel()

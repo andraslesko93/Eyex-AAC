@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EyexAAC.ViewModel.Utils
 {
-    class MessageMediumProxyUtil
+    class DatabaseContext
     {
         public static List<MessageMedium> GetTableRootMessageMediums()
         {
@@ -58,7 +58,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public static MessageMedium GetMessageMediumById(int id)
+        /*public static MessageMedium GetMessageMediumById(int id)
         {
             using (var context = new MessageMediumContext())
             {
@@ -69,7 +69,7 @@ namespace EyexAAC.ViewModel.Utils
                 }
                 return messageMedium;
             }
-        }
+        }*/
 
 
     }
