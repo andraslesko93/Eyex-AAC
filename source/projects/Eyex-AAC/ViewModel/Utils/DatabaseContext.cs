@@ -10,44 +10,44 @@ namespace EyexAAC.ViewModel.Utils
 {
     class DatabaseContext
     {
-        public static List<MessageMedium> GetTableRootMessageMediums()
+        public static List<Messenger> GetTableRootMessengers()
         {
-            using (var context = new MessageMediumContext())
+            using (var context = new MessengerContext())
             {
-                var messageMediums = context.MessageMediums.Include(c => c.Children).Where(c => c.Parent == null && (c.Type == MessageMediumType.table)).ToList();
-                foreach (MessageMedium messageMedium in messageMediums)
+                var messengers = context.Messengers.Include(c => c.Children).Where(c => c.Parent == null && (c.Type == MessengerType.table)).ToList();
+                foreach (Messenger messenger in messengers)
                 {
-                    if (messageMedium.ImageAsByte != null)
+                    if (messenger.ImageAsByte != null)
                     {
-                        messageMedium.InitializeImage();
+                        messenger.InitializeImage();
                     }
                 }
-                return messageMediums;
+                return messengers;
             }
         }
 
-        public static List<MessageMedium> GetBasicMessageMediums()
+        public static List<Messenger> GetBasicMessengers()
         {
-            using (var context = new MessageMediumContext())
+            using (var context = new MessengerContext())
             {
-                var messageMediums = context.MessageMediums.Where(c => c.Type == MessageMediumType.basic).ToList();
-                foreach (MessageMedium messageMedium in messageMediums)
+                var messengers = context.Messengers.Where(c => c.Type == MessengerType.basic).ToList();
+                foreach (Messenger messenger in messengers)
                 {
-                    if (messageMedium.ImageAsByte != null)
+                    if (messenger.ImageAsByte != null)
                     {
-                        messageMedium.InitializeImage();
+                        messenger.InitializeImage();
                     }
                 }
-                return messageMediums;
+                return messengers;
             }
         }
 
-        public static List<MessageMedium> GetChildren(MessageMedium messageMedium)
+        public static List<Messenger> GetChildren(Messenger messenger)
         {
-            using (var context = new MessageMediumContext())
+            using (var context = new MessengerContext())
             {
-                var children = context.MessageMediums.Include(c => c.Children).Include(c => c.Parent).Where(c => c.Parent.Id == messageMedium.Id).ToList();
-                foreach (MessageMedium child in children)
+                var children = context.Messengers.Include(c => c.Children).Include(c => c.Parent).Where(c => c.Parent.Id == messenger.Id).ToList();
+                foreach (Messenger child in children)
                 {
                     if (child.ImageAsByte != null)
                     {
@@ -58,16 +58,16 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        /*public static MessageMedium GetMessageMediumById(int id)
+        /*public static Messenger GetMessengerById(int id)
         {
-            using (var context = new MessageMediumContext())
+            using (var context = new MessengerContext())
             {
-                var messageMedium = context.MessageMediums.Include(c => c.Children).Include(c => c.Parent).SingleOrDefault(c => c.Id == id);
-                if (messageMedium.ImageAsByte != null)
+                var messenger = context.Messengers.Include(c => c.Children).Include(c => c.Parent).SingleOrDefault(c => c.Id == id);
+                if (messenger.ImageAsByte != null)
                 {
-                    messageMedium.InitializeImage();
+                    messenger.InitializeImage();
                 }
-                return messageMedium;
+                return messenger;
             }
         }*/
 

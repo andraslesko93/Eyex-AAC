@@ -20,7 +20,7 @@ namespace EyexAAC
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MessageMediumViewModel messageMediumViewModelObject;
+        private MessengerViewModel messageMediumViewModelObject;
 
         private static readonly string UP_A_LEVEL_EVENT = "up";
         private static readonly string NEXT_PAGE_EVENT = "next";
@@ -31,8 +31,8 @@ namespace EyexAAC
         }
         private void MessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
         {
-            messageMediumViewModelObject = new MessageMediumViewModel();
-            messageMediumViewModelObject.LoadMessageMediums();
+            messageMediumViewModelObject = new MessengerViewModel();
+            messageMediumViewModelObject.LoadMessengers();
             MessageMediumViewControl.DataContext = messageMediumViewModelObject;
             DataContext = messageMediumViewModelObject;
         }

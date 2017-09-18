@@ -11,20 +11,20 @@ using System.ComponentModel;
 
 namespace EyexAAC.Model
 {
-    class MessageMedium: INotifyPropertyChanged
+    class Messenger: INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string name;
         private BitmapImage image;
-        private List<MessageMedium> children;
-        private MessageMedium parent;
+        private List<Messenger> children;
+        private Messenger parent;
 
         public int Id { get; set; }
         public byte[] ImageAsByte { get; set; }
 
         public bool HasChild { get; set; }
-        public MessageMediumType Type { get; set; }
+        public MessengerType Type { get; set; }
         public string Name
         {
             get { return name; }
@@ -46,7 +46,7 @@ namespace EyexAAC.Model
             }
         }
 
-        public MessageMedium Parent
+        public Messenger Parent
         {
             get { return parent; }
             set
@@ -56,7 +56,7 @@ namespace EyexAAC.Model
             }
         }
 
-        public List<MessageMedium> Children
+        public List<Messenger> Children
         {
             get { return children; }
             set
@@ -66,31 +66,31 @@ namespace EyexAAC.Model
             }
         }
 
-        public MessageMedium(){}
+        public Messenger(){}
 
-        public MessageMedium(string name, string image)
+        public Messenger(string name, string image)
         {
             Name = name;
             Image = LoadImage(image);
             ImageAsByte = BitmapImageToByte(Image);
-            Children = new List<MessageMedium>();
+            Children = new List<Messenger>();
             HasChild = false;
         }
 
-        public MessageMedium(string name, string image, MessageMediumType type)
+        public Messenger(string name, string image, MessengerType type)
         {
             Name = name;
             Image = LoadImage(image);
             ImageAsByte = BitmapImageToByte(Image);
-            Children = new List<MessageMedium>();
+            Children = new List<Messenger>();
             Type = type;
             HasChild = false;
         }
-        public MessageMedium(string name, MessageMediumType type)
+        public Messenger(string name, MessengerType type)
         {
             Name = name;
             Type = type;
-            Children = new List<MessageMedium>();
+            Children = new List<Messenger>();
             HasChild = false;
         }
 
@@ -130,7 +130,7 @@ namespace EyexAAC.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
-        public void AddChild(MessageMedium messageMedium)
+        public void AddChild(Messenger messageMedium)
         {
             messageMedium.Parent = this;
             Children.Add(messageMedium);
@@ -139,9 +139,9 @@ namespace EyexAAC.Model
             RaisePropertyChanged("HasChild");
         }
 
-        public MessageMedium Copy()
+        public Messenger Copy()
         {
-            MessageMedium msg = new MessageMedium();
+            Messenger msg = new Messenger();
             msg.Children = Children;
             msg.HasChild = HasChild;
             msg.Image = Image;
@@ -156,7 +156,7 @@ namespace EyexAAC.Model
         }
     }
 
-    enum MessageMediumType {
+    enum MessengerType {
         table=0, //default value
         basic,
         goBack,

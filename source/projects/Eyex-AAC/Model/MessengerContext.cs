@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace EyexAAC.Model
 {
-    class MessageMediumContext : DbContext
+    class MessengerContext : DbContext
     {
-        public DbSet<MessageMedium> MessageMediums { get; set; }
+        public DbSet<Messenger> Messengers { get; set; }
     }
 }

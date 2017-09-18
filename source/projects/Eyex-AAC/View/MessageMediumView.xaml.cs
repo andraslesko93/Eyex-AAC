@@ -23,7 +23,7 @@ namespace EyexAAC.View
     /// </summary>
     public partial class MessageMediumView : UserControl
     {
-        private MessageMediumViewModel messageMediumViewModel = new MessageMediumViewModel();
+        private MessengerViewModel messageMediumViewModel = new MessengerViewModel();
 
         public MessageMediumView()
         {
@@ -36,7 +36,7 @@ namespace EyexAAC.View
             var hasGaze = stackPanel.GetHasGaze();
             if (hasGaze)
             {
-                messageMediumViewModel.PerformActionOnMessageMedium((int)stackPanel.Tag);
+                messageMediumViewModel.PerformActionOnMessenger((int)stackPanel.Tag);
             }
         }
 

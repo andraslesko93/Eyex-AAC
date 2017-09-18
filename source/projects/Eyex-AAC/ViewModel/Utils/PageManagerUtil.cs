@@ -17,10 +17,10 @@ namespace EyexAAC.ViewModel.Utils
         public int CurrentPageNumber { get; set; }
         public int CurrentPageLevel { get; set; }
 
-        public MessageMedium ParentMessenger { get; set; }
-        public ObservableCollection<MessageMedium> DisplayedMessengers { get; set; }
+        public Messenger ParentMessenger { get; set; }
+        public ObservableCollection<Messenger> DisplayedMessengers { get; set; }
 
-        public List<MessageMedium> MessageMediumCache { get; set; }
+        public List<Messenger> MessengerCache { get; set; }
 
         private List<int> PageNumberStack { get; set; }
         private bool _isPreviousPageButtonEnabled;
@@ -54,16 +54,16 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public PageManagerUtil(int maxRowCount, int maxColumnCount, List<MessageMedium> messageMedium, ObservableCollection<MessageMedium> displayedMessageMediums)
+        public PageManagerUtil(int maxRowCount, int maxColumnCount, List<Messenger> messengers, ObservableCollection<Messenger> displayedMessengers)
         {
-            MessageMediumCache = messageMedium;
-            ParentMessenger = new MessageMedium();
+            MessengerCache = messengers;
+            ParentMessenger = new Messenger();
             CurrentPageLevel = 0;
             CurrentPageNumber = 1;
             PageNumberStack = new List<int>();
             MaxRowCount = maxRowCount;
             MaxColumnCount = maxColumnCount;
-            DisplayedMessengers = displayedMessageMediums;
+            DisplayedMessengers = displayedMessengers;
             LoadMessengers();
         }
 
@@ -100,7 +100,7 @@ namespace EyexAAC.ViewModel.Utils
             CurrentPageNumber = PageNumberStack.Last();
             PageNumberStack.RemoveAt(PageNumberStack.Count - 1);
 
-            List<MessageMedium> newDataScope = new List<MessageMedium>();
+            List<Messenger> newDataScope = new List<Messenger>();
             if (ParentMessenger.Parent != null)
             {
                 newDataScope = DatabaseContext.GetChildren(ParentMessenger.Parent);
@@ -116,18 +116,18 @@ namespace EyexAAC.ViewModel.Utils
                     CurrentPageLevel = 0;
                     CurrentPageNumber = 1;
                     PageNumberStack.Clear();
-                    NewDataScope(DatabaseContext.GetTableRootMessageMediums());
+                    NewDataScope(DatabaseContext.GetTableRootMessengers());
                 }
             }
             else
             {
                 //Parent is a root
                 CurrentPageLevel = 0;
-                NewDataScope(DatabaseContext.GetTableRootMessageMediums());
+                NewDataScope(DatabaseContext.GetTableRootMessengers());
             }
         }
 
-        public void MoveDownALevel(MessageMedium Parent, List<MessageMedium> Children)
+        public void MoveDownALevel(Messenger Parent, List<Messenger> Children)
         {
             ParentMessenger = Parent;
             PageNumberStack.Add(CurrentPageNumber);
@@ -138,7 +138,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public void NextPageButtonStateCalculator()
         {
-            if (MessageMediumCache.Count() > CurrentPageNumber * (MaxColumnCount * MaxRowCount))
+            if (MessengerCache.Count() > CurrentPageNumber * (MaxColumnCount * MaxRowCount))
             {
                 IsNextPageButtonEnabled = true;
             }
@@ -184,22 +184,22 @@ namespace EyexAAC.ViewModel.Utils
             int indexTo = CurrentPageNumber * maxElementCountOnAPage;
 
             DisplayedMessengers.Clear();
-            for (; (indexFrom < indexTo && indexFrom < MessageMediumCache.Count()); indexFrom++)
+            for (; (indexFrom < indexTo && indexFrom < MessengerCache.Count()); indexFrom++)
             {
-                DisplayedMessengers.Add(MessageMediumCache[indexFrom]);
+                DisplayedMessengers.Add(MessengerCache[indexFrom]);
             }
             CalculateButtonStates();
         }
 
-        public void AddToMessageMediumCache(MessageMedium messageMedium)
+        public void AddToMessengerCache(Messenger messenger)
         {
-            MessageMediumCache.Add(messageMedium);
+            MessengerCache.Add(messenger);
             NextPageButtonStateCalculator();
         }
 
-        private void NewDataScope(List<MessageMedium> messageMediumList)
+        private void NewDataScope(List<Messenger> messengerList)
         {
-            MessageMediumCache = messageMediumList;
+            MessengerCache = messengerList;
             LoadMessengers();
         }
 

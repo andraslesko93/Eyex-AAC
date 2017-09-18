@@ -13,7 +13,7 @@ namespace EyexAAC.ViewModel
     class BasicMessageMediumViewModel
     {
         private SpeechSynthesizer synthesizer;
-        public static ObservableCollection<MessageMedium> BasicMessageMediums
+        public static ObservableCollection<Messenger> BasicMessageMediums
         {
             get;
             set;
@@ -27,18 +27,18 @@ namespace EyexAAC.ViewModel
 
         public void LoadBasicMessageMediums()
         {
-            BasicMessageMediums = new ObservableCollection<MessageMedium>();
-            DatabaseContext.GetBasicMessageMediums().ToList().ForEach(BasicMessageMediums.Add);
+            BasicMessageMediums = new ObservableCollection<Messenger>();
+            DatabaseContext.GetBasicMessengers().ToList().ForEach(BasicMessageMediums.Add);
         }
                
         internal void performActionOnBasicMessageMedium(int id)
         {
-            MessageMedium messageMedium = GetBasicMessageMediumFromCollectionById(id);
+            Messenger messageMedium = GetBasicMessageMediumFromCollectionById(id);
             synthesizer.SpeakAsync(messageMedium.Name);
             //Console.WriteLine(messageMedium.Name);
             //TODO: Use a reader library instead. 
         }
-        private MessageMedium GetBasicMessageMediumFromCollectionById(int id)
+        private Messenger GetBasicMessageMediumFromCollectionById(int id)
         {
             var messageMedium = BasicMessageMediums.FirstOrDefault(c => c.Id == id);
             messageMedium.InitializeImage();

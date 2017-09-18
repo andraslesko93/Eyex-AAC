@@ -10,12 +10,12 @@ namespace EyexAAC.ViewModel
 {
     class ApplicationContext
     {
-        public ObservableCollection<MessageMedium> Messengers { get; set; }
+        public ObservableCollection<Messenger> Messengers { get; set; }
 
         private static ApplicationContext instance = null;
         private ApplicationContext()
         {
-            Messengers = new ObservableCollection<MessageMedium>();
+            Messengers = new ObservableCollection<Messenger>();
         }
 
         public static ApplicationContext Instance
@@ -30,7 +30,7 @@ namespace EyexAAC.ViewModel
             }
         }
 
-        public MessageMedium GetMessageMediumFromApplicationContextById(int id)
+        public Messenger GetMessengerFromApplicationContextById(int id)
         {
             var messenger = Messengers.FirstOrDefault(c => c.Id == id);
             messenger.InitializeImage();

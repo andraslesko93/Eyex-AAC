@@ -13,19 +13,19 @@ using System.ComponentModel;
 
 namespace EyexAAC.ViewModel
 {
-    class ManageMessageMediumViewModel : INotifyPropertyChanged
+    class ManageViewModel : INotifyPropertyChanged
     {
-        private static MessageMedium _focusedMessageMedium;
+        private static Messenger _focusedMessageMedium;
 
-        private static MessageMedium TableRoot;
-        private static MessageMedium BasicRoot;
+        private static Messenger TableRoot;
+        private static Messenger BasicRoot;
         private bool addInProggress = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public static ObservableCollection<MessageMedium> MessageMediums { get; set; }
+        public static ObservableCollection<Messenger> MessageMediums { get; set; }
 
-        public MessageMedium FocusedMessageMedium
+        public Messenger FocusedMessageMedium
         {
             get { return _focusedMessageMedium; }
             set
@@ -35,17 +35,17 @@ namespace EyexAAC.ViewModel
             }
         }
 
-        public ManageMessageMediumViewModel()
+        public ManageViewModel()
         {
-            TableRoot =  new MessageMedium("Table message mediums", MessageMediumType.root);
-            BasicRoot =  new MessageMedium("Basic message mediums", MessageMediumType.root);
-            MessageMediums = new ObservableCollection<MessageMedium>();
+            TableRoot =  new Messenger("Table message mediums", MessengerType.root);
+            BasicRoot =  new Messenger("Basic message mediums", MessengerType.root);
+            MessageMediums = new ObservableCollection<Messenger>();
             SetRootObjects();
         }
 
-        public void SetChildren(MessageMedium messageMedium)
+        public void SetChildren(Messenger messageMedium)
         {
-            if (messageMedium.Type==MessageMediumType.root)
+            if (messageMedium.Type==MessengerType.root)
             {
                 return;
             }
@@ -54,20 +54,20 @@ namespace EyexAAC.ViewModel
 
         private void SetRootObjects()
         {       
-            foreach (MessageMedium msg in DatabaseContext.GetTableRootMessageMediums())
+            foreach (Messenger msg in DatabaseContext.GetTableRootMessengers())
             {
                  TableRoot.AddChild(msg);
             }
             MessageMediums.Add(TableRoot);
 
-            foreach (MessageMedium msg in DatabaseContext.GetBasicMessageMediums())
+            foreach (Messenger msg in DatabaseContext.GetBasicMessengers())
             {
                 BasicRoot.AddChild(msg);
             }
             MessageMediums.Add(BasicRoot);
         }
 
-        public void SetMessageMediumToFocus(MessageMedium messageMedium)
+        public void SetMessageMediumToFocus(Messenger messageMedium)
         {
             FocusedMessageMedium = messageMedium;
             addInProggress = false;
@@ -85,11 +85,11 @@ namespace EyexAAC.ViewModel
 
         private void SaveToApplicationContext()
         {
-            if (FocusedMessageMedium.Type == MessageMediumType.table)
+            if (FocusedMessageMedium.Type == MessengerType.table)
             {
                 HandleTableMessageMediums();
             }
-            else if (FocusedMessageMedium.Type == MessageMediumType.basic)
+            else if (FocusedMessageMedium.Type == MessengerType.basic)
             {
                 HandleBasicMessageMediums();
             }
@@ -97,7 +97,7 @@ namespace EyexAAC.ViewModel
 
         private void HandleBasicMessageMediums()
         {
-            MessageMedium basicMessageMedium = BasicMessageMediumViewModel.BasicMessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
+            Messenger basicMessageMedium = BasicMessageMediumViewModel.BasicMessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
 
             if (basicMessageMedium != null)
             {
@@ -112,7 +112,7 @@ namespace EyexAAC.ViewModel
 
         private void HandleTableMessageMediums()
         {
-            MessageMedium tableMessageMedium = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
+            Messenger tableMessageMedium = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
             //Does it exists in the current context?
             if (tableMessageMedium != null)
             {
@@ -122,21 +122,21 @@ namespace EyexAAC.ViewModel
             }
             else
             {
-                MessageMedium currentElement = ApplicationContext.Instance.Messengers.Last();
+                Messenger currentElement = ApplicationContext.Instance.Messengers.Last();
 
-                if (FocusedMessageMedium.Parent.Type == MessageMediumType.root && currentElement.Parent == null)
+                if (FocusedMessageMedium.Parent.Type == MessengerType.root && currentElement.Parent == null)
                 {
                     ApplicationContext.Instance.Messengers.Add(FocusedMessageMedium);
-                    MessageMediumViewModel.PageManagerUtil.AddToMessageMediumCache(FocusedMessageMedium);
+                    MessengerViewModel.PageManagerUtil.AddToMessengerCache(FocusedMessageMedium);
                 }
                 else if(FocusedMessageMedium.Parent.Id==currentElement.Parent.Id)
                 {
                     ApplicationContext.Instance.Messengers.Add(FocusedMessageMedium);
-                    MessageMediumViewModel.PageManagerUtil.AddToMessageMediumCache(FocusedMessageMedium);
+                    MessengerViewModel.PageManagerUtil.AddToMessengerCache(FocusedMessageMedium);
                 }
             }
             //Add to parent.
-            MessageMedium tableMessageMediumParent = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessageMedium.Parent.Id);
+            Messenger tableMessageMediumParent = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessageMedium.Parent.Id);
             if (tableMessageMediumParent != null)
             {
                 tableMessageMediumParent.AddChild(FocusedMessageMedium);
@@ -145,9 +145,9 @@ namespace EyexAAC.ViewModel
 
         private void SaveToDB()
         {
-            using (var context = new MessageMediumContext())
+            using (var context = new MessengerContext())
             {
-                var result = context.MessageMediums.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
+                var result = context.Messengers.SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
                 if (result != null)
                 {
                     result.Name = FocusedMessageMedium.Name;
@@ -157,17 +157,17 @@ namespace EyexAAC.ViewModel
                 else
                 {
                     var messageMediumToSave = FocusedMessageMedium.Copy();
-                    if (messageMediumToSave.Parent.Type == MessageMediumType.root)
+                    if (messageMediumToSave.Parent.Type == MessengerType.root)
                     {
                         messageMediumToSave.Parent = null;
                     }
                     else
                     {
                         //get the parent.
-                        var parent = context.MessageMediums.Include(c => c.Children).SingleOrDefault(c => c.Id == messageMediumToSave.Parent.Id);
+                        var parent = context.Messengers.Include(c => c.Children).SingleOrDefault(c => c.Id == messageMediumToSave.Parent.Id);
                         parent.AddChild(messageMediumToSave);
                     }
-                    context.MessageMediums.Add(messageMediumToSave);
+                    context.Messengers.Add(messageMediumToSave);
                     context.SaveChanges();
                     FocusedMessageMedium.Id = messageMediumToSave.Id;
                 }
@@ -177,69 +177,69 @@ namespace EyexAAC.ViewModel
 
         public void DeleteFocusedMesageMedium()
         {
-            if (!IsFocusMessageMediumSetted() || FocusedMessageMedium.Type==MessageMediumType.root)
+            if (!IsFocusMessageMediumSetted() || FocusedMessageMedium.Type==MessengerType.root)
             {
                 return;
             }
             DeleteFromApplicationContext();
             DeleteFromDb();
             RefreshTreeView();
-            MessageMediumViewModel.PageManagerUtil.NextPageButtonStateCalculator();
+            MessengerViewModel.PageManagerUtil.NextPageButtonStateCalculator();
         }
 
         private void RefreshTreeView()
         {
-            if (FocusedMessageMedium.Parent.Type == MessageMediumType.root)
+            if (FocusedMessageMedium.Parent.Type == MessengerType.root)
             {
                 if (FocusedMessageMedium.Parent.Name == "Table message mediums")
                 {
-                    TableRoot.Children = new List<MessageMedium>();
-                    TableRoot.Children = DatabaseContext.GetTableRootMessageMediums();
-                    foreach (MessageMedium child in TableRoot.Children)
+                    TableRoot.Children = new List<Messenger>();
+                    TableRoot.Children = DatabaseContext.GetTableRootMessengers();
+                    foreach (Messenger child in TableRoot.Children)
                     {
                         child.Parent = TableRoot;
                     }
                 }
                 else if (FocusedMessageMedium.Parent.Name == "Basic message mediums")
                 {
-                    BasicRoot.Children = new List<MessageMedium>();
-                    BasicRoot.Children = DatabaseContext.GetBasicMessageMediums();
-                    foreach (MessageMedium child in BasicRoot.Children)
+                    BasicRoot.Children = new List<Messenger>();
+                    BasicRoot.Children = DatabaseContext.GetBasicMessengers();
+                    foreach (Messenger child in BasicRoot.Children)
                     {
                         child.Parent = BasicRoot;
                     }
                 }
                 return;
             }
-            MessageMedium parent = DfsInMessageMediums(MessageMediums, FocusedMessageMedium.Parent.Id);
-            parent.Children = new List<MessageMedium>();
+            Messenger parent = DfsInMessageMediums(MessageMediums, FocusedMessageMedium.Parent.Id);
+            parent.Children = new List<Messenger>();
             SetChildren(parent);
         }
 
         private void DeleteFromDb()
         {
-            using (var context = new MessageMediumContext())
+            using (var context = new MessengerContext())
             {
-                var result = context.MessageMediums.Include(c => c.Children).SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
-                List<MessageMedium> deleteStack = new List<MessageMedium>();
+                var result = context.Messengers.Include(c => c.Children).SingleOrDefault(c => c.Id == FocusedMessageMedium.Id);
+                List<Messenger> deleteStack = new List<Messenger>();
                 DeleteChildrenFromDB(result.Children, context, deleteStack);
-                foreach (MessageMedium msg in deleteStack)
+                foreach (Messenger msg in deleteStack)
                 {
-                    context.MessageMediums.Remove(msg);
+                    context.Messengers.Remove(msg);
                 }
-                context.MessageMediums.Remove(result);
+                context.Messengers.Remove(result);
                 context.SaveChanges();
             }
         }
 
         private void DeleteFromApplicationContext()
         {
-            if (FocusedMessageMedium.Type == MessageMediumType.table)
+            if (FocusedMessageMedium.Type == MessengerType.table)
             {
                 ApplicationContext.Instance.Messengers.Remove(ApplicationContext.Instance.Messengers.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
-                MessageMediumViewModel.PageManagerUtil.MessageMediumCache.Remove(MessageMediumViewModel.PageManagerUtil.MessageMediumCache.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
+                MessengerViewModel.PageManagerUtil.MessengerCache.Remove(MessengerViewModel.PageManagerUtil.MessengerCache.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
             }
-            else if (FocusedMessageMedium.Type == MessageMediumType.basic)
+            else if (FocusedMessageMedium.Type == MessengerType.basic)
             {
                 BasicMessageMediumViewModel.BasicMessageMediums.Remove(BasicMessageMediumViewModel.BasicMessageMediums.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
             }
@@ -248,35 +248,35 @@ namespace EyexAAC.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
-        private void DeleteChildrenFromDB(List<MessageMedium> messageMediumList, MessageMediumContext context, List<MessageMedium> deleteStack)
+        private void DeleteChildrenFromDB(List<Messenger> messageMediumList, MessengerContext context, List<Messenger> deleteStack)
         {
             if (messageMediumList == null)
             {
                 return;
             }
-            foreach (MessageMedium msg in messageMediumList)
+            foreach (Messenger msg in messageMediumList)
             {
-                var result = context.MessageMediums.Include(c => c.Children).SingleOrDefault(c => c.Id == msg.Id);
+                var result = context.Messengers.Include(c => c.Children).SingleOrDefault(c => c.Id == msg.Id);
                 deleteStack.Add(result);
                 DeleteChildrenFromDB(msg.Children, context, deleteStack);
             }
         }
-        private MessageMedium DfsInMessageMediums(ObservableCollection<MessageMedium> messageMediumList, int id)
+        private Messenger DfsInMessageMediums(ObservableCollection<Messenger> messageMediumList, int id)
         {
-            foreach (MessageMedium msg in messageMediumList)
+            foreach (Messenger msg in messageMediumList)
             {
                 return DFS(msg.Children, id);
             }
             return null;
         }
-        private MessageMedium DFS(List<MessageMedium> messageMediumList, int id)
+        private Messenger DFS(List<Messenger> messageMediumList, int id)
         {
 
             if (messageMediumList == null)
             {
                 return null;
             }
-            foreach (MessageMedium msg in messageMediumList)
+            foreach (Messenger msg in messageMediumList)
             {
                 Console.WriteLine(msg.Id);
                
@@ -311,20 +311,20 @@ namespace EyexAAC.ViewModel
             }
 
             addInProggress = true;
-            MessageMedium parent = FocusedMessageMedium;
-            FocusedMessageMedium = new MessageMedium();
+            Messenger parent = FocusedMessageMedium;
+            FocusedMessageMedium = new Messenger();
             FocusedMessageMedium.Parent = parent;
-            FocusedMessageMedium.Children = new List<MessageMedium>();
+            FocusedMessageMedium.Children = new List<Messenger>();
 
-            if (parent.Type == MessageMediumType.root)
+            if (parent.Type == MessengerType.root)
             {
                 if (parent.Name == "Table message mediums")
                 {
-                    FocusedMessageMedium.Type = MessageMediumType.table;
+                    FocusedMessageMedium.Type = MessengerType.table;
                 }
                 else if (parent.Name == "Basic message mediums")
                 {
-                    FocusedMessageMedium.Type = MessageMediumType.basic;
+                    FocusedMessageMedium.Type = MessengerType.basic;
                 }
             }
             else

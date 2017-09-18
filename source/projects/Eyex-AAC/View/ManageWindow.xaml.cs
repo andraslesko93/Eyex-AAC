@@ -22,10 +22,10 @@ namespace EyexAAC.View
     /// </summary>
     public partial class ManageWindow : Window
     {
-        ManageMessageMediumViewModel manageMessageMediumViewModel;
+        ManageViewModel manageMessageMediumViewModel;
         public ManageWindow()
         {
-            manageMessageMediumViewModel = new ManageMessageMediumViewModel();
+            manageMessageMediumViewModel = new ManageViewModel();
             DataContext = manageMessageMediumViewModel;
             InitializeComponent();
         }
@@ -34,7 +34,7 @@ namespace EyexAAC.View
             TreeViewItem treeViewItem = e.OriginalSource as TreeViewItem;     
             if (treeViewItem != null)
             {
-                MessageMedium messageMedium = treeViewItem.Header as MessageMedium;
+                Messenger messageMedium = treeViewItem.Header as Messenger;
                 manageMessageMediumViewModel.SetChildren(messageMedium);
             }
         }
@@ -44,8 +44,8 @@ namespace EyexAAC.View
             TreeViewItem treeViewItem = e.OriginalSource as TreeViewItem;
             if (treeViewItem != null)
             {
-                MessageMedium messageMedium = treeViewItem.Header as MessageMedium;
-                if (messageMedium.Type == MessageMediumType.root)
+                Messenger messageMedium = treeViewItem.Header as Messenger;
+                if (messageMedium.Type == MessengerType.root)
                 {
                     EditorGrid.Visibility = System.Windows.Visibility.Hidden;
                 }
