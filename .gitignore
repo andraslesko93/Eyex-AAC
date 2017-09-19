@@ -17,6 +17,7 @@
 *.userprefs
 
 # Build results
+
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -424,3 +425,7 @@ __pycache__/
 # BizTalk build output
 
 # End of https://www.gitignore.io/api/csharp,visualstudio
+/source/EyeXFramework/bin/x86/Debug/EyeXFramework.dll
+/source/EyeXFramework/bin/x86
+/source/projects/Eyex-AAC/bin/x86
+/source/EyeXFramework/obj/x86
