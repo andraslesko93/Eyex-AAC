@@ -134,6 +134,7 @@ namespace EyexAAC.Model
         public void AddChild(Messenger messenger)
         {
             messenger.Parent = this;
+            if (Children == null) { Children = new ObservableCollection<Messenger>(); }
             Children.Add(messenger);
             HasChild = true;
             RaisePropertyChanged("Children");

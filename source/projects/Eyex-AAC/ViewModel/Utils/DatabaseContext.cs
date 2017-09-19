@@ -27,6 +27,35 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
+        public static ObservableCollection<Messenger> LoadAllTableMessengers()
+        {
+            using (var context = new MessengerContext())
+            {
+            var query = from t in context.Messengers where t.Type==MessengerType.table select t;
+                var subset = query.ToList().Where(x => x.Parent==null);
+                ObservableCollection<Messenger> result = new ObservableCollection<Messenger>(subset);
+                initilizeImagesHierarchicly(result);
+                return result;
+            }
+        }
+
+         private static void initilizeImagesHierarchicly(ObservableCollection<Messenger> messengers) {
+
+             foreach (Messenger messenger in messengers)
+             {
+                 if (messenger.ImageAsByte != null)
+                 {
+                     messenger.InitializeImage();
+                 }
+                 if(messenger.Children !=null)
+                    {
+                 initilizeImagesHierarchicly(messenger.Children);
+                 }
+
+             }
+         }
+
+
         public static ObservableCollection<Messenger> GetBasicMessengers()
         {
             using (var context = new MessengerContext())

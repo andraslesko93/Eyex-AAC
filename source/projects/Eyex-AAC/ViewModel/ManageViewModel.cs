@@ -55,7 +55,7 @@ namespace EyexAAC.ViewModel
 
         private void SetRootObjects()
         {       
-            foreach (Messenger msg in DatabaseContext.GetTableRootMessengers())
+            foreach (Messenger msg in DatabaseContext.LoadAllTableMessengers())
             {
                  TableRoot.AddChild(msg);
             }
