@@ -20,7 +20,7 @@ namespace EyexAAC.ViewModel.Utils
         public Messenger ParentMessenger { get; set; }
         public ObservableCollection<Messenger> DisplayedMessengers { get; set; }
 
-        public List<Messenger> MessengerCache { get; set; }
+        public ObservableCollection<Messenger> MessengerCache { get; set; }
 
         private List<int> PageNumberStack { get; set; }
         private bool _isPreviousPageButtonEnabled;
@@ -54,7 +54,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public PageManagerUtil(int maxRowCount, int maxColumnCount, List<Messenger> messengers, ObservableCollection<Messenger> displayedMessengers)
+        public PageManagerUtil(int maxRowCount, int maxColumnCount, ObservableCollection<Messenger> messengers, ObservableCollection<Messenger> displayedMessengers)
         {
             MessengerCache = messengers;
             ParentMessenger = new Messenger();
@@ -100,7 +100,7 @@ namespace EyexAAC.ViewModel.Utils
             CurrentPageNumber = PageNumberStack.Last();
             PageNumberStack.RemoveAt(PageNumberStack.Count - 1);
 
-            List<Messenger> newDataScope = new List<Messenger>();
+            ObservableCollection<Messenger> newDataScope = new ObservableCollection<Messenger>();
             if (ParentMessenger.Parent != null)
             {
                 newDataScope = DatabaseContext.GetChildren(ParentMessenger.Parent);
@@ -127,7 +127,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public void MoveDownALevel(Messenger Parent, List<Messenger> Children)
+        public void MoveDownALevel(Messenger Parent, ObservableCollection<Messenger> Children)
         {
             ParentMessenger = Parent;
             PageNumberStack.Add(CurrentPageNumber);
@@ -197,7 +197,7 @@ namespace EyexAAC.ViewModel.Utils
             NextPageButtonStateCalculator();
         }
 
-        private void NewDataScope(List<Messenger> messengerList)
+        private void NewDataScope(ObservableCollection<Messenger> messengerList)
         {
             MessengerCache = messengerList;
             LoadMessengers();

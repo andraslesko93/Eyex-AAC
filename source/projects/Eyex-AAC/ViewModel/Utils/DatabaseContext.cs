@@ -5,12 +5,13 @@ using System.Linq;
 using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace EyexAAC.ViewModel.Utils
 {
     class DatabaseContext
     {
-        public static List<Messenger> GetTableRootMessengers()
+       public static ObservableCollection<Messenger> GetTableRootMessengers()
         {
             using (var context = new MessengerContext())
             {
@@ -22,11 +23,11 @@ namespace EyexAAC.ViewModel.Utils
                         messenger.InitializeImage();
                     }
                 }
-                return messengers;
+                return new ObservableCollection<Messenger>(messengers);
             }
         }
 
-        public static List<Messenger> GetBasicMessengers()
+        public static ObservableCollection<Messenger> GetBasicMessengers()
         {
             using (var context = new MessengerContext())
             {
@@ -38,11 +39,11 @@ namespace EyexAAC.ViewModel.Utils
                         messenger.InitializeImage();
                     }
                 }
-                return messengers;
+                return new ObservableCollection<Messenger>(messengers);
             }
         }
 
-        public static List<Messenger> GetChildren(Messenger messenger)
+        public static ObservableCollection<Messenger> GetChildren(Messenger messenger)
         {
             using (var context = new MessengerContext())
             {
@@ -54,7 +55,7 @@ namespace EyexAAC.ViewModel.Utils
                         child.InitializeImage();
                     }
                 }
-                return children;
+                return new ObservableCollection<Messenger>(children);
             }
         }
 

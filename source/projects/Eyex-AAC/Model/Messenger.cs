@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace EyexAAC.Model
 {
@@ -17,7 +18,7 @@ namespace EyexAAC.Model
 
         private string name;
         private BitmapImage image;
-        private List<Messenger> children;
+        private ObservableCollection<Messenger> children;
         private Messenger parent;
 
         public int Id { get; set; }
@@ -56,7 +57,7 @@ namespace EyexAAC.Model
             }
         }
 
-        public List<Messenger> Children
+        public ObservableCollection<Messenger> Children
         {
             get { return children; }
             set
@@ -73,7 +74,7 @@ namespace EyexAAC.Model
             Name = name;
             Image = LoadImage(image);
             ImageAsByte = BitmapImageToByte(Image);
-            Children = new List<Messenger>();
+            Children = new ObservableCollection<Messenger>();
             HasChild = false;
         }
 
@@ -82,7 +83,7 @@ namespace EyexAAC.Model
             Name = name;
             Image = LoadImage(image);
             ImageAsByte = BitmapImageToByte(Image);
-            Children = new List<Messenger>();
+            Children = new ObservableCollection<Messenger>();
             Type = type;
             HasChild = false;
         }
@@ -90,7 +91,7 @@ namespace EyexAAC.Model
         {
             Name = name;
             Type = type;
-            Children = new List<Messenger>();
+            Children = new ObservableCollection<Messenger>();
             HasChild = false;
         }
 

@@ -19,7 +19,7 @@ namespace EyexAAC.ViewModel
 {
     class MessengerViewModel
     {
-        public static ObservableCollection<Messenger> Messengers{ get; set; }
+        public ObservableCollection<Messenger> Messengers{ get; set; }
         public static PageManagerUtil PageManagerUtil { get; set; }
         public static RenderUtil RenderUtil { get; set; }
 

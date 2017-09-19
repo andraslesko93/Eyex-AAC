@@ -49,6 +49,7 @@ namespace EyexAAC.ViewModel
             {
                 return;
             }
+
             messageMedium.Children = DatabaseContext.GetChildren(messageMedium);
         }
 
@@ -183,11 +184,21 @@ namespace EyexAAC.ViewModel
             }
             DeleteFromApplicationContext();
             DeleteFromDb();
-            RefreshTreeView();
+            DeleteFromTreeView();
+            //RefreshTreeView();
             MessengerViewModel.PageManagerUtil.NextPageButtonStateCalculator();
         }
 
-        private void RefreshTreeView()
+        private void DeleteFromTreeView()
+        {
+            MessageMediums[0].Children.Remove(MessageMediums[0].Children.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
+
+            //   Messenger messenger = DfsInMessengerList(MessageMediums, FocusedMessageMedium.Parent.Id);
+            //TODO: Itt kene csinalni egyet ami a treeviewbol kikeresi es kiszedi.
+            //Gyakorlatilag egy dfs itt is
+        }
+
+        /*private void RefreshTreeView()
         {
             if (FocusedMessageMedium.Parent.Type == MessengerType.root)
             {
@@ -214,7 +225,7 @@ namespace EyexAAC.ViewModel
             Messenger parent = DfsInMessageMediums(MessageMediums, FocusedMessageMedium.Parent.Id);
             parent.Children = new List<Messenger>();
             SetChildren(parent);
-        }
+        }*/
 
         private void DeleteFromDb()
         {
@@ -248,7 +259,7 @@ namespace EyexAAC.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
-        private void DeleteChildrenFromDB(List<Messenger> messageMediumList, MessengerContext context, List<Messenger> deleteStack)
+        private void DeleteChildrenFromDB(ObservableCollection<Messenger> messageMediumList, MessengerContext context, List<Messenger> deleteStack)
         {
             if (messageMediumList == null)
             {
@@ -261,15 +272,16 @@ namespace EyexAAC.ViewModel
                 DeleteChildrenFromDB(msg.Children, context, deleteStack);
             }
         }
-        private Messenger DfsInMessageMediums(ObservableCollection<Messenger> messageMediumList, int id)
+        private Messenger DfsInMessengerList(ObservableCollection<Messenger> messageMediumList, int id)
         {
+            //TODO vszeg ez igy rossz
             foreach (Messenger msg in messageMediumList)
             {
                 return DFS(msg.Children, id);
             }
             return null;
         }
-        private Messenger DFS(List<Messenger> messageMediumList, int id)
+        private Messenger DFS(ObservableCollection<Messenger> messageMediumList, int id)
         {
 
             if (messageMediumList == null)
@@ -277,9 +289,7 @@ namespace EyexAAC.ViewModel
                 return null;
             }
             foreach (Messenger msg in messageMediumList)
-            {
-                Console.WriteLine(msg.Id);
-               
+            {  
                 if (msg.Id == id)
                 {
                     return msg;
@@ -292,7 +302,6 @@ namespace EyexAAC.ViewModel
             }
             return null;
         }
-
 
         public bool IsFocusMessageMediumSetted()
         {
@@ -314,7 +323,7 @@ namespace EyexAAC.ViewModel
             Messenger parent = FocusedMessageMedium;
             FocusedMessageMedium = new Messenger();
             FocusedMessageMedium.Parent = parent;
-            FocusedMessageMedium.Children = new List<Messenger>();
+            FocusedMessageMedium.Children = new ObservableCollection<Messenger>();
 
             if (parent.Type == MessengerType.root)
             {
