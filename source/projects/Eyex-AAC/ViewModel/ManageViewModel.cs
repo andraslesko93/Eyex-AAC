@@ -191,7 +191,10 @@ namespace EyexAAC.ViewModel
 
         private void DeleteFromTreeView()
         {
-            MessageMediums[0].Children.Remove(MessageMediums[0].Children.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
+            Messenger messenger = DFS(MessageMediums, FocusedMessageMedium.Id);
+            messenger.Parent.RemoveChild(messenger);
+           // messenger = null;
+            //MessageMediums[0].Children.Remove(MessageMediums[0].Children.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
 
             //   Messenger messenger = DfsInMessengerList(MessageMediums, FocusedMessageMedium.Parent.Id);
             //TODO: Itt kene csinalni egyet ami a treeviewbol kikeresi es kiszedi.
@@ -272,7 +275,7 @@ namespace EyexAAC.ViewModel
                 DeleteChildrenFromDB(msg.Children, context, deleteStack);
             }
         }
-        private Messenger DfsInMessengerList(ObservableCollection<Messenger> messageMediumList, int id)
+      /*  private Messenger DfsInMessengerList(ObservableCollection<Messenger> messageMediumList, int id)
         {
             //TODO vszeg ez igy rossz
             foreach (Messenger msg in messageMediumList)
@@ -280,10 +283,9 @@ namespace EyexAAC.ViewModel
                 return DFS(msg.Children, id);
             }
             return null;
-        }
+        }*/
         private Messenger DFS(ObservableCollection<Messenger> messageMediumList, int id)
         {
-
             if (messageMediumList == null)
             {
                 return null;

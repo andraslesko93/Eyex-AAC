@@ -131,13 +131,23 @@ namespace EyexAAC.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
-        public void AddChild(Messenger messageMedium)
+        public void AddChild(Messenger messenger)
         {
-            messageMedium.Parent = this;
-            Children.Add(messageMedium);
+            messenger.Parent = this;
+            Children.Add(messenger);
             HasChild = true;
             RaisePropertyChanged("Children");
             RaisePropertyChanged("HasChild");
+        }
+
+        public void RemoveChild(Messenger messenger) {
+            Children.Remove(messenger);
+            if (!Children.Any())
+            {
+                HasChild = false;
+                RaisePropertyChanged("HasChild");
+            }
+            RaisePropertyChanged("Children");
         }
 
         public Messenger Copy()
