@@ -18,11 +18,23 @@ namespace EyexAAC.Model
 
         private string name;
         private BitmapImage image;
+        private byte[] imageAsByte;
         private ObservableCollection<Messenger> children;
         private Messenger parent;
 
         public int Id { get; set; }
-        public byte[] ImageAsByte { get; set; }
+        public byte[] ImageAsByte
+        {
+            get { return imageAsByte; }
+            set
+            {
+                imageAsByte = value;
+                if (Image == null && value!=null)
+                {
+                    Image = ByteToBitmapImage(ImageAsByte);
+                }
+            }
+        }
 
         public bool HasChild { get; set; }
         public MessengerType Type { get; set; }
@@ -42,7 +54,10 @@ namespace EyexAAC.Model
             set
             {
                 image = value;
-                ImageAsByte = BitmapImageToByte(image);
+                if (BitmapImageToByte(image) != ImageAsByte)
+                {
+                    ImageAsByte = BitmapImageToByte(image);
+                }
                 RaisePropertyChanged("Image");
             }
         }
@@ -95,13 +110,6 @@ namespace EyexAAC.Model
             HasChild = false;
         }
 
-        public void InitializeImage()
-        {
-            if (ImageAsByte != null)
-            {
-                Image = ByteToBitmapImage(ImageAsByte);
-            }
-        }
         public byte[] BitmapImageToByte(BitmapImage image)
         {
             MemoryStream memStream = new MemoryStream();

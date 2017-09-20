@@ -41,7 +41,6 @@ namespace EyexAAC.ViewModel
         private Messenger GetBasicMessageMediumFromCollectionById(int id)
         {
             var messageMedium = BasicMessageMediums.FirstOrDefault(c => c.Id == id);
-            messageMedium.InitializeImage();
             return messageMedium;
         }
     }

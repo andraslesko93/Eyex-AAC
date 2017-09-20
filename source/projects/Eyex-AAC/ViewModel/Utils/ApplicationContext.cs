@@ -33,7 +33,6 @@ namespace EyexAAC.ViewModel
         public Messenger GetMessengerFromApplicationContextById(int id)
         {
             var messenger = Messengers.FirstOrDefault(c => c.Id == id);
-            messenger.InitializeImage();
             return messenger;
         }
     }

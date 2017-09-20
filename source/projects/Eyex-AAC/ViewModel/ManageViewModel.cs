@@ -193,12 +193,6 @@ namespace EyexAAC.ViewModel
         {
             Messenger messenger = DFS(MessageMediums, FocusedMessageMedium.Id);
             messenger.Parent.RemoveChild(messenger);
-           // messenger = null;
-            //MessageMediums[0].Children.Remove(MessageMediums[0].Children.SingleOrDefault(i => i.Id == FocusedMessageMedium.Id));
-
-            //   Messenger messenger = DfsInMessengerList(MessageMediums, FocusedMessageMedium.Parent.Id);
-            //TODO: Itt kene csinalni egyet ami a treeviewbol kikeresi es kiszedi.
-            //Gyakorlatilag egy dfs itt is
         }
 
         /*private void RefreshTreeView()
