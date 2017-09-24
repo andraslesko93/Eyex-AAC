@@ -23,38 +23,54 @@ namespace EyexAAC.ViewModel.Utils
         public ObservableCollection<Messenger> MessengerCache { get; set; }
 
         private List<int> PageNumberStack { get; set; }
-        private bool _isPreviousPageButtonEnabled;
-        private bool _isNextPageButtonEnabled;
-        private bool _isMoveUpButtonEnabled;
+
+        private static PageManagerUtil instance = null;
+
+        public static PageManagerUtil Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new PageManagerUtil();
+                }
+                return instance;
+            }
+        }
+
+        private bool isPreviousPageButtonEnabled;
+        private bool isNextPageButtonEnabled;
+        private bool isMoveUpButtonEnabled;
         public bool IsPreviousPageButtonEnabled
         {
-            get { return _isPreviousPageButtonEnabled; }
+            get { return isPreviousPageButtonEnabled; }
             set
             {
-                _isPreviousPageButtonEnabled = value;
+                isPreviousPageButtonEnabled = value;
                 RaisePropertyChanged("IsPreviousPageButtonEnabled");
             }
         }
         public bool IsNextPageButtonEnabled
         {
-            get { return _isNextPageButtonEnabled; }
+            get { return isNextPageButtonEnabled; }
             set
             {
-                _isNextPageButtonEnabled = value;
+                isNextPageButtonEnabled = value;
                 RaisePropertyChanged("IsNextPageButtonEnabled");
             }
         }
         public bool IsMoveUpButtonEnabled
         {
-            get { return _isMoveUpButtonEnabled; }
+            get { return isMoveUpButtonEnabled; }
             set
             {
-                _isMoveUpButtonEnabled = value;
+                isMoveUpButtonEnabled = value;
                 RaisePropertyChanged("IsMoveUpButtonEnabled");
             }
         }
 
-        public PageManagerUtil(int maxRowCount, int maxColumnCount, ObservableCollection<Messenger> messengers, ObservableCollection<Messenger> displayedMessengers)
+        private PageManagerUtil() { }
+        public void SetPageManagerUtil(int maxRowCount, int maxColumnCount, ObservableCollection<Messenger> messengers, ObservableCollection<Messenger> displayedMessengers)
         {
             MessengerCache = messengers;
             ParentMessenger = new Messenger();
@@ -160,6 +176,39 @@ namespace EyexAAC.ViewModel.Utils
                 IsPreviousPageButtonEnabled = true;
             }
         }
+
+        public void RemoveMessenger(Messenger messenger)
+        {
+            MessengerCache.Remove(MessengerCache.SingleOrDefault(i => i.Id == messenger.Id));
+
+            if (DisplayedMessengers.Count() == 0)
+            {
+                if (IsPreviousPageButtonEnabled)
+                {
+                    PreviousPage();
+                }
+                else if (IsMoveUpButtonEnabled)
+                {
+                    MoveUpALevel();
+                }
+            }
+
+         /*   if (messenger.Id == ParentMessenger.Id)
+            {
+                MoveUpALevel();
+            }*/
+
+            //Move the last element from tha cache to the displayed messengers if needed.
+            int maxElementCountOnAPage = MaxColumnCount * MaxRowCount;
+
+            if (DisplayedMessengers.Count() < maxElementCountOnAPage && IsNextPageButtonEnabled)
+            {
+                int indexTo = CurrentPageNumber * maxElementCountOnAPage;
+                DisplayedMessengers.Add(MessengerCache[indexTo - 1]);
+            }
+            NextPageButtonStateCalculator();
+        }
+
         private void MoveUpButtonStateCalculator()
         {
             if (CurrentPageLevel == 0)
@@ -171,7 +220,6 @@ namespace EyexAAC.ViewModel.Utils
                 IsMoveUpButtonEnabled = true;
             }
         }
-
 
         private void RaisePropertyChanged(string property)
         {

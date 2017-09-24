@@ -20,6 +20,7 @@ namespace EyexAAC.ViewModel
     class MessengerViewModel
     {
         public ObservableCollection<Messenger> Messengers{ get; set; }
+        //Need a reference property for databinding.
         public static PageManagerUtil PageManagerUtil { get; set; }
         public static RenderUtil RenderUtil { get; set; }
 
@@ -36,7 +37,8 @@ namespace EyexAAC.ViewModel
             //AddInitData();
             RenderUtil = new RenderUtil();
             Messengers = ApplicationContext.Instance.Messengers;
-            PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, DatabaseContext.GetTableRootMessengers(), Messengers);
+            PageManagerUtil = PageManagerUtil.Instance;
+            PageManagerUtil.SetPageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, DatabaseContext.GetTableRootMessengers(), Messengers);
         }
         public void PerformActionOnMessenger(int id)
         {

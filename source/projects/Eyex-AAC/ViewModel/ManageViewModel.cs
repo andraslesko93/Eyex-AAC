@@ -81,11 +81,11 @@ namespace EyexAAC.ViewModel
             }
             else if (FocusedMessenger.Type == MessengerType.pegged)
             {
-                SavePeggedMessenger();
+                SavePermanentMessenger();
             }
         }
 
-        private void SavePeggedMessenger()
+        private void SavePermanentMessenger()
         {
             Messenger basicMessageMedium = BasicMessageMediumViewModel.BasicMessageMediums.SingleOrDefault(c => c.Id == FocusedMessenger.Id);
 
@@ -112,10 +112,10 @@ namespace EyexAAC.ViewModel
             else
             {
                 //Should we add the new element to the currently visible elements ?
-                if (FocusedMessenger.Parent.Id == MessengerViewModel.PageManagerUtil.ParentMessenger.Id)
+                if (FocusedMessenger.Parent.Id == PageManagerUtil.Instance.ParentMessenger.Id)
                 {
                     ApplicationContext.Instance.Messengers.Add(FocusedMessenger);
-                    MessengerViewModel.PageManagerUtil.AddToMessengerCache(FocusedMessenger);
+                    PageManagerUtil.Instance.AddToMessengerCache(FocusedMessenger);
                 }
             }
 
@@ -150,7 +150,7 @@ namespace EyexAAC.ViewModel
             addInProggress = false;
 
             //Recalculate next page button
-            MessengerViewModel.PageManagerUtil.NextPageButtonStateCalculator();
+            PageManagerUtil.Instance.NextPageButtonStateCalculator();
         }
 
         private void DeleteFromApplicationContext()
@@ -158,7 +158,8 @@ namespace EyexAAC.ViewModel
             if (FocusedMessenger.Type == MessengerType.general)
             {
                 ApplicationContext.Instance.Messengers.Remove(ApplicationContext.Instance.Messengers.SingleOrDefault(i => i.Id == FocusedMessenger.Id));
-                MessengerViewModel.PageManagerUtil.MessengerCache.Remove(MessengerViewModel.PageManagerUtil.MessengerCache.SingleOrDefault(i => i.Id == FocusedMessenger.Id));
+                PageManagerUtil.Instance.RemoveMessenger(FocusedMessenger);
+                //PageManagerUtil.Instance.MessengerCache.Remove(PageManagerUtil.Instance.MessengerCache.SingleOrDefault(i => i.Id == FocusedMessenger.Id));
                 //TODO Reorder in page manager.
             }
             else if (FocusedMessenger.Type == MessengerType.pegged)

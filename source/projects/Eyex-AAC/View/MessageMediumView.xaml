@@ -89,6 +89,9 @@
                                             <DataTrigger Value="True" Binding="{Binding Path=HasChild}">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
+                                            <DataTrigger Value="False" Binding="{Binding Path=HasChild}">
+                                                <Setter Property="Visibility" Value="Hidden"/>
+                                            </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Image.Style>
