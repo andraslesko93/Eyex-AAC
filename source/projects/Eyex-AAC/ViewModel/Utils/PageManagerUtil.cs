@@ -122,6 +122,7 @@ namespace EyexAAC.ViewModel.Utils
             else
             {
                 //Parent is a root
+                ParentMessenger = new Messenger();
                 CurrentPageLevel = 0;
                 NewDataScope(DatabaseContext.GetTableRootMessengers());
             }

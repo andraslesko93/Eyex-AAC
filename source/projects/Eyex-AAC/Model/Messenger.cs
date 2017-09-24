@@ -177,9 +177,8 @@ namespace EyexAAC.Model
     }
 
     enum MessengerType {
-        table=0, //default value
-        basic,
-        goBack,
+        general=0, //default value
+        pegged,
         root
     };
 }

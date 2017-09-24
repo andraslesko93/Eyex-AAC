@@ -29,23 +29,14 @@ namespace EyexAAC.View
             DataContext = manageMessageMediumViewModel;
             InitializeComponent();
         }
-        private void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem treeViewItem = e.OriginalSource as TreeViewItem;     
-            if (treeViewItem != null)
-            {
-                Messenger messageMedium = treeViewItem.Header as Messenger;
-                manageMessageMediumViewModel.SetChildren(messageMedium);
-            }
-        }
 
         private void treeView_Selected(object sender, RoutedEventArgs e)
         {
             TreeViewItem treeViewItem = e.OriginalSource as TreeViewItem;
             if (treeViewItem != null)
             {
-                Messenger messageMedium = treeViewItem.Header as Messenger;
-                if (messageMedium.Type == MessengerType.root)
+                Messenger messenger = treeViewItem.Header as Messenger;
+                if (messenger.Type == MessengerType.root)
                 {
                     EditorGrid.Visibility = System.Windows.Visibility.Hidden;
                 }
@@ -53,13 +44,13 @@ namespace EyexAAC.View
                 {
                     EditorGrid.Visibility = System.Windows.Visibility.Visible; 
                 }
-                manageMessageMediumViewModel.SetMessageMediumToFocus(messageMedium);
+                manageMessageMediumViewModel.SetMessageMediumToFocus(messenger);
             }
         }
 
         private void Save_Button_Click(object sender, RoutedEventArgs e)
         {
-            manageMessageMediumViewModel.SaveFocusedMesageMedium();
+            manageMessageMediumViewModel.SaveFocusedMessenger();
             InfoMessage.Content = "Successfully saved.";
         }
 
@@ -81,10 +72,10 @@ namespace EyexAAC.View
 
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (manageMessageMediumViewModel.IsFocusMessageMediumSetted())
+            if (manageMessageMediumViewModel.FocusedMessenger!=null)
             {
                 EditorGrid.Visibility = System.Windows.Visibility.Visible;
-                manageMessageMediumViewModel.AddChildToFocusedMessageMedium();
+                manageMessageMediumViewModel.AddChildToFocusedMessenger();
                 InfoMessage.Content = "";
             }
             else

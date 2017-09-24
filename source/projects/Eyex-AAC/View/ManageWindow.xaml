@@ -39,14 +39,14 @@
                 <StackPanel>
                     <StackPanel HorizontalAlignment="Left" Margin="0,0,0,20" >
                         <Label Content="Parent's name:" FontSize="15" Margin="0,0,0,5" />
-                        <TextBox Text="{Binding Path = FocusedMessageMedium.Parent.Name, Mode=TwoWay}" Background="LightGray" IsReadOnly="True"  FontSize="15" Margin="5,0,0,10" MaxLines="1" Width="200"/>
+                        <TextBox Text="{Binding Path = FocusedMessenger.Parent.Name, Mode=TwoWay}" Background="LightGray" IsReadOnly="True"  FontSize="15" Margin="5,0,0,10" MaxLines="1" Width="200"/>
                         
                         <Label Content="Name:" FontSize="15" Margin="0,0,0,5" />
-                        <TextBox x:Name="NameTextBox" Text="{Binding Path = FocusedMessageMedium.Name, Mode=TwoWay}" FontSize="15" Margin="5,0,0,10" MaxLines="1" Width="200"/>
+                        <TextBox x:Name="NameTextBox" Text="{Binding Path = FocusedMessenger.Name, Mode=TwoWay}" FontSize="15" Margin="5,0,0,10" MaxLines="1" Width="200"/>
                         <Label Content="Image preview:"  FontSize="15" Margin="0,0,0,5" />
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center">
-                        <Image x:Name="Image" Source="{Binding Path = FocusedMessageMedium.Image, Mode=TwoWay}" Width="193" Height="163" Margin="0,0,0,20"/>
+                        <Image x:Name="Image" Source="{Binding Path = FocusedMessenger.Image, Mode=TwoWay}" Width="193" Height="163" Margin="0,0,0,20"/>
                         <Button Content="Change Image" Click="Change_Button_Click" FontSize="15" Background="White"/>
                     </StackPanel>
                 </StackPanel>

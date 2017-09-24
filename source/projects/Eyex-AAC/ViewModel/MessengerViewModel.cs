@@ -33,7 +33,7 @@ namespace EyexAAC.ViewModel
         }
         public void LoadMessengers()
         {
-            AddInitData();
+            //AddInitData();
             RenderUtil = new RenderUtil();
             Messengers = ApplicationContext.Instance.Messengers;
             PageManagerUtil = new PageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, DatabaseContext.GetTableRootMessengers(), Messengers);
@@ -41,7 +41,7 @@ namespace EyexAAC.ViewModel
         public void PerformActionOnMessenger(int id)
         {
             Messenger messenger = ApplicationContext.Instance.GetMessengerFromApplicationContextById(id);
-            if (messenger.Children.Any())
+            if (messenger.Children!=null && messenger.Children.Any())
             {
                 MoveDownALevel(messenger);
             }
@@ -92,11 +92,11 @@ namespace EyexAAC.ViewModel
                 school.AddChild(study);
                 context.Messengers.Add(school);
 
-                context.Messengers.Add(new Messenger("hello", "pack://application:,,,/Resources/Images/demo images/basic/hello.jpg", MessengerType.basic));
-                context.Messengers.Add(new Messenger("goodbye", "pack://application:,,,/Resources/Images/demo images/basic/goodbye.jpg", MessengerType.basic));
-                context.Messengers.Add(new Messenger("yes", "pack://application:,,,/Resources/Images/demo images/basic/yes.jpg", MessengerType.basic));
-                context.Messengers.Add(new Messenger("no", "pack://application:,,,/Resources/Images/demo images/basic/no.jpg", MessengerType.basic));
-                context.Messengers.Add(new Messenger("thank you", "pack://application:,,,/Resources/Images/demo images/basic/thank you.jpg", MessengerType.basic));
+                context.Messengers.Add(new Messenger("hello", "pack://application:,,,/Resources/Images/demo images/basic/hello.jpg", MessengerType.pegged));
+                context.Messengers.Add(new Messenger("goodbye", "pack://application:,,,/Resources/Images/demo images/basic/goodbye.jpg", MessengerType.pegged));
+                context.Messengers.Add(new Messenger("yes", "pack://application:,,,/Resources/Images/demo images/basic/yes.jpg", MessengerType.pegged));
+                context.Messengers.Add(new Messenger("no", "pack://application:,,,/Resources/Images/demo images/basic/no.jpg", MessengerType.pegged));
+                context.Messengers.Add(new Messenger("thank you", "pack://application:,,,/Resources/Images/demo images/basic/thank you.jpg", MessengerType.pegged));
                 context.SaveChanges();
             }
         }
