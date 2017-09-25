@@ -54,7 +54,7 @@ namespace EyexAAC.ViewModel.Utils
         {
             using (var context = new MessengerContext())
             {
-                var result = context.Messengers.Include(c => c.Children).SingleOrDefault(c => c.Id == messenger.Id);
+                var result = context.Messengers.Include(c => c.Children).Include(c => c.Parent).SingleOrDefault(c => c.Id == messenger.Id);
                 if (result != null)
                 {
                     List<Messenger> deleteStack = new List<Messenger>();
@@ -62,6 +62,10 @@ namespace EyexAAC.ViewModel.Utils
                     foreach (Messenger msg in deleteStack)
                     {
                         context.Messengers.Remove(msg);
+                    }
+                    if (result.Parent.Children.Count()==1)
+                    {
+                        result.Parent.HasChild = false;
                     }
                     context.Messengers.Remove(result);
                     context.SaveChanges();
