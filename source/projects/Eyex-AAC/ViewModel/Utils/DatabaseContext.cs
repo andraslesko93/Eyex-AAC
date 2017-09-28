@@ -63,11 +63,20 @@ namespace EyexAAC.ViewModel.Utils
                     {
                         context.Messengers.Remove(msg);
                     }
-                    if (result.Parent.Children.Count()==1)
+                    if (result.Parent != null)
                     {
-                        result.Parent.HasChild = false;
+                        int parentId = result.Parent.Id;
+                        context.Messengers.Remove(result);
+                        var parent = context.Messengers.Include(c => c.Children).Include(c => c.Parent).SingleOrDefault(c => c.Id == parentId);
+                        if (parent != null && !parent.Children.Any())
+                        {
+                            parent.HasChild = false;
+                        }
                     }
-                    context.Messengers.Remove(result);
+                    else
+                    {
+                        context.Messengers.Remove(result);
+                    }
                     context.SaveChanges();
                 }
             }

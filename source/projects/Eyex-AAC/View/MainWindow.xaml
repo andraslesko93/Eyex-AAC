@@ -28,6 +28,9 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="LightBlue"/>
+                </Trigger>
                 <Trigger Property="eyeX:Behavior.HasGaze" Value="true">
                     <Setter Property="Background" Value="LightBlue"/>
                 </Trigger>
@@ -39,6 +42,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="eyeX:Behavior.GazeAware" Value="True" />
             <Setter Property="eyeX:Behavior.GazeAwareDelay" Value="1000" />
+            <EventSetter Event="MouseLeftButtonDown" Handler="StackPanel_MouseLeftButtonDown"/>
             <EventSetter Event="eyeX:Behavior.HasGazeChanged" Handler="Scroll_OnHasGazeChanged" />
             <Style.Triggers>
                 <Trigger Property="eyeX:Behavior.HasGaze" Value="true">

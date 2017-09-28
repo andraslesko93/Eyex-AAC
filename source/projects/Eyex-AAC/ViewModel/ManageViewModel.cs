@@ -133,11 +133,12 @@ namespace EyexAAC.ViewModel
             {
                 return;
             }
-            //Remove from application context
-            DeleteFromApplicationContext();
 
             //Remove from database
             DatabaseContext.DeleteFromDb(FocusedMessenger);
+
+            //Remove from application context
+            DeleteFromApplicationContext();
 
             //Remove from treeview
             Messenger parent = FocusedMessenger.Parent;
@@ -155,11 +156,11 @@ namespace EyexAAC.ViewModel
 
         private void DeleteFromApplicationContext()
         {
+
             if (FocusedMessenger.Type == MessengerType.general)
             {
-                ApplicationContext.Instance.Messengers.Remove(ApplicationContext.Instance.Messengers.SingleOrDefault(i => i.Id == FocusedMessenger.Id));
+                ApplicationContext.Instance.RemoveMessenger(FocusedMessenger);
                 PageManagerUtil.Instance.RemoveMessenger(FocusedMessenger);
-                //PageManagerUtil.Instance.MessengerCache.Remove(PageManagerUtil.Instance.MessengerCache.SingleOrDefault(i => i.Id == FocusedMessenger.Id));
                 //TODO Reorder in page manager.
             }
             else if (FocusedMessenger.Type == MessengerType.pegged)

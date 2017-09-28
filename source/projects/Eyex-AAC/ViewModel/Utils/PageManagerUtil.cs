@@ -177,26 +177,29 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public void RemoveMessenger(Messenger messenger)
+        public void RemoveMessenger(Messenger focusedMessenger)
         {
-            MessengerCache.Remove(MessengerCache.SingleOrDefault(i => i.Id == messenger.Id));
+            MessengerCache.Remove(MessengerCache.SingleOrDefault(i => i.Id == focusedMessenger.Id));
 
             if (DisplayedMessengers.Count() == 0)
             {
                 if (IsPreviousPageButtonEnabled)
                 {
                     PreviousPage();
+                    return;
                 }
                 else if (IsMoveUpButtonEnabled)
                 {
                     MoveUpALevel();
+                    return;
                 }
             }
-
-         /*   if (messenger.Id == ParentMessenger.Id)
+            
+            if (focusedMessenger.Id == ParentMessenger.Id)
             {
                 MoveUpALevel();
-            }*/
+                return;
+            }
 
             //Move the last element from tha cache to the displayed messengers if needed.
             int maxElementCountOnAPage = MaxColumnCount * MaxRowCount;

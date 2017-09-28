@@ -34,6 +34,7 @@
             <Setter Property="eyeX:Behavior.GazeAware" Value="True" />
             <Setter Property="eyeX:Behavior.GazeAwareDelay" Value="1000" />
             <EventSetter Event="eyeX:Behavior.HasGazeChanged" Handler="MessegaMedium_OnHasGazeChanged" />
+            <EventSetter Event="MouseLeftButtonDown" Handler="StackPanel_MouseLeftButtonDown"/>
             <Style.Triggers>
                 <Trigger Property="eyeX:Behavior.HasGaze" Value="true">
                     <Setter Property="Background" Value="Green"/>
@@ -41,23 +42,6 @@
             </Style.Triggers>
         </Style>
 
-        
-        <!--
-        <Style x:Key="MetaMarkStyle" TargetType="{x:Type Image}">
-            <Setter Property="Width" Value="50"/>
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment" Value="Bottom"/>
-            <Setter Property="Source" Value="{StaticResource MetaMark}"/>
-            <Setter Property="Visibility" Value="Collapsed"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Children.Any}" Value="True">
-                    
-                </DataTrigger>
-            </Style.Triggers>
-
-        </Style>
-        -->
     </UserControl.Resources>
     <Grid>
         <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Path=Messengers}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">

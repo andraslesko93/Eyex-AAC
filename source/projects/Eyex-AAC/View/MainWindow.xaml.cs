@@ -14,6 +14,7 @@ namespace EyexAAC
     using System.Collections.Generic;
     using View;
     using System.ComponentModel;
+    using System.Windows.Media;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -78,5 +79,23 @@ namespace EyexAAC
             }
         }
 
+        private void StackPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var stackPanel = sender as StackPanel;
+            string type = (string)stackPanel.Tag;
+            if (type.Equals(NEXT_PAGE_EVENT))
+            {
+                messageMediumViewModelObject.NextPage();
+            }
+            else if (type.Equals(PREVIOUS_PAGE_EVENT))
+            {
+                messageMediumViewModelObject.PreviousPage();
+            }
+
+            else if (type.Equals(UP_A_LEVEL_EVENT))
+            {
+                messageMediumViewModelObject.MoveUpALevel();
+            }
+        }
     }
 }

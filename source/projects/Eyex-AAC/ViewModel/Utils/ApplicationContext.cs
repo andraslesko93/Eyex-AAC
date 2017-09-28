@@ -35,5 +35,22 @@ namespace EyexAAC.ViewModel
             var messenger = Messengers.FirstOrDefault(c => c.Id == id);
             return messenger;
         }
+
+        public void RemoveMessenger(Messenger focusedMessenger)
+        {
+            Messenger focusedMessengerInApplicationContext = Messengers.SingleOrDefault(i => i.Id == focusedMessenger.Id);
+            Messengers.Remove(focusedMessengerInApplicationContext);
+
+            if (focusedMessenger.Parent != null)
+            {
+                Messenger parent = Messengers.SingleOrDefault(i => i.Id == focusedMessenger.Parent.Id);
+                if (parent != null)
+                {
+                    parent.RemoveChild(parent.Children.SingleOrDefault((i => i.Id == focusedMessenger.Id)));
+                }
+            }
+            
+
+        }
     }
 }
