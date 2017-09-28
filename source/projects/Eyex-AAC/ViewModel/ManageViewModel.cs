@@ -37,8 +37,8 @@ namespace EyexAAC.ViewModel
 
         public ManageViewModel()
         {
-            TableRoot =  new Messenger("Table message mediums", MessengerType.root);
-            BasicRoot =  new Messenger("Basic message mediums", MessengerType.root);
+            TableRoot =  new Messenger("General messengers", MessengerType.root);
+            BasicRoot =  new Messenger("Pegged messengers", MessengerType.root);
             MessageMediums = new ObservableCollection<Messenger>();
             SetRootObjects();
         }
