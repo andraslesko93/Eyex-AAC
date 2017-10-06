@@ -63,14 +63,16 @@ namespace EyexAAC.ViewModel
             FocusedMessenger = messageMedium;
             addInProggress = false;
         }
-        public void SaveFocusedMessenger()
+        public Boolean SaveFocusedMessenger()
         {
             if (IsFocusMessageMediumSetted())
             {
                 DatabaseContext.SaveToDB(FocusedMessenger);
-                SaveToApplicationContext();  
+                SaveToApplicationContext();
+                return true;
             }
             addInProggress = false;
+            return false;
         }
 
         private void SaveToApplicationContext()
@@ -81,11 +83,11 @@ namespace EyexAAC.ViewModel
             }
             else if (FocusedMessenger.Type == MessengerType.pegged)
             {
-                SavePermanentMessenger();
+                SavePeggedMessenger();
             }
         }
 
-        private void SavePermanentMessenger()
+        private void SavePeggedMessenger()
         {
             Messenger basicMessageMedium = BasicMessageMediumViewModel.BasicMessageMediums.SingleOrDefault(c => c.Id == FocusedMessenger.Id);
 

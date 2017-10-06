@@ -151,7 +151,8 @@ namespace EyexAAC.Model
 
         public void RemoveChild(Messenger messenger) {
             Children.Remove(messenger);
-            if (!Children.Any())
+
+            if (Children!=null && !Children.Any())
             {
                 HasChild = false;
                 RaisePropertyChanged("HasChild");

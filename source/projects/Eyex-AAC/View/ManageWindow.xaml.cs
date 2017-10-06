@@ -50,8 +50,16 @@ namespace EyexAAC.View
 
         private void Save_Button_Click(object sender, RoutedEventArgs e)
         {
-            manageMessageMediumViewModel.SaveFocusedMessenger();
-            InfoMessage.Content = "Successfully saved.";
+            Boolean result = manageMessageMediumViewModel.SaveFocusedMessenger();
+            if (result == true)
+            {
+                InfoMessage.Content = "Successfully saved.";
+            }
+            else
+            {
+                InfoMessage.Content = "You must fill all attributes.";
+            }
+           
         }
 
         private void Change_Button_Click(object sender, RoutedEventArgs e)

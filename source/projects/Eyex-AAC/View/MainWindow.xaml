@@ -83,7 +83,7 @@
 
         <Style x:Key="EyeXGazeUpButtonStyle" TargetType="Label">
             <Setter Property="Margin" Value="0,0,0,6"/>
-            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontSize" Value="50"/>
             <Setter Property="Foreground" Value="Black"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding PageManagerUtil.IsMoveUpButtonEnabled}" Value="False">
