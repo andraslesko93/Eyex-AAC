@@ -97,6 +97,44 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="EyeXGazeSentenceButtonStyle" TargetType="Label">
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="FontSize" Value="50"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SentenceMode}" Value="False">
+                    <Setter Property="Background" Value="Transparent"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding SentenceMode}" Value="True">
+                    <Setter Property="Background" Value="Green"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ManageButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Margin" Value="5,5,5,5"/>
+            <Setter Property="Content" Value="Manage"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SentenceMode}" Value="True">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding SentenceMode}" Value="False">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SentenceTextBlockStyle" TargetType="StackPanel">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SentenceMode}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding SentenceMode}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -124,20 +162,36 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
-                <Button Click="Manage_Button_Click" Grid.Row="0" Background="White"  Margin="5,5,5,5" Content="Manage" />
-
+                <Button  Click="Manage_Button_Click" Style="{StaticResource ManageButtonStyle}" />
             </StackPanel>
             <views:MessageMediumView x:Name="MessageMediumViewControl" Grid.Row="1" Grid.Column="1" Loaded="MessageMediumViewControl_Loaded"/>
             <views:BasicMessageMediumView  x:Name="BasicMessageMediumViewControl" Grid.Row="2" Grid.Column="1" Loaded="BasicMessageMediumViewControl_Loaded"/>
         </Grid>
 
-        
+
         <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Margin ="7,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
             <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="up" >
                 <Label Content="&lt;&lt;" Style="{StaticResource EyeXGazeUpButtonStyle}"/>
             </StackPanel>
         </StackPanel>
 
+        <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Margin ="7,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="sentenceMode" >
+                <Label Content="mondatosan" Style="{StaticResource EyeXGazeSentenceButtonStyle}"/>
+            </StackPanel>
+        </StackPanel>
 
+        <StackPanel Style="{StaticResource SentenceTextBlockStyle}" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <Border BorderThickness="1" BorderBrush="Black">
+                <TextBlock FontSize="30" Text="{Binding WordList}"/>
+            </Border>
+            <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Margin ="7,0,0,0" >
+                <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="saySentence">
+                    <Border BorderThickness="1" BorderBrush="Black">
+                        <Label Content="say it" FontSize="30"/>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

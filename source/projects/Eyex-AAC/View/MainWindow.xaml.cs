@@ -26,6 +26,8 @@ namespace EyexAAC
         private static readonly string UP_A_LEVEL_EVENT = "up";
         private static readonly string NEXT_PAGE_EVENT = "next";
         private static readonly string PREVIOUS_PAGE_EVENT = "previous";
+        private static readonly string SENTENCE_MODE_EVENT = "sentenceMode";
+        private static readonly string SAY_SENTENCE_EVENT = "saySentence";
         public MainWindow()
         {
             InitializeComponent();
@@ -76,6 +78,15 @@ namespace EyexAAC
                 {
                     messageMediumViewModelObject.MoveUpALevel();
                 }
+
+                else if (type.Equals(SENTENCE_MODE_EVENT))
+                {
+                    messageMediumViewModelObject.ChangeSentenceMode();
+                }
+                else if (type.Equals(SAY_SENTENCE_EVENT))
+                {
+                    messageMediumViewModelObject.SaySentence();
+                }
             }
         }
 
@@ -95,6 +106,19 @@ namespace EyexAAC
             else if (type.Equals(UP_A_LEVEL_EVENT))
             {
                 messageMediumViewModelObject.MoveUpALevel();
+            }
+
+            else if (type.Equals(UP_A_LEVEL_EVENT))
+            {
+                messageMediumViewModelObject.MoveUpALevel();
+            }
+            else if (type.Equals(SENTENCE_MODE_EVENT))
+            {
+                messageMediumViewModelObject.ChangeSentenceMode();
+            }
+            else if (type.Equals(SAY_SENTENCE_EVENT))
+            {
+                messageMediumViewModelObject.SaySentence();
             }
         }
     }
