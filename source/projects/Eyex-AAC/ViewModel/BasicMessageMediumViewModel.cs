@@ -13,6 +13,7 @@ namespace EyexAAC.ViewModel
     class BasicMessageMediumViewModel
     {
         private SpeechSynthesizer synthesizer;
+        public SentenceModeManager SentenceModeManager { get; set; }
         public static ObservableCollection<Messenger> BasicMessageMediums
         {
             get;
@@ -23,6 +24,7 @@ namespace EyexAAC.ViewModel
             synthesizer = new SpeechSynthesizer();
             synthesizer.Volume = 100;
             synthesizer.Rate = -2;
+            SentenceModeManager = SentenceModeManager.Instance;
         }
 
         public void LoadBasicMessageMediums()
@@ -34,7 +36,15 @@ namespace EyexAAC.ViewModel
         internal void performActionOnBasicMessageMedium(int id)
         {
             Messenger messageMedium = GetBasicMessageMediumFromCollectionById(id);
-            synthesizer.SpeakAsync(messageMedium.Name);
+            if (SentenceModeManager.SentenceMode)
+            {
+                SentenceModeManager.WordList.Add(messageMedium.Name);
+            }
+            else
+            {
+                synthesizer.SpeakAsync(messageMedium.Name);
+            }
+
             //Console.WriteLine(messageMedium.Name);
             //TODO: Use a reader library instead. 
         }

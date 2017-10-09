@@ -17,7 +17,7 @@ using EyexAAC.ViewModel.Utils;
 
 namespace EyexAAC.ViewModel
 {
-    class MessengerViewModel:INotifyPropertyChanged
+    class MessengerViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<Messenger> Messengers{ get; set; }
@@ -26,37 +26,15 @@ namespace EyexAAC.ViewModel
         public static RenderUtil RenderUtil { get; set; }
 
         private SpeechSynthesizer synthesizer;
-        private static bool sentenceMode;
 
-        public bool SentenceMode
-        {
-            get { return sentenceMode; }
-            set
-            { sentenceMode = value;
-                RaisePropertyChanged("SentenceMode");
-            }
-        }
-
-        private static List<String> wordList;
-
-        public List<String> WordList
-        {
-            get { return wordList; }
-            set
-            {
-                wordList = value;
-                RaisePropertyChanged("WordList");
-            }
-        }
-
+        public SentenceModeManager SentenceModeManager { get; set; }
 
         public MessengerViewModel()
         {
             synthesizer = new SpeechSynthesizer();
             synthesizer.Volume = 100;
             synthesizer.Rate = -2;
-            SentenceMode = false;
-            WordList = new List<string>();
+            SentenceModeManager = SentenceModeManager.Instance;
         }
         public void LoadMessengers()
         {
@@ -75,9 +53,9 @@ namespace EyexAAC.ViewModel
             }
             else
             {
-                if (SentenceMode)
+                if (SentenceModeManager.SentenceMode)
                 {
-                    WordList.Add(messenger.Name);
+                    SentenceModeManager.WordList.Add(messenger.Name);
                 }
                 else
                 {
@@ -139,22 +117,18 @@ namespace EyexAAC.ViewModel
         internal void SaySentence()
         {
             String sentence ="";
-            foreach (String word in WordList) {
+            foreach (String word in SentenceModeManager.WordList) {
                 sentence += word;
             }
-            WordList.Clear();
             synthesizer.SpeakAsync(sentence);
+            SentenceModeManager.WordList.Clear();
         }
 
         public void ChangeSentenceMode()
         {
-            SentenceMode = !SentenceMode;
+            SentenceModeManager.SentenceMode = !SentenceModeManager.SentenceMode;
         }
 
-        private void RaisePropertyChanged(string property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-        }
 
         public void NextPage()
         {

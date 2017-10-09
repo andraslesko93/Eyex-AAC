@@ -36,5 +36,12 @@ namespace EyexAAC.View
                 messageMediumViewModel.performActionOnBasicMessageMedium((int)stackPanel.Tag);
             }
         }
+
+        private void StackPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var stackPanel = sender as StackPanel;
+            messageMediumViewModel.performActionOnBasicMessageMedium((int)stackPanel.Tag);
+
+        }
     }
 }

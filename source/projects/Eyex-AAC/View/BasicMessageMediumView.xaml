@@ -30,6 +30,7 @@
             <Setter Property="eyeX:Behavior.GazeAware" Value="True" />
             <Setter Property="eyeX:Behavior.GazeAwareDelay" Value="1000" />
             <EventSetter Event="eyeX:Behavior.HasGazeChanged" Handler="MessegaMedium_OnHasGazeChanged" />
+            <EventSetter Event="MouseLeftButtonDown" Handler="StackPanel_MouseLeftButtonDown"/>
             <Style.Triggers>
                 <Trigger Property="eyeX:Behavior.HasGaze" Value="true">
                     <Setter Property="Background" Value="Green"/>

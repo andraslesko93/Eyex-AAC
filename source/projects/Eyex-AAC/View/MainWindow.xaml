@@ -102,10 +102,10 @@
             <Setter Property="FontSize" Value="50"/>
             <Setter Property="Foreground" Value="Black"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding SentenceMode}" Value="False">
+                <DataTrigger Binding="{Binding SentenceModeManager.SentenceMode}" Value="False">
                     <Setter Property="Background" Value="Transparent"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding SentenceMode}" Value="True">
+                <DataTrigger Binding="{Binding SentenceModeManager.SentenceMode}" Value="True">
                     <Setter Property="Background" Value="Green"/>
                 </DataTrigger>
             </Style.Triggers>
@@ -116,10 +116,10 @@
             <Setter Property="Margin" Value="5,5,5,5"/>
             <Setter Property="Content" Value="Manage"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding SentenceMode}" Value="True">
+                <DataTrigger Binding="{Binding SentenceModeManager.SentenceMode}" Value="True">
                     <Setter Property="Visibility" Value="Hidden"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding SentenceMode}" Value="False">
+                <DataTrigger Binding="{Binding SentenceModeManager.SentenceMode}" Value="False">
                     <Setter Property="Visibility" Value="Visible"/>
                 </DataTrigger>
             </Style.Triggers>
@@ -127,14 +127,20 @@
 
         <Style x:Key="SentenceTextBlockStyle" TargetType="StackPanel">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding SentenceMode}" Value="False">
+                <DataTrigger Binding="{Binding SentenceModeManager.SentenceMode}" Value="False">
                     <Setter Property="Visibility" Value="Collapsed"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding SentenceMode}" Value="True">
+                <DataTrigger Binding="{Binding SentenceModeManager.SentenceMode}" Value="True">
                     <Setter Property="Visibility" Value="Visible"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+
+        <Style x:Key="WordListListViewItem" TargetType="{x:Type ListViewItem}">
+            <Setter Property="Focusable" Value="False"/>
+        </Style>
+
     </Window.Resources>
 
     <Grid>
@@ -177,18 +183,24 @@
 
         <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Margin ="7,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Right">
             <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="sentenceMode" >
-                <Label Content="mondatosan" Style="{StaticResource EyeXGazeSentenceButtonStyle}"/>
+                <Label Content="&#xE144;" FontFamily="Segoe UI Symbol" Style="{StaticResource EyeXGazeSentenceButtonStyle}"/>
             </StackPanel>
         </StackPanel>
 
         <StackPanel Style="{StaticResource SentenceTextBlockStyle}" VerticalAlignment="Top" HorizontalAlignment="Center">
             <Border BorderThickness="1" BorderBrush="Black">
-                <TextBlock FontSize="30" Text="{Binding WordList}"/>
+                <ListView FontSize="30" ItemsSource="{Binding SentenceModeManager.WordList}" HorizontalAlignment="Stretch"  ItemContainerStyle="{StaticResource WordListListViewItem}" >
+                    <ListView.ItemsPanel >
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="800" MinHeight="50"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
             </Border>
             <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Margin ="7,0,0,0" >
                 <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="saySentence">
                     <Border BorderThickness="1" BorderBrush="Black">
-                        <Label Content="say it" FontSize="30"/>
+                        <Label Content="&#xE120;" FontFamily="Segoe UI Symbol" FontSize="30"/>
                     </Border>
                 </StackPanel>
             </StackPanel>
