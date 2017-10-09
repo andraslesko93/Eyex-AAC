@@ -49,5 +49,6 @@ namespace EyexAAC.ViewModel.Utils
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
+
     }
 }

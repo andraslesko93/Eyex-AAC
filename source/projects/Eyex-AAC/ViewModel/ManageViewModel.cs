@@ -63,7 +63,7 @@ namespace EyexAAC.ViewModel
             FocusedMessenger = messageMedium;
             addInProggress = false;
         }
-        public Boolean SaveFocusedMessenger()
+        public bool SaveFocusedMessenger()
         {
             if (IsFocusMessageMediumSetted())
             {

@@ -1,16 +1,8 @@
 ﻿using EyexAAC.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
-using System.Windows.Media.Imaging;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Media;
-using System.Globalization;
 using System.Speech.Synthesis;
 
 using EyexAAC.ViewModel.Utils;
@@ -19,14 +11,11 @@ namespace EyexAAC.ViewModel
 {
     class MessengerViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<Messenger> Messengers{ get; set; }
         //Need a reference property for databinding.
         public static PageManagerUtil PageManagerUtil { get; set; }
         public static RenderUtil RenderUtil { get; set; }
-
         private SpeechSynthesizer synthesizer;
-
         public SentenceModeManager SentenceModeManager { get; set; }
 
         public MessengerViewModel()

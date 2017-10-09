@@ -63,6 +63,10 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Drawing" />
@@ -84,6 +88,7 @@
     <Compile Include="ViewModel\Utils\ApplicationContext.cs" />
     <Compile Include="ViewModel\BasicMessageMediumViewModel.cs" />
     <Compile Include="ViewModel\ManageViewModel.cs" />
+    <Compile Include="ViewModel\Utils\M2qttManager.cs" />
     <Compile Include="ViewModel\Utils\DatabaseContext.cs" />
     <Compile Include="ViewModel\Utils\RenderUtil.cs" />
     <Compile Include="ViewModel\Utils\PageManagerUtil.cs" />
