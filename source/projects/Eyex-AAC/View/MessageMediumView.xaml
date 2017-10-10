@@ -54,7 +54,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Path = Id, Mode=OneWay}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
                         <Grid>
-                            <Image Source="{Binding Path = Image, Mode=OneWay}" 
+                            <Image Source="{Binding Path = Image}" 
                                HorizontalAlignment="Center" VerticalAlignment="Center" 
                                Width="{Binding Path=DataContext.RenderUtil.ImageWidth, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
                                Height="{Binding Path=DataContext.RenderUtil.ImageHeight, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
@@ -80,8 +80,9 @@
                                     </Style>
                                 </Image.Style>
                             </Image>
+
+                            <Label FontSize="20" VerticalAlignment="Bottom" HorizontalAlignment="Center" Content="{Binding Path = Name}"/>
                         </Grid>
-                        
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
