@@ -105,12 +105,18 @@ namespace EyexAAC.ViewModel
 
         internal void SaySentence()
         {
+            if (!SentenceModeManager.WordList.Any())
+            {
+                return;
+            }
             String sentence ="";
             foreach (String word in SentenceModeManager.WordList) {
                 sentence += word;
+                sentence += " ";
             }
             synthesizer.SpeakAsync(sentence);
             SentenceModeManager.WordList.Clear();
+            M2qttManager.Instance.Publish("dev/test", sentence);
         }
 
         public void ChangeSentenceMode()
