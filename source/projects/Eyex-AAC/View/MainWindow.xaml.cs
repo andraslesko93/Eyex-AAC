@@ -28,6 +28,7 @@ namespace EyexAAC
         private static readonly string PREVIOUS_PAGE_EVENT = "previous";
         private static readonly string SENTENCE_MODE_EVENT = "sentenceMode";
         private static readonly string SAY_SENTENCE_EVENT = "saySentence";
+        private static bool closing = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -46,12 +47,21 @@ namespace EyexAAC
             BasicMessageMediumViewControl.DataContext = messageMediumViewModelObject;
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (closing == false)
+            {
+                messageMediumViewModelObject.M2qttManager.Disconnect();
+                closing = true;
+                Application.Current.Shutdown();
+            }
+        }
+
+       /* protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-
             Application.Current.Shutdown();
-        }
+        }*/
         private void Manage_Button_Click(object sender, RoutedEventArgs e)
         {
             ManageWindow manageWindow = new ManageWindow();

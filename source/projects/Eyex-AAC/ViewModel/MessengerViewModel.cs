@@ -11,19 +11,28 @@ namespace EyexAAC.ViewModel
 {
     class MessengerViewModel
     {
+
+        private static readonly string BROKER_IP_ADDRESS = "192.168.0.230";
+        private static readonly string USERNAME = "user2";
+        private static readonly string PASSWORD = "password";
+
         public ObservableCollection<Messenger> Messengers{ get; set; }
         //Need a reference property for databinding.
         public static PageManagerUtil PageManagerUtil { get; set; }
         public static RenderUtil RenderUtil { get; set; }
-        private SpeechSynthesizer synthesizer;
+        private SpeechSynthesizer synthesizer { get; set; }
         public SentenceModeManager SentenceModeManager { get; set; }
 
+        public M2qttManager M2qttManager { get; set; }
         public MessengerViewModel()
         {
             synthesizer = new SpeechSynthesizer();
             synthesizer.Volume = 100;
             synthesizer.Rate = -2;
             SentenceModeManager = SentenceModeManager.Instance;
+            M2qttManager = new M2qttManager(BROKER_IP_ADDRESS, USERNAME, PASSWORD, synthesizer);
+            M2qttManager.Connect();
+            M2qttManager.Subscribe("dev/test");
         }
         public void LoadMessengers()
         {
@@ -109,14 +118,16 @@ namespace EyexAAC.ViewModel
             {
                 return;
             }
-            String sentence ="";
-            foreach (String word in SentenceModeManager.WordList) {
+            string sentence ="";
+            foreach (string word in SentenceModeManager.WordList) {
                 sentence += word;
                 sentence += " ";
             }
+            sentence = sentence.Trim();
             synthesizer.SpeakAsync(sentence);
             SentenceModeManager.WordList.Clear();
-            M2qttManager.Instance.Publish("dev/test", sentence);
+            //Use connect in a separate window.
+            M2qttManager.Publish("dev/test", sentence);
         }
 
         public void ChangeSentenceMode()
