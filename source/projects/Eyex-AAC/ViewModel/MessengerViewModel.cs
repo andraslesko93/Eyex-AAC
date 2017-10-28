@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Speech.Synthesis;
 
 using EyexAAC.ViewModel.Utils;
+using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace EyexAAC.ViewModel
 {
@@ -13,6 +14,7 @@ namespace EyexAAC.ViewModel
     {
 
         private static readonly string BROKER_IP_ADDRESS = "192.168.0.230";
+        public static readonly string CLIENT_ID = "Eyex user";
         private static readonly string USERNAME = "user2";
         private static readonly string PASSWORD = "password";
 
@@ -30,7 +32,7 @@ namespace EyexAAC.ViewModel
             synthesizer.Volume = 100;
             synthesizer.Rate = -2;
             SentenceModeManager = SentenceModeManager.Instance;
-            M2qttManager = new M2qttManager(BROKER_IP_ADDRESS, USERNAME, PASSWORD, synthesizer);
+            M2qttManager = new M2qttManager(BROKER_IP_ADDRESS, USERNAME, PASSWORD, synthesizer, CLIENT_ID);
             M2qttManager.Connect();
             M2qttManager.Subscribe("dev/test");
         }
@@ -53,7 +55,7 @@ namespace EyexAAC.ViewModel
             {
                 if (SentenceModeManager.SentenceMode)
                 {
-                    SentenceModeManager.WordList.Add(messenger.Name);
+                    SentenceModeManager.AddWord(messenger.Name);
                 }
                 else
                 {
@@ -114,18 +116,18 @@ namespace EyexAAC.ViewModel
 
         internal void SaySentence()
         {
-            if (!SentenceModeManager.WordList.Any())
+            /*if (!SentenceModeManager.WordList.Any())
             {
                 return;
-            }
+            }*/
             string sentence ="";
-            foreach (string word in SentenceModeManager.WordList) {
+            foreach (string word in SentenceModeManager.GetLastSentence()) {
                 sentence += word;
                 sentence += " ";
             }
             sentence = sentence.Trim();
             synthesizer.SpeakAsync(sentence);
-            SentenceModeManager.WordList.Clear();
+            SentenceModeManager.EndSentence();
             //Use connect in a separate window.
             M2qttManager.Publish("dev/test", sentence);
         }

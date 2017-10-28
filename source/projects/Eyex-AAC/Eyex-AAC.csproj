@@ -90,6 +90,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\MqttMessage.cs" />
+    <Compile Include="Model\MTObservableCollection.cs" />
     <Compile Include="ViewModel\Utils\ApplicationContext.cs" />
     <Compile Include="ViewModel\BasicMessageMediumViewModel.cs" />
     <Compile Include="ViewModel\ManageViewModel.cs" />

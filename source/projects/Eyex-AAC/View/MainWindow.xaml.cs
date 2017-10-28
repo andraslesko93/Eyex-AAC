@@ -15,6 +15,7 @@ namespace EyexAAC
     using View;
     using System.ComponentModel;
     using System.Windows.Media;
+    using System.Collections.Specialized;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -32,6 +33,7 @@ namespace EyexAAC
         public MainWindow()
         {
             InitializeComponent();
+            ((INotifyCollectionChanged)SentenceListView.Items).CollectionChanged += SentenceListView_CollectionChanged;
         }
         private void MessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -129,6 +131,15 @@ namespace EyexAAC
             else if (type.Equals(SAY_SENTENCE_EVENT))
             {
                 messageMediumViewModelObject.SaySentence();
+            }
+        }
+
+        private void SentenceListView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+
+            if (SentenceListView.Items.Count > 0)
+            {
+                SentenceListView.ScrollIntoView(SentenceListView.Items[SentenceListView.Items.Count - 1]);
             }
         }
     }

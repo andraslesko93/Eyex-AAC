@@ -144,7 +144,7 @@
     </Window.Resources>
 
     <Grid>
-        
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -174,7 +174,6 @@
             <views:BasicMessageMediumView  x:Name="BasicMessageMediumViewControl" Grid.Row="2" Grid.Column="1" Loaded="BasicMessageMediumViewControl_Loaded"/>
         </Grid>
 
-
         <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Margin ="7,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
             <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="up" >
                 <Label Content="&lt;&lt;" Style="{StaticResource EyeXGazeUpButtonStyle}"/>
@@ -186,16 +185,21 @@
                 <Label Content="&#xE144;" FontFamily="Segoe UI Symbol" Style="{StaticResource EyeXGazeSentenceButtonStyle}"/>
             </StackPanel>
         </StackPanel>
-
         <StackPanel Style="{StaticResource SentenceTextBlockStyle}" VerticalAlignment="Top" HorizontalAlignment="Center">
             <Border BorderThickness="1" BorderBrush="Black">
-                <ListView FontSize="30" ItemsSource="{Binding SentenceModeManager.WordList}" HorizontalAlignment="Stretch"  ItemContainerStyle="{StaticResource WordListListViewItem}" >
-                    <ListView.ItemsPanel >
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="800" MinHeight="50"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ListView x:Name="SentenceListView" FontSize="30" ItemsSource="{Binding SentenceModeManager.SentenceList}" MinHeight="60" MaxHeight="60" Width="800" HorizontalAlignment="Stretch"  ItemContainerStyle="{StaticResource WordListListViewItem}" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding Sender}" FontStyle ="Italic"/>
+                                    <Label Content=": " FontStyle ="Italic"/>
+                                    <Label Content="{Binding SentenceAsString}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
             </Border>
             <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Margin ="7,0,0,0" >
                 <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="saySentence">

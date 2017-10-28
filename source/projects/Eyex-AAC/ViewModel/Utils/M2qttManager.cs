@@ -19,13 +19,13 @@ namespace EyexAAC.ViewModel.Utils
         public string ClientId { get; set; }
         private SpeechSynthesizer Synthesizer { get; set; }
 
-        public M2qttManager(string brokerIpAddress, string username, string password, SpeechSynthesizer synthesizer)
+        public M2qttManager(string brokerIpAddress, string username, string password, SpeechSynthesizer synthesizer, string clientId)
         {
             BrokerIpAddress = brokerIpAddress;
             Username = username;
             Password = password;
             Synthesizer = synthesizer;
-            ClientId = "Eyex user";// Guid.NewGuid().ToString();
+            ClientId = clientId;// Guid.NewGuid().ToString();
             Client = new MqttClient(BrokerIpAddress);
             Client.MqttMsgPublishReceived += new MqttClient.MqttMsgPublishEventHandler(EventPublished);
         }
@@ -78,11 +78,14 @@ namespace EyexAAC.ViewModel.Utils
             if (IsValidJson(messageAsJson))
             { 
                 MqttMessage mqttMessage = JsonConvert.DeserializeObject<MqttMessage>(messageAsJson);
-                if (mqttMessage.ClientId != ClientId) { 
+                if (mqttMessage.ClientId != ClientId) {
+                    SentenceModeManager.Instance.NewSentence(mqttMessage.Message, mqttMessage.ClientId);
                     Synthesizer.SpeakAsync(mqttMessage.ClientId+" say: "+ mqttMessage.Message);
                     Console.WriteLine(mqttMessage.ClientId + mqttMessage.Message);
                 }
             }
+
+            
         }
 
         private static bool IsValidJson(string strInput)

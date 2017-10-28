@@ -38,7 +38,7 @@ namespace EyexAAC.ViewModel
             Messenger messageMedium = GetBasicMessageMediumFromCollectionById(id);
             if (SentenceModeManager.SentenceMode)
             {
-                SentenceModeManager.WordList.Add(messageMedium.Name);
+                SentenceModeManager.AddWord(messageMedium.Name);
             }
             else
             {
