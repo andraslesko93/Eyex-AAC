@@ -186,21 +186,36 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Style="{StaticResource SentenceTextBlockStyle}" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <Border BorderThickness="1" BorderBrush="Black">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <ListView x:Name="SentenceListView" FontSize="30" ItemsSource="{Binding SentenceModeManager.SentenceList}" MinHeight="60" MaxHeight="60" Width="800" HorizontalAlignment="Stretch"  ItemContainerStyle="{StaticResource WordListListViewItem}" >
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="{Binding Sender}" FontStyle ="Italic"/>
-                                    <Label Content=": " FontStyle ="Italic"/>
-                                    <Label Content="{Binding SentenceAsString}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </ScrollViewer>
+            <Border BorderThickness="0.5" BorderBrush="Black">
+                <ListView x:Name="SentenceListView" 
+                              FontSize="30" 
+                              ItemsSource="{Binding SentenceModeManager.SentenceList}" 
+                              MinHeight="60" 
+                              MaxHeight="75" 
+                              Width="800" 
+                              HorizontalAlignment="Stretch"  
+                              HorizontalContentAlignment="Stretch" 
+                              ItemContainerStyle="{StaticResource WordListListViewItem}" 
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              >
+                            <!--Todo: Find a solution to warp text in listview...-->
+                            <!--HorizontalScrollBarVisibility="Disabled"-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" >
+                                <Label Content="{Binding Sender}" FontStyle ="Italic"/>
+                                <Label Content=": " FontStyle ="Italic"/>
+                                <Label Content="{Binding SentenceAsString}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Border>
+            <TextBox x:Name="SentenceTextBox" MinHeight="60" Width="800" FontSize="30"
+                     Text="{Binding SentenceModeManager.CurrentSentenceAsString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     TextChanged="SentenceTextBox_TextChanged"
+                     TextWrapping="Wrap"
+             />
             <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Margin ="7,0,0,0" >
                 <StackPanel Style="{StaticResource EyeXGazeAwareSelectScrollButton}" Tag="saySentence">
                     <Border BorderThickness="1" BorderBrush="Black">

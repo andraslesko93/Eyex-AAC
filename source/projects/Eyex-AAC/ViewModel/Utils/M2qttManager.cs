@@ -79,7 +79,7 @@ namespace EyexAAC.ViewModel.Utils
             { 
                 MqttMessage mqttMessage = JsonConvert.DeserializeObject<MqttMessage>(messageAsJson);
                 if (mqttMessage.ClientId != ClientId) {
-                    SentenceModeManager.Instance.NewSentence(mqttMessage.Message, mqttMessage.ClientId);
+                    SentenceModeManager.Instance.PublishSentence(mqttMessage.Message, mqttMessage.ClientId);
                     Synthesizer.SpeakAsync(mqttMessage.ClientId+" say: "+ mqttMessage.Message);
                     Console.WriteLine(mqttMessage.ClientId + mqttMessage.Message);
                 }

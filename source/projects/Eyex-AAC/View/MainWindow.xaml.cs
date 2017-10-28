@@ -142,5 +142,10 @@ namespace EyexAAC
                 SentenceListView.ScrollIntoView(SentenceListView.Items[SentenceListView.Items.Count - 1]);
             }
         }
+
+        private void SentenceTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SentenceTextBox.CaretIndex = SentenceTextBox.Text.Length;
+        }
     }
 }

@@ -10,7 +10,18 @@ namespace EyexAAC.ViewModel.Utils
     {
         public MTObservableCollection<Sentence> SentenceList { get; set; }
 
-        private static bool isSentenceActive = false;
+        public Sentence CurrentSentence { get; set; }
+
+        public string CurrentSentenceAsString
+        {
+            get { return CurrentSentence.SentenceAsString; }
+            set {
+                string[] stringArray = value.Split(null);
+                CurrentSentence.WordList = stringArray.ToList();
+            }
+
+        }
+
         private bool sentenceMode;
         public bool SentenceMode
         {
@@ -28,6 +39,7 @@ namespace EyexAAC.ViewModel.Utils
         private SentenceModeManager()
         {
             SentenceList = new MTObservableCollection<Sentence>();
+            CurrentSentence = new Sentence();
             SentenceMode = false;
         }
 
@@ -49,17 +61,23 @@ namespace EyexAAC.ViewModel.Utils
         }
 
         public void AddWord(string word) {
-            if (isSentenceActive == false)
-            {
-                NewSentence();
-                isSentenceActive = true;
-            }
-            SentenceList.Last().AddWord(word);
+            CurrentSentence.AddWord(word);
+            RaisePropertyChanged("CurrentSentenceAsString");
         }
 
-        public List<String> GetLastSentence() { return SentenceList.Last().WordList; }
+        public void PublishSentence(string sentence, string sender)
+        {
+            SentenceList.Add(new Sentence(sentence, sender));
+        }
 
-        public class Sentence: INotifyPropertyChanged
+        public void PublishSentence()
+        {
+            SentenceList.Add(CurrentSentence);
+            CurrentSentence = new Sentence();
+            RaisePropertyChanged("CurrentSentenceAsString");
+        }
+
+        public class Sentence
         {
             public string Sender { get; set; }
             public string SentenceAsString { get { return string.Join(" ", this.WordList); } }
@@ -75,34 +93,14 @@ namespace EyexAAC.ViewModel.Utils
                 WordList = new List<string>(sentenceAsArray);
                 Sender = sender;
             }
-
-            public event PropertyChangedEventHandler PropertyChanged;
-
             public void AddWord(string word)
             {
                 WordList.Add(word);
-                RaisePropertyChanged("SentenceAsString");
             }
-            private void RaisePropertyChanged(string property)
+            public void Clear()
             {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+                WordList.Clear();
             }
-        }
-
-        public void NewSentence()
-        {
-            SentenceList.Add(new Sentence());
-        }
-
-        public void NewSentence(string sentence, string sender)
-        {
-            SentenceList.Add(new Sentence(sentence, sender));
-            EndSentence();
-        }
-
-        public void EndSentence()
-        {
-            isSentenceActive = false;
         }
     }
 }

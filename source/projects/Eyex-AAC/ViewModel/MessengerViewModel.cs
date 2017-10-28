@@ -12,7 +12,6 @@ namespace EyexAAC.ViewModel
 {
     class MessengerViewModel
     {
-
         private static readonly string BROKER_IP_ADDRESS = "192.168.0.230";
         public static readonly string CLIENT_ID = "Eyex user";
         private static readonly string USERNAME = "user2";
@@ -120,14 +119,9 @@ namespace EyexAAC.ViewModel
             {
                 return;
             }*/
-            string sentence ="";
-            foreach (string word in SentenceModeManager.GetLastSentence()) {
-                sentence += word;
-                sentence += " ";
-            }
-            sentence = sentence.Trim();
+            string sentence = SentenceModeManager.Instance.CurrentSentence.SentenceAsString;
             synthesizer.SpeakAsync(sentence);
-            SentenceModeManager.EndSentence();
+            SentenceModeManager.PublishSentence();
             //Use connect in a separate window.
             M2qttManager.Publish("dev/test", sentence);
         }
