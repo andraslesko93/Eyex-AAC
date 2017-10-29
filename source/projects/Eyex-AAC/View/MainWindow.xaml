@@ -114,7 +114,7 @@
         <Style x:Key="ManageButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Margin" Value="5,5,5,5"/>
-            <Setter Property="Content" Value="Manage"/>
+            <Setter Property="Content" Value="Settings"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding SentenceModeManager.SentenceMode}" Value="True">
                     <Setter Property="Visibility" Value="Hidden"/>

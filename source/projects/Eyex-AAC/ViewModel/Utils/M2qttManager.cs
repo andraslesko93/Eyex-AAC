@@ -19,13 +19,13 @@ namespace EyexAAC.ViewModel.Utils
         public string ClientId { get; set; }
         private SpeechSynthesizer Synthesizer { get; set; }
 
-        public M2qttManager(string brokerIpAddress, string username, string password, SpeechSynthesizer synthesizer, string clientId)
+        public M2qttManager(string brokerIpAddress, string username, string password, SpeechSynthesizer synthesizer)
         {
             BrokerIpAddress = brokerIpAddress;
             Username = username;
             Password = password;
             Synthesizer = synthesizer;
-            ClientId = clientId;// Guid.NewGuid().ToString();
+            ClientId = UserViewModel.GetUsername();
             Client = new MqttClient(BrokerIpAddress);
             Client.MqttMsgPublishReceived += new MqttClient.MqttMsgPublishEventHandler(EventPublished);
         }

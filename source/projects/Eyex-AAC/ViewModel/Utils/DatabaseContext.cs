@@ -20,6 +20,26 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
+        public static User GetUserCredentials(string username)
+        {
+            using (var context = new UserContext())
+            {
+                var user = context.Users.Where(c => c.Username == username).SingleOrDefault();
+                return user;
+            }
+        }
+
+        public static User CreateUser(string username)
+        {
+            using (var context = new UserContext())
+            {
+                User newUser = new User(username);
+                context.Users.Add(newUser);
+                context.SaveChanges();
+                return newUser;   
+            }
+        }
+
         public static ObservableCollection<Messenger> LoadAllTableMessengers()
         {
             using (var context = new MessengerContext())

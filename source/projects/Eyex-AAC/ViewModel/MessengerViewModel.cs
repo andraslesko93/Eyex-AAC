@@ -13,7 +13,6 @@ namespace EyexAAC.ViewModel
     class MessengerViewModel
     {
         private static readonly string BROKER_IP_ADDRESS = "192.168.0.230";
-        public static readonly string CLIENT_ID = "Eyex user";
         private static readonly string USERNAME = "user2";
         private static readonly string PASSWORD = "password";
 
@@ -31,7 +30,7 @@ namespace EyexAAC.ViewModel
             synthesizer.Volume = 100;
             synthesizer.Rate = -2;
             SentenceModeManager = SentenceModeManager.Instance;
-            M2qttManager = new M2qttManager(BROKER_IP_ADDRESS, USERNAME, PASSWORD, synthesizer, CLIENT_ID);
+            M2qttManager = new M2qttManager(BROKER_IP_ADDRESS, USERNAME, PASSWORD, synthesizer);
             M2qttManager.Connect();
             M2qttManager.Subscribe("dev/test");
         }
@@ -43,6 +42,7 @@ namespace EyexAAC.ViewModel
             PageManagerUtil = PageManagerUtil.Instance;
             PageManagerUtil.SetPageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, DatabaseContext.GetTableRootMessengers(), Messengers);
         }
+
         public void PerformActionOnMessenger(int id)
         {
             Messenger messenger = ApplicationContext.Instance.GetMessengerFromApplicationContextById(id);

@@ -8,13 +8,9 @@ namespace EyexAAC
     using System.Windows.Controls;
     using System.Windows.Input;
     using EyeXFramework.Wpf;
-    using System;
-    using EyexAAC.ViewModel;
-    using EyexAAC.Model;
-    using System.Collections.Generic;
+    using ViewModel;
     using View;
     using System.ComponentModel;
-    using System.Windows.Media;
     using System.Collections.Specialized;
 
     /// <summary>

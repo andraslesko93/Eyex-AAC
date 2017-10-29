@@ -83,7 +83,7 @@ namespace EyexAAC.ViewModel.Utils
             public string SentenceAsString { get { return string.Join(" ", this.WordList); } }
             public List<String> WordList { get; set; }
             public Sentence() {
-                Sender = MessengerViewModel.CLIENT_ID;
+                Sender = UserViewModel.GetUsername();
                 WordList = new List<string>();
             }
 
