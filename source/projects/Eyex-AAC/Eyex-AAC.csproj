@@ -93,7 +93,7 @@
     <Compile Include="Model\MTObservableCollection.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\UserContext.cs" />
-    <Compile Include="ViewModel\UserViewModel.cs" />
+    <Compile Include="ViewModel\SessionViewModel.cs" />
     <Compile Include="ViewModel\Utils\ApplicationContext.cs" />
     <Compile Include="ViewModel\BasicMessageMediumViewModel.cs" />
     <Compile Include="ViewModel\ManageViewModel.cs" />

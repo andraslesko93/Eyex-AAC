@@ -12,6 +12,7 @@ namespace EyexAAC
     using View;
     using System.ComponentModel;
     using System.Collections.Specialized;
+    using ViewModel.Utils;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -49,7 +50,7 @@ namespace EyexAAC
         {
             if (closing == false)
             {
-                messageMediumViewModelObject.M2qttManager.Disconnect();
+                M2qttManager.Disconnect();
                 closing = true;
                 Application.Current.Shutdown();
             }

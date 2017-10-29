@@ -92,5 +92,10 @@ namespace EyexAAC.View
             }
 
         }
+
+        private void Connect_Button_Click(object sender, RoutedEventArgs e)
+        {
+            manageMessageMediumViewModel.Connect(Password.SecurePassword);
+        }
     }
 }

@@ -10,6 +10,7 @@ using EyexAAC.ViewModel.Utils;
 using System.Windows.Media.Imaging;
 using System.Windows.Data;
 using System.ComponentModel;
+using System.Security;
 
 namespace EyexAAC.ViewModel
 {
@@ -21,6 +22,8 @@ namespace EyexAAC.ViewModel
         private static Messenger BasicRoot;
         private bool addInProggress = false;
 
+        public User User { get; set; }
+        public M2qttManager M2qttManager { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static ObservableCollection<Messenger> MessageMediums { get; set; }
@@ -39,6 +42,7 @@ namespace EyexAAC.ViewModel
         {
             TableRoot =  new Messenger("General messengers", MessengerType.root);
             BasicRoot =  new Messenger("Pegged messengers", MessengerType.root);
+            User = SessionViewModel.User;
             MessageMediums = new ObservableCollection<Messenger>();
             SetRootObjects();
         }
@@ -100,6 +104,16 @@ namespace EyexAAC.ViewModel
             {
                 BasicMessageMediumViewModel.BasicMessageMediums.Add(FocusedMessenger);
             }
+        }
+
+        internal void Connect(SecureString password)
+        {
+
+            M2qttManager = new M2qttManager(User.MessageBrokerIpAddress, User.MessageBrokerUsername, "password");
+            M2qttManager.Connect();
+            M2qttManager.Subscribe("dev/test");
+
+            //Connect and store credentials...
         }
 
         private void SaveGeneralMessengers() {

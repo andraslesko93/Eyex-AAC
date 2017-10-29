@@ -12,21 +12,33 @@ namespace EyexAAC.ViewModel.Utils
 {
     class M2qttManager
     {
-        private MqttClient Client { get; set; }
+        private static MqttClient Client { get; set; }
         private string Username { get; set; }
-        private string BrokerIpAddress { get; set; }
         private string Password { get; set; }
-        public string ClientId { get; set; }
+        private static string ClientId { get; set; }
+
+        public static bool IsConnected
+        {
+            get
+            {
+                if (Client != null)
+                {
+                    return Client.IsConnected;
+                }
+                return false;
+            }
+        }
         private SpeechSynthesizer Synthesizer { get; set; }
 
-        public M2qttManager(string brokerIpAddress, string username, string password, SpeechSynthesizer synthesizer)
+        public M2qttManager(string brokerIpAddress, string username, string password)
         {
-            BrokerIpAddress = brokerIpAddress;
             Username = username;
             Password = password;
-            Synthesizer = synthesizer;
-            ClientId = UserViewModel.GetUsername();
-            Client = new MqttClient(BrokerIpAddress);
+            Synthesizer = new SpeechSynthesizer();
+            Synthesizer.Volume = 100;
+            Synthesizer.Rate = -2; ;
+            ClientId = SessionViewModel.GetUsername();
+            Client = new MqttClient(brokerIpAddress);
             Client.MqttMsgPublishReceived += new MqttClient.MqttMsgPublishEventHandler(EventPublished);
         }
         public void Connect() {
@@ -42,15 +54,19 @@ namespace EyexAAC.ViewModel.Utils
             Client.Connect(ClientId, Username, Password);
         }
 
-        public void Publish(string topic, string message)
+        public static void Publish(string topic, string message)
         {
             MqttMessage mqttMessage = new MqttMessage(ClientId, message);
             string mqttMessageAsJson = JsonConvert.SerializeObject(mqttMessage);
             Client.Publish(topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
         }
 
-        public void Disconnect()
+        public static void Disconnect()
         {
+            if (Client==null)
+            {
+                return;
+            }
             if (Client.IsConnected)
             { 
              Client.Disconnect();

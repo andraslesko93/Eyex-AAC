@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace EyexAAC.ViewModel
 {
-    class UserViewModel : INotifyPropertyChanged
+    class SessionViewModel : INotifyPropertyChanged
     {
         private static readonly string USERNAME_IS_NULL_MESSAGE = "Please enter a username";
         private static readonly string USERS_TXT_FILE = "username.txt";
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public string UserNameInput { get; set; }
-        private static User User { get; set; }
+        public string UserNameInputForLogin { get; set; }
+        public static User User { get; set; }
         private string infoMessage;
         public string InfoMessage
         {
@@ -28,29 +28,29 @@ namespace EyexAAC.ViewModel
                 RaisePropertyChanged("InfoMessage");
             }
         }
-        public UserViewModel()
+        public SessionViewModel()
         {
             if (File.Exists(USERS_TXT_FILE))
             { 
                 //Set previous username as default value.
-                 UserNameInput = File.ReadAllText(USERS_TXT_FILE);
+                 UserNameInputForLogin = File.ReadAllText(USERS_TXT_FILE);
             }
         }
 
         public bool Login()
         {
-            if (string.IsNullOrEmpty (UserNameInput))
+            if (string.IsNullOrEmpty (UserNameInputForLogin))
             {
                 InfoMessage = USERNAME_IS_NULL_MESSAGE;
                 return false;
             }
-            var user = DatabaseContext.GetUserCredentials(UserNameInput);
+            var user = DatabaseContext.GetUserCredentials(UserNameInputForLogin);
             if (user == null)
             {
-                user = DatabaseContext.CreateUser(UserNameInput);
+                user = DatabaseContext.CreateUser(UserNameInputForLogin);
             }
             User = user;
-            saveUserName(UserNameInput);
+            saveUserName(UserNameInputForLogin);
             return true;
         }
 

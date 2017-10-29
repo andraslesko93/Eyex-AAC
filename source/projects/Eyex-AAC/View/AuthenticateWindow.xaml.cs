@@ -1,17 +1,5 @@
 ﻿using EyexAAC.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace EyexAAC.View
 {
@@ -20,17 +8,17 @@ namespace EyexAAC.View
     /// </summary>
     public partial class AuthenticaWindow : Window
     {
-        private UserViewModel userViewModel;
+        private SessionViewModel sessionViewModel;
         public AuthenticaWindow()
         {
             InitializeComponent();
-            userViewModel = new UserViewModel();
-            DataContext = userViewModel;
+            sessionViewModel = new SessionViewModel();
+            DataContext = sessionViewModel;
         }
 
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (userViewModel.Login())
+            if (sessionViewModel.Login())
             {
                 var mainWindow = new MainWindow();
                 mainWindow.Show();

@@ -10,7 +10,7 @@
         <Label Content="{Binding InfoMessage}" HorizontalAlignment="Center" VerticalAlignment="Top"></Label>
         <StackPanel Width="300" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Label Content="Please enter your username:"/>
-            <TextBox Text="{Binding UserNameInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding UserNameInputForLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content="Login" Click="Login_Button_Click" Background="White" Margin="0,20,0,0"/> 
         </StackPanel>
     </Grid>

@@ -72,6 +72,10 @@ namespace EyexAAC.ViewModel.Utils
 
         public void PublishSentence()
         {
+            if (!CurrentSentence.WordList.Any())
+            {
+                return;
+            }
             SentenceList.Add(CurrentSentence);
             CurrentSentence = new Sentence();
             RaisePropertyChanged("CurrentSentenceAsString");
@@ -83,7 +87,7 @@ namespace EyexAAC.ViewModel.Utils
             public string SentenceAsString { get { return string.Join(" ", this.WordList); } }
             public List<String> WordList { get; set; }
             public Sentence() {
-                Sender = UserViewModel.GetUsername();
+                Sender = SessionViewModel.GetUsername();
                 WordList = new List<string>();
             }
 

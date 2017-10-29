@@ -23,16 +23,16 @@ namespace EyexAAC.ViewModel
         private SpeechSynthesizer synthesizer { get; set; }
         public SentenceModeManager SentenceModeManager { get; set; }
 
-        public M2qttManager M2qttManager { get; set; }
+       // public M2qttManager M2qttManager { get; set; }
         public MessengerViewModel()
         {
             synthesizer = new SpeechSynthesizer();
             synthesizer.Volume = 100;
             synthesizer.Rate = -2;
             SentenceModeManager = SentenceModeManager.Instance;
-            M2qttManager = new M2qttManager(BROKER_IP_ADDRESS, USERNAME, PASSWORD, synthesizer);
-            M2qttManager.Connect();
-            M2qttManager.Subscribe("dev/test");
+           // M2qttManager = new M2qttManager(BROKER_IP_ADDRESS, USERNAME, PASSWORD, synthesizer);
+            //M2qttManager.Connect();
+         //   M2qttManager.Subscribe("dev/test");
         }
         public void LoadMessengers()
         {
@@ -123,7 +123,10 @@ namespace EyexAAC.ViewModel
             synthesizer.SpeakAsync(sentence);
             SentenceModeManager.PublishSentence();
             //Use connect in a separate window.
-            M2qttManager.Publish("dev/test", sentence);
+            if (M2qttManager.IsConnected)
+            { 
+                M2qttManager.Publish("dev/test", sentence);
+            }
         }
 
         public void ChangeSentenceMode()
