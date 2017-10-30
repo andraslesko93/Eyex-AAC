@@ -57,11 +57,15 @@
                     </Border>
                 </Grid>
             </TabItem>
-            <TabItem Header="User and connection">
+            <TabItem Header="Connection and sharing">
                 <Grid>
-                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="1230" Margin="20,20,20,20">
-                        <Label Content="User credentials:" FontSize="20" />
-                        <StackPanel Margin="100,10,0,0" Width="250" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Width="1230" Margin="20,20,20,20">
+                        <Label Content="User credentials:" FontSize="20" Margin="0,0,0,10" />
+                        <StackPanel Margin="100,0,0,0" Width="250" HorizontalAlignment="Left">
                             <Label Content="Username:"/>
                             <TextBox FontSize="15" Margin="6,0,0,0" Text="{Binding User.Username}" Background="LightGray" IsReadOnly="True"/>
                         </StackPanel>
@@ -98,6 +102,12 @@
                         <Label Content="Connection state:" FontSize="20" Margin="0,30,0,0" />
                         <Label Margin="100,10,0,0" Content="{Binding ConnectionStateMessage}" FontSize="15" FontWeight="Bold"/>
 
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="20,20,20,20" >
+                        <Label Content="Share messengers:" FontSize="20" Margin="0,0,0,10"/>
+                        <Button Margin="106,10,0,0" HorizontalAlignment="Left" Width="200" Height="50" IsEnabled="False" Background="White" Content="Start sharing" Click="Share_Button_Click"/>
+                        <Label Margin="100,10,0,0" Content="Log:"/>
+                        <TextBox Margin="106,0,0,0" FontSize="15" Width="400" Height="400" IsReadOnly="True"/>
                     </StackPanel>
                 </Grid>
             </TabItem>

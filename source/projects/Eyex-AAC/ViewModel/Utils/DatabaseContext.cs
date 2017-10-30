@@ -40,7 +40,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public static ObservableCollection<Messenger> LoadAllTableMessengers()
+        public static ObservableCollection<Messenger> LoadAllGeneralMessenger()
         {
             using (var context = new MessengerContext())
             {
