@@ -12,25 +12,19 @@ namespace EyexAAC.ViewModel.Utils
 {
     class M2qttManager
     {
-        private static MqttClient Client { get; set; }
+        private static readonly string TOPIC_SEPARATOR = "/";
+        public static MqttClient Client { get; set; }
         private string Username { get; set; }
         private string Password { get; set; }
         private static string ClientId { get; set; }
 
-        public static bool IsConnected
-        {
-            get
-            {
-                if (Client != null)
-                {
-                    return Client.IsConnected;
-                }
-                return false;
-            }
-        }
+        private byte connectionResponse = 6;
+
+        public static bool IsSubscribed { get; set; } = false;
+        public static string Topic { get; set; }
         private SpeechSynthesizer Synthesizer { get; set; }
 
-        public M2qttManager(string brokerIpAddress, string username, string password)
+        public void  initialize(string brokerIpAddress, string username, string password)
         {
             Username = username;
             Password = password;
@@ -41,17 +35,61 @@ namespace EyexAAC.ViewModel.Utils
             Client = new MqttClient(brokerIpAddress);
             Client.MqttMsgPublishReceived += new MqttClient.MqttMsgPublishEventHandler(EventPublished);
         }
-        public void Connect() {
+        public string Connect() {
+            if (Client.IsConnected)
+            {
+                return null;
+            }
             Thread t = new Thread(EstablishConnection);
+            t.IsBackground = true;
             t.Start();
             if (!t.Join(TimeSpan.FromSeconds(5)))
             {
                 t.Abort();
-                throw new Exception("Unable to connect to the message broker.");
+                connectionResponse = 3;
             }
+            return GetConnectionResponseMessage();
         }
-        private void EstablishConnection() { 
-            Client.Connect(ClientId, Username, Password);
+
+        public string GetConnectionResponseMessage()
+        {
+            string responseMessage;
+            switch(connectionResponse)
+            {
+                case 0:
+                    responseMessage = "Connected";
+                    break;
+                case 1:
+                    responseMessage = "Connection Refused, unacceptable protocol version";
+                    break;
+                case 2:
+                    responseMessage = "Connection Refused, identifier rejected";
+                    break;
+                case 3:
+                    responseMessage = "Connection Refused, Server unavailable";
+                    break;
+                case 4:
+                    responseMessage = "Connection Refused, bad user name or password";
+                    break;
+                case 5:
+                    responseMessage = "Connection Refused, not authorized";
+                    break;
+                case 6:
+                    responseMessage = "Disconnected";
+                    break;
+                default:
+                    responseMessage = "Unknown error occured.";
+                    break;
+            }
+            return responseMessage;
+        }
+
+        private void EstablishConnection() {
+            try
+            {
+                connectionResponse = Client.Connect(ClientId, Username, Password);
+            }
+            catch { }
         }
 
         public static void Publish(string topic, string message)
@@ -61,23 +99,28 @@ namespace EyexAAC.ViewModel.Utils
             Client.Publish(topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
         }
 
-        public static void Disconnect()
+        public string Disconnect()
         {
-            if (Client==null)
+            if (Client != null &&Client.IsConnected)
+            { 
+                Client.Disconnect();
+                connectionResponse = 6;
+                return GetConnectionResponseMessage();
+            }
+            return "";
+        }
+
+        public void Subscribe(string topic, string subtopic)
+        {
+            if (Client == null || Client.IsConnected == false)
             {
                 return;
             }
-            if (Client.IsConnected)
-            { 
-             Client.Disconnect();
-            }
-        }
-
-        public void Subscribe(string topic)
-        {
-            if (topic != "")
+            Topic = topic + TOPIC_SEPARATOR + subtopic;
+            if (Topic != "")
             {
-                Subscribe(new string[] { topic });
+                Subscribe(new string[] { Topic });
+                IsSubscribed = true;
             }
         }
 

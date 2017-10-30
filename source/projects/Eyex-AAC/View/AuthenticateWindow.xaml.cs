@@ -1,5 +1,6 @@
 ﻿using EyexAAC.ViewModel;
 using System.Windows;
+using System;
 
 namespace EyexAAC.View
 {
@@ -9,6 +10,7 @@ namespace EyexAAC.View
     public partial class AuthenticaWindow : Window
     {
         private SessionViewModel sessionViewModel;
+        private bool loggedIn = false;
         public AuthenticaWindow()
         {
             InitializeComponent();
@@ -22,8 +24,18 @@ namespace EyexAAC.View
             {
                 var mainWindow = new MainWindow();
                 mainWindow.Show();
+                loggedIn = true;
                 Close();
             }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            if (loggedIn == false)
+            {
+                Application.Current.Shutdown();
+            } 
         }
     }
 }

@@ -1,16 +1,8 @@
 ﻿using EyexAAC.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Data.Entity;
-using System.Text;
-using System.Threading.Tasks;
 using EyexAAC.ViewModel.Utils;
-using System.Windows.Media.Imaging;
-using System.Windows.Data;
 using System.ComponentModel;
-using System.Security;
 
 namespace EyexAAC.ViewModel
 {
@@ -23,8 +15,19 @@ namespace EyexAAC.ViewModel
         private bool addInProggress = false;
 
         public User User { get; set; }
-        public M2qttManager M2qttManager { get; set; }
+        public static M2qttManager M2qttManager { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
+        private static string connectionStateMessage;
+        public string ConnectionStateMessage
+        {
+            get { return connectionStateMessage; }
+            set
+            {
+                connectionStateMessage = value;
+                RaisePropertyChanged("ConnectionStateMessage");
+            }
+        }
 
         public static ObservableCollection<Messenger> MessageMediums { get; set; }
 
@@ -45,6 +48,12 @@ namespace EyexAAC.ViewModel
             User = SessionViewModel.User;
             MessageMediums = new ObservableCollection<Messenger>();
             SetRootObjects();
+
+            M2qttManager = new M2qttManager();
+            if (string.IsNullOrEmpty(ConnectionStateMessage))
+            {
+                ConnectionStateMessage = M2qttManager.GetConnectionResponseMessage();
+            }
         }
 
         private void SetRootObjects()
@@ -71,7 +80,7 @@ namespace EyexAAC.ViewModel
         {
             if (IsFocusMessageMediumSetted())
             {
-                DatabaseContext.SaveToDB(FocusedMessenger);
+                DatabaseContext.SaveMessengerToDB(FocusedMessenger);
                 SaveToApplicationContext();
                 return true;
             }
@@ -106,14 +115,23 @@ namespace EyexAAC.ViewModel
             }
         }
 
-        internal void Connect(SecureString password)
+        public void Connect(string password)
         {
+            M2qttManager.initialize(User.MessageBrokerIpAddress, User.MessageBrokerUsername, password);
+            ConnectionStateMessage =M2qttManager.Connect();
+            M2qttManager.Subscribe(User.MessageBrokerTopic, User.MessageBrokerSubTopic);
 
-            M2qttManager = new M2qttManager(User.MessageBrokerIpAddress, User.MessageBrokerUsername, "password");
-            M2qttManager.Connect();
-            M2qttManager.Subscribe("dev/test");
+            //Store credentials for further use.
+            DatabaseContext.SaveUserToDB(User);
+        }
 
-            //Connect and store credentials...
+        public void Disconnect()
+        {
+            if (M2qttManager != null)
+            {
+                M2qttManager.Disconnect();
+                ConnectionStateMessage = "Disconnected";
+            }
         }
 
         private void SaveGeneralMessengers() {

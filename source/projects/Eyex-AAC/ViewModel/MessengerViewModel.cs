@@ -1,20 +1,17 @@
 ﻿using EyexAAC.Model;
-using System;
 using System.Linq;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Speech.Synthesis;
 
 using EyexAAC.ViewModel.Utils;
-using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace EyexAAC.ViewModel
 {
     class MessengerViewModel
     {
-        private static readonly string BROKER_IP_ADDRESS = "192.168.0.230";
-        private static readonly string USERNAME = "user2";
-        private static readonly string PASSWORD = "password";
+        //private static readonly string BROKER_IP_ADDRESS = "192.168.0.230";
+        //private static readonly string USERNAME = "user2";
+        //private static readonly string PASSWORD = "password";
 
         public ObservableCollection<Messenger> Messengers{ get; set; }
         //Need a reference property for databinding.
@@ -23,20 +20,16 @@ namespace EyexAAC.ViewModel
         private SpeechSynthesizer synthesizer { get; set; }
         public SentenceModeManager SentenceModeManager { get; set; }
 
-       // public M2qttManager M2qttManager { get; set; }
         public MessengerViewModel()
         {
             synthesizer = new SpeechSynthesizer();
             synthesizer.Volume = 100;
             synthesizer.Rate = -2;
             SentenceModeManager = SentenceModeManager.Instance;
-           // M2qttManager = new M2qttManager(BROKER_IP_ADDRESS, USERNAME, PASSWORD, synthesizer);
-            //M2qttManager.Connect();
-         //   M2qttManager.Subscribe("dev/test");
         }
         public void LoadMessengers()
         {
-           // AddInitData();
+            AddInitData();
             RenderUtil = new RenderUtil();
             Messengers = ApplicationContext.Instance.Messengers;
             PageManagerUtil = PageManagerUtil.Instance;
@@ -115,17 +108,12 @@ namespace EyexAAC.ViewModel
 
         internal void SaySentence()
         {
-            /*if (!SentenceModeManager.WordList.Any())
-            {
-                return;
-            }*/
             string sentence = SentenceModeManager.Instance.CurrentSentence.SentenceAsString;
             synthesizer.SpeakAsync(sentence);
             SentenceModeManager.PublishSentence();
-            //Use connect in a separate window.
-            if (M2qttManager.IsConnected)
-            { 
-                M2qttManager.Publish("dev/test", sentence);
+            if (M2qttManager.IsSubscribed)
+            {
+                M2qttManager.Publish(M2qttManager.Topic, sentence);
             }
         }
 
@@ -147,7 +135,6 @@ namespace EyexAAC.ViewModel
         {
            PageManagerUtil.MoveDownALevel(messenger, DatabaseContext.GetChildren(messenger));
         }
-
         public void MoveUpALevel()
         {
             PageManagerUtil.MoveUpALevel();

@@ -73,12 +73,31 @@
                             <TextBox Margin="6,0,0,0" FontSize="15" Text="{Binding User.MessageBrokerUsername}"/>
                             <Label Content="Message broker password:"/>
                             <PasswordBox Margin="6,0,0,0" FontSize="15" x:Name="Password"></PasswordBox>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Topic:" Grid.Column="0" Grid.Row="0"/>
+                                <TextBox Margin="6,0,0,0" FontSize="15" Text="{Binding User.MessageBrokerTopic}" Grid.Column="0" Grid.Row="1" />
+                                <Label Content="/" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" ></Label>
+                                <TextBox Margin="6,0,0,0" FontSize="15" Text="{Binding User.MessageBrokerSubTopic}" Grid.Column="2" Grid.Row="1"/>
+                            </Grid>
                         </StackPanel>
 
-                        <Grid Margin="100,10,0,0" Width="250" HorizontalAlignment="Left">
-                            <Button Background="White" Content="Connect" Margin="10,0,10,0" HorizontalAlignment="Left" Click="Connect_Button_Click"/>
-                            <Button Background="White" Content="Synchronize"  Margin="10,0,10,0" HorizontalAlignment="Right"/>
+                        <Grid Margin="100,30,0,0" Width="250" HorizontalAlignment="Left">
+                            <Button Background="White" Content="Disconnect"  Margin="10,0,10,0" HorizontalAlignment="Left" Click="Disconnect_Button_Click"/>
+                            <Button Background="White" Content="Connect" Margin="10,0,10,0" HorizontalAlignment="Right" Click="Connect_Button_Click"/>
                         </Grid>
+
+                        <Label Content="Connection state:" FontSize="20" Margin="0,30,0,0" />
+                        <Label Margin="100,10,0,0" Content="{Binding ConnectionStateMessage}" FontSize="15" FontWeight="Bold"/>
+
                     </StackPanel>
                 </Grid>
             </TabItem>

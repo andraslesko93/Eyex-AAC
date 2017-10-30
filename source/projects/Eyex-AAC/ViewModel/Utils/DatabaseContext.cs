@@ -115,7 +115,24 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public static void SaveToDB(Messenger messenger)
+        public static void SaveUserToDB(User user)
+        {
+            using (var context = new UserContext())
+            {
+                var result = context.Users.SingleOrDefault(c => c.Username == user.Username);
+                if (result != null)
+                {
+                    result.MessageBrokerUsername = user.MessageBrokerUsername;
+                    result.MessageBrokerIpAddress = user.MessageBrokerIpAddress;
+                    result.MessageBrokerTopic = user.MessageBrokerTopic;
+                    result.MessageBrokerSubTopic = user.MessageBrokerSubTopic;
+                    context.SaveChanges();
+                }
+            }
+        }
+
+
+        public static void SaveMessengerToDB(Messenger messenger)
         {
             using (var context = new MessengerContext())
             {
