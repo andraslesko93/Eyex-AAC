@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using EyexAAC.ViewModel.Utils;
 using System.ComponentModel;
+using System;
 
 namespace EyexAAC.ViewModel
 {
@@ -94,7 +95,7 @@ namespace EyexAAC.ViewModel
             {
                 SaveGeneralMessengers();
             }
-            else if (FocusedMessenger.Type == MessengerType.pegged)
+            else if (FocusedMessenger.Type == MessengerType.pinned)
             {
                 SavePeggedMessenger();
             }
@@ -113,6 +114,18 @@ namespace EyexAAC.ViewModel
             {
                 BasicMessageMediumViewModel.BasicMessageMediums.Add(FocusedMessenger);
             }
+        }
+
+        public void StopSharingMessengers()
+        {
+            //TODO
+            //AllowEdit = true;
+            PageManagerUtil.Instance.MessengerCache = DatabaseContext.LoadAllGeneralMessenger();
+        }
+
+        public void ShareMessengers()
+        {
+            M2qttManager.ShareMessengers();
         }
 
         public void Connect(string password)
@@ -197,7 +210,7 @@ namespace EyexAAC.ViewModel
                 PageManagerUtil.Instance.RemoveMessenger(FocusedMessenger);
                 //TODO Reorder in page manager.
             }
-            else if (FocusedMessenger.Type == MessengerType.pegged)
+            else if (FocusedMessenger.Type == MessengerType.pinned)
             {
                 BasicMessageMediumViewModel.BasicMessageMediums.Remove(BasicMessageMediumViewModel.BasicMessageMediums.SingleOrDefault(i => i.Id == FocusedMessenger.Id));
             }

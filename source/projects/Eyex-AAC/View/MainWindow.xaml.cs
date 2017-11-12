@@ -47,9 +47,12 @@ namespace EyexAAC
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            if (ManageViewModel.M2qttManager != null)
+            { 
                 ManageViewModel.M2qttManager.Disconnect();
-                Application.Current.Shutdown();
-                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
+            Application.Current.Shutdown();
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
         private void Manage_Button_Click(object sender, RoutedEventArgs e)
         {

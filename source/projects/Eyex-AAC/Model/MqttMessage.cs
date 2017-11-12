@@ -9,11 +9,18 @@ namespace EyexAAC.Model
     class MqttMessage
     {
         public string ClientId { get; set; }
-        public string Message { get; set; }
-        public MqttMessage(string clientId, string message)
+        public MqttMessageType Type { get; set; }
+        public string Payload { get; set; }
+        public MqttMessage(string clientId, string payload, MqttMessageType type)
         {
             ClientId = clientId;
-            Message = message;
+            Payload = payload;
+            Type = type;
         }
+    }
+    enum MqttMessageType
+    {
+        SimpleMessage,
+        MessengerList
     }
 }

@@ -33,7 +33,7 @@ namespace EyexAAC.ViewModel
             RenderUtil = new RenderUtil();
             Messengers = ApplicationContext.Instance.Messengers;
             PageManagerUtil = PageManagerUtil.Instance;
-            PageManagerUtil.SetPageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, DatabaseContext.GetTableRootMessengers(), Messengers);
+            PageManagerUtil.SetPageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, DatabaseContext.LoadAllGeneralMessenger(), Messengers);
         }
 
         public void PerformActionOnMessenger(int id)
@@ -97,11 +97,11 @@ namespace EyexAAC.ViewModel
                 school.AddChild(study);
                 context.Messengers.Add(school);
 
-                context.Messengers.Add(new Messenger("hello", "pack://application:,,,/Resources/Images/demo images/basic/hello.jpg", MessengerType.pegged));
-                context.Messengers.Add(new Messenger("goodbye", "pack://application:,,,/Resources/Images/demo images/basic/goodbye.jpg", MessengerType.pegged));
-                context.Messengers.Add(new Messenger("yes", "pack://application:,,,/Resources/Images/demo images/basic/yes.jpg", MessengerType.pegged));
-                context.Messengers.Add(new Messenger("no", "pack://application:,,,/Resources/Images/demo images/basic/no.jpg", MessengerType.pegged));
-                context.Messengers.Add(new Messenger("thank you", "pack://application:,,,/Resources/Images/demo images/basic/thank you.jpg", MessengerType.pegged));
+                context.Messengers.Add(new Messenger("hello", "pack://application:,,,/Resources/Images/demo images/basic/hello.jpg", MessengerType.pinned));
+                context.Messengers.Add(new Messenger("goodbye", "pack://application:,,,/Resources/Images/demo images/basic/goodbye.jpg", MessengerType.pinned));
+                context.Messengers.Add(new Messenger("yes", "pack://application:,,,/Resources/Images/demo images/basic/yes.jpg", MessengerType.pinned));
+                context.Messengers.Add(new Messenger("no", "pack://application:,,,/Resources/Images/demo images/basic/no.jpg", MessengerType.pinned));
+                context.Messengers.Add(new Messenger("thank you", "pack://application:,,,/Resources/Images/demo images/basic/thank you.jpg", MessengerType.pinned));
                 context.SaveChanges();
             }
         }
@@ -113,7 +113,7 @@ namespace EyexAAC.ViewModel
             SentenceModeManager.PublishSentence();
             if (M2qttManager.IsSubscribed)
             {
-                M2qttManager.Publish(M2qttManager.Topic, sentence);
+                M2qttManager.Publish(sentence);
             }
         }
 
@@ -133,7 +133,7 @@ namespace EyexAAC.ViewModel
         }
         private void MoveDownALevel(Messenger messenger)
         {
-           PageManagerUtil.MoveDownALevel(messenger, DatabaseContext.GetChildren(messenger));
+           PageManagerUtil.MoveDownALevel(messenger);
         }
         public void MoveUpALevel()
         {

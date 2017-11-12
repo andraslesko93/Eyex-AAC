@@ -11,15 +11,6 @@ namespace EyexAAC.ViewModel.Utils
 {
     class DatabaseContext
     {
-       public static ObservableCollection<Messenger> GetTableRootMessengers()
-        {
-            using (var context = new MessengerContext())
-            {
-                var messengers = context.Messengers.Include(c => c.Children).Where(c => c.Parent == null && (c.Type == MessengerType.general)).ToList();
-                return new ObservableCollection<Messenger>(messengers);
-            }
-        }
-
         public static User GetUserCredentials(string username)
         {
             using (var context = new UserContext())
@@ -56,17 +47,8 @@ namespace EyexAAC.ViewModel.Utils
         {
             using (var context = new MessengerContext())
             {
-                var messengers = context.Messengers.Where(c => c.Type == MessengerType.pegged).ToList();
+                var messengers = context.Messengers.Where(c => c.Type == MessengerType.pinned).ToList();
                 return new ObservableCollection<Messenger>(messengers);
-            }
-        }
-
-        public static ObservableCollection<Messenger> GetChildren(Messenger messenger)
-        {
-            using (var context = new MessengerContext())
-            {
-                var children = context.Messengers.Include(c => c.Children).Include(c => c.Parent).Where(c => c.Parent.Id == messenger.Id).ToList();
-                return new ObservableCollection<Messenger>(children);
             }
         }
 

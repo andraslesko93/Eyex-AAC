@@ -94,9 +94,13 @@ namespace EyexAAC.View
             manageMessageMediumViewModel.Disconnect();
         }
 
-        private void Share_Button_Click(object sender, RoutedEventArgs e)
+        private void Start_Share_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            manageMessageMediumViewModel.ShareMessengers();
+        }
+        private void Stop_Share_Button_Click(object sender, RoutedEventArgs e)
+        {
+            manageMessageMediumViewModel.StopSharingMessengers();
         }
     }
 }

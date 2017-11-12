@@ -119,7 +119,7 @@ namespace EyexAAC.ViewModel.Utils
             ObservableCollection<Messenger> newDataScope = new ObservableCollection<Messenger>();
             if (ParentMessenger.Parent != null)
             {
-                newDataScope = DatabaseContext.GetChildren(ParentMessenger.Parent);
+                newDataScope = ParentMessenger.Parent.Children;
                 if (newDataScope.Any())
                 {
                     NewDataScope(newDataScope);
@@ -132,7 +132,7 @@ namespace EyexAAC.ViewModel.Utils
                     CurrentPageLevel = 0;
                     CurrentPageNumber = 1;
                     PageNumberStack.Clear();
-                    NewDataScope(DatabaseContext.GetTableRootMessengers());
+                    NewDataScope(DatabaseContext.LoadAllGeneralMessenger());
                 }
             }
             else
@@ -140,17 +140,17 @@ namespace EyexAAC.ViewModel.Utils
                 //Parent is a root
                 ParentMessenger = new Messenger();
                 CurrentPageLevel = 0;
-                NewDataScope(DatabaseContext.GetTableRootMessengers());
+                NewDataScope(DatabaseContext.LoadAllGeneralMessenger());
             }
         }
 
-        public void MoveDownALevel(Messenger Parent, ObservableCollection<Messenger> Children)
+        public void MoveDownALevel(Messenger Parent)
         {
             ParentMessenger = Parent;
             PageNumberStack.Add(CurrentPageNumber);
             CurrentPageNumber = 1;
             CurrentPageLevel++;
-            NewDataScope(Children);
+            NewDataScope(Parent.Children);
         }
 
         public void NextPageButtonStateCalculator()

@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using System.Drawing;
 using System.IO;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 
 namespace EyexAAC.Model
 {
@@ -48,6 +45,7 @@ namespace EyexAAC.Model
             }
         }
         [NotMapped]
+        [JsonIgnore]
         public BitmapImage Image
         {
             get{ return image; }
@@ -61,7 +59,7 @@ namespace EyexAAC.Model
                 RaisePropertyChanged("Image");
             }
         }
-
+        [JsonIgnore]
         public Messenger Parent
         {
             get { return parent; }
@@ -179,7 +177,7 @@ namespace EyexAAC.Model
 
     enum MessengerType {
         general=0, //default value
-        pegged,
+        pinned,
         root
     };
 }

@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
@@ -92,11 +94,11 @@ namespace EyexAAC.ViewModel.Utils
             catch { }
         }
 
-        public static void Publish(string topic, string message)
+        public static void Publish(string message)
         {
-            MqttMessage mqttMessage = new MqttMessage(ClientId, message);
+            MqttMessage mqttMessage = new MqttMessage(ClientId, message, MqttMessageType.SimpleMessage);
             string mqttMessageAsJson = JsonConvert.SerializeObject(mqttMessage);
-            Client.Publish(topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+            Client.Publish(Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 1, true);
         }
 
         public string Disconnect()
@@ -108,6 +110,21 @@ namespace EyexAAC.ViewModel.Utils
                 return GetConnectionResponseMessage();
             }
             return "";
+        }
+
+        internal void StopSharingMessengers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShareMessengers()
+        {
+            ObservableCollection<Messenger> messengers = DatabaseContext.LoadAllGeneralMessenger();
+            //Serialize payload and create wrapper class.
+            MqttMessage mqttMessage = new MqttMessage(ClientId, JsonConvert.SerializeObject(messengers), MqttMessageType.MessengerList);
+            //Serialize wrapper class.
+            string mqttMessageAsJson = JsonConvert.SerializeObject(mqttMessage);
+            Client.Publish(Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 1, true);
         }
 
         public void Subscribe(string topic, string subtopic)
@@ -131,16 +148,36 @@ namespace EyexAAC.ViewModel.Utils
                 Client.Subscribe(topics, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
             }
         }
-        private void EventPublished(Object sender, MqttMsgPublishEventArgs e)
+        private void EventPublished(object sender, MqttMsgPublishEventArgs e)
         {
-            string messageAsJson = System.Text.UTF8Encoding.UTF8.GetString(e.Message);
+            string messageAsJson = Encoding.UTF8.GetString(e.Message);
             if (IsValidJson(messageAsJson))
-            { 
+            {
                 MqttMessage mqttMessage = JsonConvert.DeserializeObject<MqttMessage>(messageAsJson);
-                if (mqttMessage.ClientId != ClientId) {
-                    SentenceModeManager.Instance.PublishSentence(mqttMessage.Message, mqttMessage.ClientId);
-                    Synthesizer.SpeakAsync(mqttMessage.ClientId+" say: "+ mqttMessage.Message);
-                    Console.WriteLine(mqttMessage.ClientId + mqttMessage.Message);
+                if (mqttMessage.ClientId == ClientId)
+                {
+                    return;
+                }
+                switch (mqttMessage.Type)
+                {
+                    case MqttMessageType.SimpleMessage:
+                        SentenceModeManager.Instance.PublishSentence(mqttMessage.Payload, mqttMessage.ClientId);
+                        Synthesizer.SpeakAsync(mqttMessage.ClientId + " say: " + mqttMessage.Payload);
+                        Console.WriteLine(mqttMessage.ClientId + mqttMessage.Payload);
+                        break;
+                    case MqttMessageType.MessengerList:
+                        try
+                        {
+                            ObservableCollection<Messenger> messengers = JsonConvert.DeserializeObject<ObservableCollection<Messenger>>(mqttMessage.Payload);
+                            //Messenger messenger = JsonConvert.DeserializeObject<Messenger>(mqttMessage.Payload);
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex.ToString());
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
 
