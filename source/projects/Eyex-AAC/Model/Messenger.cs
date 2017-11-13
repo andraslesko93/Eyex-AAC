@@ -44,6 +44,7 @@ namespace EyexAAC.Model
             get { return encodedImage; }
             set
             {
+                encodedImage = value;
                 if (ImageAsByte == null && value != null)
                 {
                     ImageAsByte=Convert.FromBase64String(value);
