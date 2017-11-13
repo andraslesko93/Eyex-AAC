@@ -26,8 +26,11 @@ namespace EyexAAC.ViewModel.Utils
         public static string Topic { get; set; }
         private SpeechSynthesizer Synthesizer { get; set; }
 
+        private SynchronizationContext synchronizationContext;
         public void  initialize(string brokerIpAddress, string username, string password)
         {
+            synchronizationContext = System.Threading.SynchronizationContext.Current;
+
             Username = username;
             Password = password;
             Synthesizer = new SpeechSynthesizer();
@@ -124,7 +127,7 @@ namespace EyexAAC.ViewModel.Utils
             MqttMessage mqttMessage = new MqttMessage(ClientId, JsonConvert.SerializeObject(messengers), MqttMessageType.MessengerList);
             //Serialize wrapper class.
             string mqttMessageAsJson = JsonConvert.SerializeObject(mqttMessage);
-            Client.Publish(Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 1, true);
+            Client.Publish(Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 0, true);
         }
 
         public void Subscribe(string topic, string subtopic)
@@ -169,6 +172,7 @@ namespace EyexAAC.ViewModel.Utils
                         try
                         {
                             ObservableCollection<Messenger> messengers = JsonConvert.DeserializeObject<ObservableCollection<Messenger>>(mqttMessage.Payload);
+                            synchronizationContext.Post(x => PageManagerUtil.Instance.NewDataScope(messengers), null);
                             //Messenger messenger = JsonConvert.DeserializeObject<Messenger>(mqttMessage.Payload);
                         }
                         catch (Exception ex)

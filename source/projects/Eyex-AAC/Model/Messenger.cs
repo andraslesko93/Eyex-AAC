@@ -94,11 +94,14 @@ namespace EyexAAC.Model
             get { return children; }
             set
             {
-                children = value;
-                foreach (Messenger chid in value) {
-                    chid.parent = this;
+                if (value != null)
+                { 
+                    children = value;
+                    foreach (Messenger chid in value) {
+                        chid.parent = this;
+                    }
+                    RaisePropertyChanged("Children");
                 }
-                RaisePropertyChanged("Children");
             }
         }
 

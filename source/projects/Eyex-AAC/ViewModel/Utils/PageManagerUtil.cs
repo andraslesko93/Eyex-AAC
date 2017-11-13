@@ -249,7 +249,7 @@ namespace EyexAAC.ViewModel.Utils
             NextPageButtonStateCalculator();
         }
 
-        private void NewDataScope(ObservableCollection<Messenger> messengerList)
+        public void NewDataScope(ObservableCollection<Messenger> messengerList)
         {
             MessengerCache = messengerList;
             LoadMessengers();
