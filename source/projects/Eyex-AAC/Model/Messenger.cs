@@ -18,8 +18,10 @@ namespace EyexAAC.Model
         private byte[] imageAsByte;
         private ObservableCollection<Messenger> children;
         private Messenger parent;
+        private string encodedImage;
 
         public int Id { get; set; }
+        [JsonIgnore]
         public byte[] ImageAsByte
         {
             get { return imageAsByte; }
@@ -29,6 +31,22 @@ namespace EyexAAC.Model
                 if (Image == null && value!=null)
                 {
                     Image = ByteToBitmapImage(ImageAsByte);
+                }
+                if (EncodedImage == null && value != null)
+                {
+                    EncodedImage = Convert.ToBase64String(value);
+                }
+
+            }
+        }
+        [NotMapped]
+        public string EncodedImage {
+            get { return encodedImage; }
+            set
+            {
+                if (ImageAsByte == null && value != null)
+                {
+                    ImageAsByte=Convert.FromBase64String(value);
                 }
             }
         }
@@ -76,6 +94,9 @@ namespace EyexAAC.Model
             set
             {
                 children = value;
+                foreach (Messenger chid in value) {
+                    chid.parent = this;
+                }
                 RaisePropertyChanged("Children");
             }
         }
@@ -160,18 +181,15 @@ namespace EyexAAC.Model
 
         public Messenger Copy()
         {
-            Messenger msg = new Messenger();
-            msg.Children = Children;
-            msg.HasChild = HasChild;
-            msg.Image = Image;
-            msg.ImageAsByte = ImageAsByte;
-            msg.Name = Name;
-            msg.Parent = Parent;
-            msg.Type = Type;
-            
-
-
-            return msg;
+            Messenger messenger = new Messenger();
+            messenger.Children = Children;
+            messenger.HasChild = HasChild;
+            messenger.Image = Image;
+            messenger.ImageAsByte = ImageAsByte;
+            messenger.Name = Name;
+            messenger.Parent = Parent;
+            messenger.Type = Type;
+            return messenger;
         }
     }
 
