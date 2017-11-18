@@ -3,12 +3,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
+using System.Windows;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
@@ -17,6 +19,7 @@ namespace EyexAAC.ViewModel.Utils
     class M2qttManager
     {
         private static readonly string TOPIC_SEPARATOR = "/";
+
         public static MqttClient Client { get; set; }
         private string Username { get; set; }
         private string Password { get; set; }
@@ -27,7 +30,8 @@ namespace EyexAAC.ViewModel.Utils
         public static bool IsSubscribed { get; set; } = false;
         public static string Topic { get; set; }
         private SpeechSynthesizer Synthesizer { get; set; }
-        public static bool IsShareMode { get;  set; }
+
+
         public static ObservableCollection<Messenger> SharedMessengers { get;  set; }
 
         private SynchronizationContext synchronizationContext;
@@ -119,19 +123,21 @@ namespace EyexAAC.ViewModel.Utils
             return "";
         }
 
-        internal void StopSharingMessengers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ShareMessengers()
+        public string ShareMessengers()
         {
             ObservableCollection<Messenger> messengers = DatabaseContext.LoadAllGeneralMessenger();
             //Serialize payload and create wrapper class.
             MqttMessage mqttMessage = new MqttMessage(ClientId, JsonConvert.SerializeObject(messengers), MqttMessageType.MessengerList);
             //Serialize wrapper class.
             string mqttMessageAsJson = JsonConvert.SerializeObject(mqttMessage);
-            Client.Publish(Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 0, true);
+            try
+            {
+                Client.Publish(Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 0, true);
+                return "Your messengers has been shared.";
+            }
+            catch {
+                return "A technical error occured";
+            }
         }
 
         public void Subscribe(string topic, string subtopic)
@@ -173,16 +179,22 @@ namespace EyexAAC.ViewModel.Utils
                         Console.WriteLine(mqttMessage.ClientId + mqttMessage.Payload);
                         break;
                     case MqttMessageType.MessengerList:
-                        try
+
+                        string messageBoxText = mqttMessage.ClientId + " wants to share thier messengers with you, do want to accept them? By accepting them any unsaved changes will be discarded.";
+                        MessageBoxResult result = MessageBox.Show(messageBoxText, "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (result == MessageBoxResult.Yes)
                         {
-                            ObservableCollection<Messenger> messengers =  DecodePayload (mqttMessage.Payload);
-                            SharedMessengers = messengers;
-                            IsShareMode = true;
-                            synchronizationContext.Post(x => PageManagerUtil.Instance.NewDataScope(messengers), null);
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine(ex.ToString());
+                            try
+                            {
+                                ObservableCollection<Messenger> messengers = DecodePayload(mqttMessage.Payload);
+                                SharedMessengers = messengers;
+                                ManageViewModel.IsSharingSession = true;
+                                synchronizationContext.Post(x => PageManagerUtil.Instance.NewDataScope(messengers), null);
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine(ex.ToString());
+                            }
                         }
                         break;
                     default:

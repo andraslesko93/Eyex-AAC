@@ -4,6 +4,7 @@ using System.Linq;
 using EyexAAC.ViewModel.Utils;
 using System.ComponentModel;
 using System;
+using System.Windows;
 
 namespace EyexAAC.ViewModel
 {
@@ -11,14 +12,16 @@ namespace EyexAAC.ViewModel
     {
         private static Messenger _focusedMessenger;
 
-        private static Messenger TableRoot;
-        private static Messenger BasicRoot;
+        private static Messenger GeneralRootMessenger;
+        private static Messenger PinnedRootMessenger;
         private bool addInProggress = false;
 
         public User User { get; set; }
         public static M2qttManager M2qttManager { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public static event PropertyChangedEventHandler StaticPropertyChanged;
+
         private static string connectionStateMessage;
         public string ConnectionStateMessage
         {
@@ -30,7 +33,34 @@ namespace EyexAAC.ViewModel
             }
         }
 
+        private static string sharingStateMessage;
+        public static string SharingStateMessage
+        {
+            get { return sharingStateMessage; }
+            set
+            {
+                sharingStateMessage = value;
+                RaiseStaticPropertyChanged("SharingStateMessage");
+            }
+        }
+
+        private static bool isSharingSession;
+        public static bool IsSharingSession
+        {
+            get { return isSharingSession; }
+            set
+            {
+                isSharingSession = value;
+                RaiseStaticPropertyChanged("IsSharingSession");
+
+                if (value == true) {
+                    SharingStateMessage = "You are now in a sharing session.";
+                }
+            }
+        }
+
         public static ObservableCollection<Messenger> MessageMediums { get; set; }
+
 
         public Messenger FocusedMessenger
         {
@@ -44,8 +74,8 @@ namespace EyexAAC.ViewModel
 
         public ManageViewModel()
         {
-            TableRoot =  new Messenger("General messengers", MessengerType.root);
-            BasicRoot =  new Messenger("Pegged messengers", MessengerType.root);
+            GeneralRootMessenger =  new Messenger("General messengers", MessengerType.root);
+            PinnedRootMessenger =  new Messenger("Pinned messengers", MessengerType.root);
             User = SessionViewModel.User;
             MessageMediums = new ObservableCollection<Messenger>();
             SetRootObjects();
@@ -58,18 +88,27 @@ namespace EyexAAC.ViewModel
         }
 
         private void SetRootObjects()
-        {       
+        {
+            if (IsSharingSession)
+            {
+                return;
+            }
             foreach (Messenger msg in DatabaseContext.LoadAllGeneralMessenger())
             {
-                 TableRoot.AddChild(msg);
+                 GeneralRootMessenger.AddChild(msg);
             }
-            MessageMediums.Add(TableRoot);
-
+            if (!MessageMediums.Contains(GeneralRootMessenger))
+            {
+                MessageMediums.Add(GeneralRootMessenger);
+            }
             foreach (Messenger msg in DatabaseContext.GetBasicMessengers())
             {
-                BasicRoot.AddChild(msg);
+                PinnedRootMessenger.AddChild(msg);
             }
-            MessageMediums.Add(BasicRoot);
+            if (!MessageMediums.Contains(PinnedRootMessenger))
+            {
+                MessageMediums.Add(PinnedRootMessenger);
+            }   
         }
 
         public void SetMessageMediumToFocus(Messenger messageMedium)
@@ -116,16 +155,23 @@ namespace EyexAAC.ViewModel
             }
         }
 
-        public void StopSharingMessengers()
+        public void LeaveSharingSession()
         {
-            //TODO
-            //AllowEdit = true;
-            PageManagerUtil.Instance.MessengerCache = DatabaseContext.LoadAllGeneralMessenger();
+            string messageBoxText = "If you leave sharing session, all shared messengers will be discarded, do you want to save them?";
+            MessageBoxResult result = MessageBox.Show(messageBoxText, "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                DatabaseContext.SaveMessengers(PageManagerUtil.Instance.MessengerCache);
+            }
+            IsSharingSession = false;
+            SetRootObjects();
+            PageManagerUtil.Instance.NewDataScope(DatabaseContext.LoadAllGeneralMessenger());
+            SharingStateMessage = "You have left the sharing session.";
         }
 
         public void ShareMessengers()
         {
-            M2qttManager.ShareMessengers();
+            SharingStateMessage = M2qttManager.ShareMessengers();
         }
 
         public void Connect(string password)
@@ -142,8 +188,7 @@ namespace EyexAAC.ViewModel
         {
             if (M2qttManager != null)
             {
-                M2qttManager.Disconnect();
-                ConnectionStateMessage = "Disconnected";
+                ConnectionStateMessage = M2qttManager.Disconnect();
             }
         }
 
@@ -218,6 +263,11 @@ namespace EyexAAC.ViewModel
         private void RaisePropertyChanged(string property)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        }
+
+        private static void RaiseStaticPropertyChanged(string property)
+        {
+            StaticPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(property));
         }
 
         public bool IsFocusMessageMediumSetted()

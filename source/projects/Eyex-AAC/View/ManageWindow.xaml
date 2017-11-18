@@ -6,10 +6,74 @@
         xmlns:local="clr-namespace:EyexAAC.Model"
         mc:Ignorable="d"
         Title="Settings" Height="720" Width="1280">
+    <Window.Resources>
+        <Style x:Key="StartSharingButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="106,10,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Content" Value="Share messengers..."/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSharingSession}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsSharingSession}" Value="False">
+                    <Setter Property="IsEnabled" Value="True"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="LeaveSharingSessionButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="106,10,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Content" Value="Leave sharing session."/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSharingSession}" Value="True">
+                    <Setter Property="IsEnabled" Value="True"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsSharingSession}" Value="False">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SharingModeGridStyle" TargetType="{x:Type Grid}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSharingSession}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsSharingSession}" Value="False">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SharingModeLabelStyle" TargetType="{x:Type Label}">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Content" Value="You are in a sharing session, you cannot edit your messengers."/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSharingSession}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsSharingSession}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
         <TabControl>
             <TabItem Header="Messengers">
                 <Grid>
+                <Label Style="{StaticResource SharingModeLabelStyle}"/>
+                <Grid Style="{StaticResource SharingModeGridStyle}" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*" />
@@ -55,6 +119,7 @@
                             <Button Content="Save" Click="Save_Button_Click" Background="White" FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
                         </Grid>
                     </Border>
+                </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Connection and sharing">
@@ -105,11 +170,11 @@
                     </StackPanel>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="20,20,20,20" >
                         <Label Content="Share messengers:" FontSize="20" Margin="0,0,0,10"/>
-                        <Button Margin="106,10,0,0" HorizontalAlignment="Left" Width="200" Height="40" Background="White" Content="Start sharing" Click="Start_Share_Button_Click"/>
-                        <Button Margin="106,10,0,0" HorizontalAlignment="Left" Width="200" Height="40" Background="White" Content="Stop sharing" Click="Stop_Share_Button_Click"/>
-                        
-                        <Label Margin="100,10,0,0" Content="Log:"/>
-                        <TextBox Margin="106,0,0,0" FontSize="15" Width="400" Height="400" IsReadOnly="True"/>
+                        <Button Style="{StaticResource StartSharingButtonStyle}" Click="Start_Sharing_Button_Click"/>
+                        <Button Style="{StaticResource LeaveSharingSessionButtonStyle}" Click="Leave_Sharing_Session_Button_Click" />
+                        <Label Margin="100,10,0,0" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left">
+                            <AccessText TextWrapping="WrapWithOverflow" Text="{Binding SharingStateMessage}"/>
+                        </Label>
                     </StackPanel>
                 </Grid>
             </TabItem>

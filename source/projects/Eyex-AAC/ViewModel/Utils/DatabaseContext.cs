@@ -146,6 +146,20 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
+        public static void SaveMessengers(ObservableCollection<Messenger> messengers)
+        {
+
+            using (var context = new MessengerContext())
+            {
+                foreach (Messenger messenger in messengers)
+                {
+                    context.Messengers.Add(messenger);
+                }
+                context.SaveChanges();
+            }
+        }
+
+
 
     }
 

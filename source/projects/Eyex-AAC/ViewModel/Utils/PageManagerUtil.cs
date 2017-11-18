@@ -264,7 +264,7 @@ namespace EyexAAC.ViewModel.Utils
 
         private ObservableCollection<Messenger> LoadRootGeneralMessengers()
         {
-            if (M2qttManager.IsShareMode == true) {
+            if (ManageViewModel.IsSharingSession == true) {
                 return M2qttManager.SharedMessengers;
             }
             return DatabaseContext.LoadAllGeneralMessenger();

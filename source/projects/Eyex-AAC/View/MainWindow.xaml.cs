@@ -51,6 +51,14 @@ namespace EyexAAC
             { 
                 ManageViewModel.M2qttManager.Disconnect();
             }
+            if (ManageViewModel.IsSharingSession == true) {
+                string messageBoxText = "If you close the application while in sharing mode, all shared messengers will be discarded, do you want to save them?";
+                MessageBoxResult result = MessageBox.Show(messageBoxText, "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    DatabaseContext.SaveMessengers(PageManagerUtil.Instance.MessengerCache);
+                }
+            }
             Application.Current.Shutdown();
             System.Diagnostics.Process.GetCurrentProcess().Kill();
         }

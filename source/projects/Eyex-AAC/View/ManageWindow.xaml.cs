@@ -29,11 +29,11 @@ namespace EyexAAC.View
                 Messenger messenger = treeViewItem.Header as Messenger;
                 if (messenger.Type == MessengerType.root)
                 {
-                    EditorGrid.Visibility = System.Windows.Visibility.Hidden;
+                    EditorGrid.Visibility = Visibility.Hidden;
                 }
                 else
                 {
-                    EditorGrid.Visibility = System.Windows.Visibility.Visible; 
+                    EditorGrid.Visibility = Visibility.Visible; 
                 }
                 manageMessageMediumViewModel.SetMessageMediumToFocus(messenger);
             }
@@ -41,7 +41,7 @@ namespace EyexAAC.View
 
         private void Save_Button_Click(object sender, RoutedEventArgs e)
         {
-            Boolean result = manageMessageMediumViewModel.SaveFocusedMessenger();
+            bool result = manageMessageMediumViewModel.SaveFocusedMessenger();
             if (result == true)
             {
                 InfoMessage.Content = "Successfully saved.";
@@ -94,13 +94,13 @@ namespace EyexAAC.View
             manageMessageMediumViewModel.Disconnect();
         }
 
-        private void Start_Share_Button_Click(object sender, RoutedEventArgs e)
+        private void Start_Sharing_Button_Click(object sender, RoutedEventArgs e)
         {
             manageMessageMediumViewModel.ShareMessengers();
         }
-        private void Stop_Share_Button_Click(object sender, RoutedEventArgs e)
+        private void Leave_Sharing_Session_Button_Click(object sender, RoutedEventArgs e)
         {
-            manageMessageMediumViewModel.StopSharingMessengers();
+            manageMessageMediumViewModel.LeaveSharingSession();
         }
     }
 }
