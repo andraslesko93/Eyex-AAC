@@ -132,7 +132,7 @@ namespace EyexAAC.ViewModel.Utils
                     CurrentPageLevel = 0;
                     CurrentPageNumber = 1;
                     PageNumberStack.Clear();
-                    NewDataScope(DatabaseContext.LoadAllGeneralMessenger());
+                    NewDataScope(LoadRootGeneralMessengers());
                 }
             }
             else
@@ -140,7 +140,7 @@ namespace EyexAAC.ViewModel.Utils
                 //Parent is a root
                 ParentMessenger = new Messenger();
                 CurrentPageLevel = 0;
-                NewDataScope(DatabaseContext.LoadAllGeneralMessenger());
+                NewDataScope(LoadRootGeneralMessengers());
             }
         }
 
@@ -260,6 +260,14 @@ namespace EyexAAC.ViewModel.Utils
             NextPageButtonStateCalculator();
             PreviousPageButtonStateCalculator();
             MoveUpButtonStateCalculator();
+        }
+
+        private ObservableCollection<Messenger> LoadRootGeneralMessengers()
+        {
+            if (M2qttManager.IsShareMode == true) {
+                return M2qttManager.SharedMessengers;
+            }
+            return DatabaseContext.LoadAllGeneralMessenger();
         }
     }
 }

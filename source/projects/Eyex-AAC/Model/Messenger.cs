@@ -31,6 +31,7 @@ namespace EyexAAC.Model
                 if (Image == null && value!=null)
                 {
                     Image = ByteToBitmapImage(ImageAsByte);
+                    Image.Freeze();
                 }
                 if (EncodedImage == null && value != null)
                 {
@@ -97,9 +98,6 @@ namespace EyexAAC.Model
                 if (value != null)
                 { 
                     children = value;
-                    foreach (Messenger chid in value) {
-                        chid.parent = this;
-                    }
                     RaisePropertyChanged("Children");
                 }
             }

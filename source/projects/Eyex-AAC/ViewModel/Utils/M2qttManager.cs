@@ -4,6 +4,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
@@ -25,6 +27,8 @@ namespace EyexAAC.ViewModel.Utils
         public static bool IsSubscribed { get; set; } = false;
         public static string Topic { get; set; }
         private SpeechSynthesizer Synthesizer { get; set; }
+        public static bool IsShareMode { get;  set; }
+        public static ObservableCollection<Messenger> SharedMessengers { get;  set; }
 
         private SynchronizationContext synchronizationContext;
         public void  initialize(string brokerIpAddress, string username, string password)
@@ -159,7 +163,7 @@ namespace EyexAAC.ViewModel.Utils
                 MqttMessage mqttMessage = JsonConvert.DeserializeObject<MqttMessage>(messageAsJson);
                 if (mqttMessage.ClientId == ClientId)
                 {
-                    return;
+                   return;
                 }
                 switch (mqttMessage.Type)
                 {
@@ -171,9 +175,10 @@ namespace EyexAAC.ViewModel.Utils
                     case MqttMessageType.MessengerList:
                         try
                         {
-                            ObservableCollection<Messenger> messengers = JsonConvert.DeserializeObject<ObservableCollection<Messenger>>(mqttMessage.Payload);
+                            ObservableCollection<Messenger> messengers =  DecodePayload (mqttMessage.Payload);
+                            SharedMessengers = messengers;
+                            IsShareMode = true;
                             synchronizationContext.Post(x => PageManagerUtil.Instance.NewDataScope(messengers), null);
-                            //Messenger messenger = JsonConvert.DeserializeObject<Messenger>(mqttMessage.Payload);
                         }
                         catch (Exception ex)
                         {
@@ -184,8 +189,21 @@ namespace EyexAAC.ViewModel.Utils
                         return;
                 }
             }
+        }
 
-            
+        private ObservableCollection<Messenger> DecodePayload(string payload)
+        {
+            ObservableCollection<Messenger> messengers =  JsonConvert.DeserializeObject<ObservableCollection<Messenger>>(payload);
+            foreach (Messenger messenger in messengers) {
+                if (messenger.HasChild)
+                { 
+                    foreach (Messenger child in messenger.Children)
+                    {
+                        child.Parent = messenger;
+                    }
+                }
+            }
+            return messengers;
         }
 
         private static bool IsValidJson(string strInput)
