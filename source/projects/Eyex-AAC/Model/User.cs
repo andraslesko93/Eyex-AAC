@@ -11,7 +11,7 @@ namespace EyexAAC.Model
         public string MessageBrokerTopic { get; set; }
         public string MessageBrokerSubTopic { get; set; }
 
-    public User() { }
+        public User() { }
 
         public User(string username)
         {

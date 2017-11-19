@@ -39,6 +39,7 @@ namespace EyexAAC.ViewModel
         public void PerformActionOnMessenger(int id)
         {
             Messenger messenger = ApplicationContext.Instance.GetMessengerFromApplicationContextById(id);
+            ActivityLogManager.Log(messenger);
             if (messenger.Children!=null && messenger.Children.Any())
             {
                 MoveDownALevel(messenger);

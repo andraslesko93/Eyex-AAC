@@ -89,14 +89,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\ActivityLogEntry.cs" />
+    <Compile Include="Model\ActivityLogContext.cs" />
     <Compile Include="Model\MqttMessage.cs" />
     <Compile Include="Model\MTObservableCollection.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\UserContext.cs" />
     <Compile Include="ViewModel\SessionViewModel.cs" />
+    <Compile Include="ViewModel\Utils\ActivityLogManager .cs" />
     <Compile Include="ViewModel\Utils\ApplicationContext.cs" />
     <Compile Include="ViewModel\BasicMessageMediumViewModel.cs" />
     <Compile Include="ViewModel\ManageViewModel.cs" />
+    <Compile Include="ViewModel\Utils\HttpManager.cs" />
     <Compile Include="ViewModel\Utils\M2qttManager.cs" />
     <Compile Include="ViewModel\Utils\DatabaseContext.cs" />
     <Compile Include="ViewModel\Utils\RenderUtil.cs" />

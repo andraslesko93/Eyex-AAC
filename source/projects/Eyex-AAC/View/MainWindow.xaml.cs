@@ -30,6 +30,7 @@ namespace EyexAAC
         {
             InitializeComponent();
             ((INotifyCollectionChanged)SentenceListView.Items).CollectionChanged += SentenceListView_CollectionChanged;
+            ActivityLogManager.LoadUnsentLog();
         }
         private void MessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -59,6 +60,8 @@ namespace EyexAAC
                     DatabaseContext.SaveMessengers(PageManagerUtil.Instance.MessengerCache);
                 }
             }
+            ActivityLogManager.SendActivityLog();
+            ActivityLogManager.SaveActivityLog();
             Application.Current.Shutdown();
             System.Diagnostics.Process.GetCurrentProcess().Kill();
         }

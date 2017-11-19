@@ -20,6 +20,18 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
+        public static void SaveActivityLog(List<ActivityLogEntry> ActivityLog)
+        {
+            using (var context = new ActivityLogContext())
+            {
+                foreach (ActivityLogEntry activityLogEntry in ActivityLog)
+                {
+                    context.ActivityLog.Add(activityLogEntry);
+                }
+                context.SaveChanges();
+            }
+        }
+
         public static User CreateUser(string username)
         {
             using (var context = new UserContext())
@@ -28,6 +40,15 @@ namespace EyexAAC.ViewModel.Utils
                 context.Users.Add(newUser);
                 context.SaveChanges();
                 return newUser;   
+            }
+        }
+
+        public static List<ActivityLogEntry> LoadUnsentActivityLogEntries()
+        {
+            using (var context = new ActivityLogContext())
+            {
+                var query = from t in context.ActivityLog where t.Status == ActivityLogEntryStatus.unsent select t;
+                return query.ToList();
             }
         }
 
