@@ -6,6 +6,7 @@ namespace EyexAAC.Model
     class ActivityLogEntry
     {
         [Key]
+        [JsonIgnore]
         public int Id { get; set; }
         public string MessengerName { get; set; }
         public string EncodedMessengerImage { get; set; }

@@ -20,7 +20,7 @@ namespace EyexAAC.ViewModel.Utils
                 try
                 {
                     result = client.UploadString(LOG_SERVER_URL, "POST", activityLogAsJson);
-                    if (result == "200-OK")
+                    if (result == "200")
                     {
                         return true;
                     }
