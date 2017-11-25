@@ -26,6 +26,7 @@ namespace EyexAAC.ViewModel.Utils
             bool isSucces = HttpManager.Send(ActivityLog);
             if (isSucces)
             {
+                DatabaseContext.SetActivityLogEntriesToSent(ActivityLog);
                 ActivityLog.Clear();
             }
         }

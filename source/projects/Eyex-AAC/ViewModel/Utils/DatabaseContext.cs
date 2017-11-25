@@ -51,6 +51,23 @@ namespace EyexAAC.ViewModel.Utils
                 return query.ToList();
             }
         }
+        public static void SetActivityLogEntriesToSent(List<ActivityLogEntry> activitLog)
+        {
+            using (var context = new ActivityLogContext())
+            {
+                foreach(ActivityLogEntry activityLogEntry in activitLog)
+                {
+                    var result = context.ActivityLog.SingleOrDefault(c => c.Id == activityLogEntry.Id);
+                    if (result != null)
+                    {
+                        result.Status = ActivityLogEntryStatus.sent;
+                    }
+                }
+                context.SaveChanges();
+
+            }
+        }
+
 
         public static ObservableCollection<Messenger> LoadAllGeneralMessenger()
         {
