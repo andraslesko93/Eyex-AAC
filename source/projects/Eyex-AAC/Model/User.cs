@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace EyexAAC.Model
 {
@@ -17,5 +18,7 @@ namespace EyexAAC.Model
         {
             Username = username;
         }
+
+        public ICollection<Messenger> Messengers { get; set; }
     }
 }

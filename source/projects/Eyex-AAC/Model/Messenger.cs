@@ -103,18 +103,22 @@ namespace EyexAAC.Model
             }
         }
 
+        [JsonIgnore]
+        public string Username{ get; set; }
+
         public Messenger(){}
 
-        public Messenger(string name, string image)
+        public Messenger(string name, string image, string username)
         {
             Name = name;
             Image = LoadImage(image);
             ImageAsByte = BitmapImageToByte(Image);
             Children = new ObservableCollection<Messenger>();
             HasChild = false;
+            Username = username;
         }
 
-        public Messenger(string name, string image, MessengerType type)
+        public Messenger(string name, string image, MessengerType type, string username)
         {
             Name = name;
             Image = LoadImage(image);
@@ -122,6 +126,7 @@ namespace EyexAAC.Model
             Children = new ObservableCollection<Messenger>();
             Type = type;
             HasChild = false;
+            Username = username;
         }
         public Messenger(string name, MessengerType type)
         {

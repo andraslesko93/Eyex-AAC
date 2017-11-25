@@ -56,7 +56,7 @@ namespace EyexAAC.ViewModel.Utils
         {
             using (var context = new MessengerContext())
             {
-            var query = from t in context.Messengers where t.Type==MessengerType.general select t;
+            var query = from t in context.Messengers where t.Type==MessengerType.general && t.Username == SessionViewModel.User.Username select t;
                 var subset = query.ToList().Where(x => x.Parent==null);
                 ObservableCollection<Messenger> result = new ObservableCollection<Messenger>(subset);
                 return result;
@@ -68,7 +68,7 @@ namespace EyexAAC.ViewModel.Utils
         {
             using (var context = new MessengerContext())
             {
-                var messengers = context.Messengers.Where(c => c.Type == MessengerType.pinned).ToList();
+                var messengers = context.Messengers.Where(c => c.Type == MessengerType.pinned && c.Username == SessionViewModel.User.Username).ToList();
                 return new ObservableCollection<Messenger>(messengers);
             }
         }
@@ -134,7 +134,6 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-
         public static void SaveMessengerToDB(Messenger messenger)
         {
             using (var context = new MessengerContext())
@@ -149,6 +148,7 @@ namespace EyexAAC.ViewModel.Utils
                 else
                 {
                     var messengerToSave = messenger.Copy();
+                    messengerToSave.Username = SessionViewModel.User.Username;
                     if (messengerToSave.Parent.Type == MessengerType.root)
                     {
                         messengerToSave.Parent = null;
@@ -174,6 +174,7 @@ namespace EyexAAC.ViewModel.Utils
             {
                 foreach (Messenger messenger in messengers)
                 {
+                    messenger.Username = SessionViewModel.User.Username;
                     context.Messengers.Add(messenger);
                 }
                 context.SaveChanges();
