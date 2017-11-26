@@ -2,6 +2,8 @@ from flask import Flask
 from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from flask import render_template
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.orderinglist import ordering_list
 
 import json
 app = Flask(__name__)
@@ -9,24 +11,31 @@ app.config['SQLALCHEMY_DATABASE_URI'] = r'sqlite:///c:\Projects\Eyex-AAC\source\
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-messenger_x_image = db.Table('messenger_x_image', db.Model.metadata,
-                             db.Column('messenger_id', db.Integer, db.ForeignKey('messenger.id')),
-                             db.Column('image_id', db.Integer, db.ForeignKey('image.id'))
-                             )
-
 
 class Messenger(db.Model, dict):
     __tablename__ = 'messenger'
     id = db.Column(db.Integer, primary_key=True)
     messenger_name = db.Column(db.String)
-    images = db.relationship("Image", secondary=messenger_x_image)
+    messenger_usage_count = db.Column(db.Integer, default=1)
+
+    _images = db.relationship('MessengerXImage', order_by='MessengerXImage.image_usage_count',
+                              collection_class=ordering_list('image_usage_count'))
+    images = association_proxy('_images', 'image', creator=lambda _i: MessengerXImage(image=_i, image_usage_count=1),)
 
 
 class Image(db.Model):
     __tablename__ = 'image'
     id = db.Column(db.Integer, primary_key=True)
-    messengers = db.relationship("Messenger", secondary=messenger_x_image)
     encoded_messenger_image = db.Column(db.String, unique=True)
+    #messengers = association_proxy("messengerXImage", "messenger", creator=lambda _i: Messenger(messenger_name=_i))
+
+
+class MessengerXImage(db.Model):
+    messenger_id = db.Column(db.Integer, db.ForeignKey('messenger.id'), primary_key=True)
+    image_id = db.Column(db.Integer, db.ForeignKey('image.id'), primary_key=True)
+    image_usage_count = db.Column(db.Integer, default=1)
+    #messenger = db.relationship(Messenger, backref="messengerXImage")
+    image = db.relationship('Image')
 
 
 @app.route('/')
@@ -56,16 +65,31 @@ def log():
     for list_item in request.get_json():
         normalized_messenger_name = normalize(list_item.get("MessengerName", None))
         encoded_messenger_image = list_item.get("EncodedMessengerImage", None)
-        #Query by image...
-        messenger = Messenger(messenger_name=normalized_messenger_name)
+        image = Image(encoded_messenger_image=encoded_messenger_image)
         existing_image = Image.query.filter(Image.encoded_messenger_image == encoded_messenger_image).first()
-        if existing_image is None:
-            image = Image(encoded_messenger_image=encoded_messenger_image)
-            image.messengers.append(messenger)
-            db.session.add(image)
+        existing_messenger = Messenger.query.filter(Messenger.messenger_name == normalized_messenger_name).first()
+        if existing_messenger is None:
+            messenger = Messenger(messenger_name=normalized_messenger_name)
+            if existing_image is None:
+                messenger.images.append(image)
+                print("New messenger with new image")
+            else:
+                messenger.images.append(existing_image)
+                print("New messenger with existing image")
+            db.session.add(messenger)
         else:
-            existing_image.messengers.append(messenger)
-            db.session.add(existing_image)
+            if existing_image is None:
+                existing_messenger.images.append(image)
+                print("Existing messenger with new image")
+            else:
+                messenger_image_relation = MessengerXImage.query.filter(
+                    MessengerXImage.messenger_id == existing_messenger.id and
+                    MessengerXImage.image_id == existing_image.id).first()
+                messenger_image_relation.image_usage_count += 1
+                db.session.add(messenger_image_relation)
+                print("Existing messenger with existing image")
+            existing_messenger.messenger_usage_count += 1
+            db.session.add(existing_messenger)
     db.session.commit()
     return "200"
 
