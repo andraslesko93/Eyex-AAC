@@ -35,24 +35,10 @@
 
     <!-- Page Content -->
     <div class="container">
-      <h3 class="mt-4">Top 5 most used messengers:</h3>
-        <div align="center">
-            <canvas id="bar-chart" width="600" height="250"></canvas>
-        </div>
-
-      <h3 class="mt-4">Messengers by usage:</h3>
-        {% for messenger in messengers %}
-        <div class="row"  style="width:400;" >
-          <div class="col-sm-11">
-              <font size="5">
-              {{ loop.index }}.
-              <a href="messengers/{{messenger.id}}">
-              {{ messenger.messenger_name }}
-              </a>
-              </font>
-          </div>
-        </div>
-
+        <h3 class="mt-4">Images for messenger: "{{messenger.messenger_name}}"</h3>
+        {% for image in messenger.images %}
+             <h5>{{ loop.index }}. Used {{ usage_numbers[loop.index0]}} times.</h5>
+             <img src="data:;base64,{{ image.encoded_messenger_image }}"/>
         {% endfor %}
 
     </div>
@@ -65,7 +51,29 @@
     <script src="{{ url_for('static',filename='vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ url_for('static',filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script src="{{ url_for('static',filename='js/chart.js') }}"></script>
+
+	<script>
+	new Chart(document.getElementById("bar-chart"), {
+    type: 'bar',
+    data: {
+      labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+      datasets: [
+        {
+          label: "Number of usage",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          data: [2478,5267,734,784,433]
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Predicted world population (millions) in 2050'
+      }
+    }
+});
+	</script>
   </body>
 
 </html>
