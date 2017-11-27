@@ -13,7 +13,10 @@ namespace EyexAAC
     public partial class App : Application
     {
         private WpfEyeXHost _eyeXHost;
-
+        public WpfEyeXHost EyeXHost
+        {
+            get { return _eyeXHost; }
+        }
         public App()
         {
             _eyeXHost = new WpfEyeXHost();

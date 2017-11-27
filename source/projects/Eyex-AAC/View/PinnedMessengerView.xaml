@@ -25,6 +25,28 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="EyeXGazeAwareSelectForScroll" BasedOn="{StaticResource EyeXGazeAwareElement}" TargetType="{x:Type StackPanel}">
+            <Setter Property="Margin" Value="10,10,10,10" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="eyeX:Behavior.GazeAwareDelay" Value="2500" />
+            <EventSetter Event="eyeX:Behavior.HasGazeChanged" Handler="Scroll_OnHasGazeChanged" />
+            <Style.Triggers>
+                <Trigger Property="eyeX:Behavior.HasGaze" Value="true">
+                    <Setter Property="Background" Value="LightBlue"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+
+        <Style x:Key="EyeXAutoPannableStyle" TargetType="FrameworkElement">
+            <Setter Property="eyeX:Behavior.Pannable" Value="Default" />
+            <Setter Property="eyeX:Behavior.AvailablePanDirections" Value="Left,Right" />
+            <Setter Property="eyeX:Behavior.PanningProfile" Value="Horizontal" />
+            <Setter Property="eyeX:Behavior.AutoPan" Value="True" />
+        </Style>
+
         <Style x:Key="EyeXGazeAwareSelect" TargetType="{x:Type StackPanel}">
             <Setter Property="Margin" Value="10,10,10,10" />
             <Setter Property="eyeX:Behavior.GazeAware" Value="True" />
@@ -39,7 +61,9 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <ListView ItemsSource="{Binding Path=PinnedMessengers}"  HorizontalAlignment="Center" VerticalAlignment="Center" ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
+        <ListView ItemsSource="{Binding Path=PinnedMessengers}" Panel.ZIndex="80" Grid.Column="1" Margin="30,0,30,0" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                  Style="{StaticResource EyeXAutoPannableStyle}"
+                  ItemContainerStyle="{StaticResource EyeXGazeAwareListViewItem}">
             <ListView.ItemsPanel >
                 <ItemsPanelTemplate>
                     <UniformGrid Rows="1" HorizontalAlignment="Center"/>
@@ -47,8 +71,10 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Path = Id, Mode=OneWay}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
-                        <Image Source="{Binding Path = Image, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="193" Height="164" Margin="10,10,10,10"/>
+                    <StackPanel Style="{StaticResource EyeXGazeAwareSelectForScroll}">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Path = Id, Mode=OneWay}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
+                            <Image Source="{Binding Path = Image, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="193" Height="164" Margin="10,10,10,10"/>
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

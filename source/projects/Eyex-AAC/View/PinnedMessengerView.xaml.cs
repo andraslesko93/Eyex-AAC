@@ -43,5 +43,17 @@ namespace EyexAAC.View
             pinnedMessengerViewModel.performActionOnPinnedMessengers((int)stackPanel.Tag);
 
         }
+
+        private void Scroll_OnHasGazeChanged(object sender, RoutedEventArgs e)
+        {
+            var stackPanel = sender as StackPanel;
+            var hasGaze = stackPanel.GetHasGaze();
+            var currentApp = Application.Current as App;
+            if (hasGaze)
+            {
+                if (currentApp != null) currentApp.EyeXHost.TriggerPanningBegin();
+            }
+            else { if (currentApp != null) currentApp.EyeXHost.TriggerPanningEnd(); }
+        }
     }
 }
