@@ -171,8 +171,8 @@
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
                 <Button  Click="Manage_Button_Click" Style="{StaticResource ManageButtonStyle}" />
             </StackPanel>
-            <views:MessageMediumView x:Name="MessageMediumViewControl" Grid.Row="1" Grid.Column="1" Loaded="MessageMediumViewControl_Loaded"/>
-            <views:BasicMessageMediumView  x:Name="BasicMessageMediumViewControl" Grid.Row="2" Grid.Column="1" Loaded="BasicMessageMediumViewControl_Loaded"/>
+            <views:MessengerView x:Name="MessengerViewControl" Grid.Row="1" Grid.Column="1" Loaded="MessengerViewControl_Loaded"/>
+            <views:PinnedMessengerView  x:Name="PinnedMessengerViewControl" Grid.Row="2" Grid.Column="1" Loaded="PinnedMessengerViewControl_Loaded"/>
         </Grid>
 
         <StackPanel Style="{StaticResource EyeXGazeAwareScrollButton}"  Margin ="7,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">

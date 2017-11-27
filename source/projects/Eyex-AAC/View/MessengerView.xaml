@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="EyexAAC.View.MessageMediumView"
+﻿<UserControl x:Class="EyexAAC.View.MessengerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -33,7 +33,7 @@
             <Setter Property="Margin" Value="10,10,10,10" />
             <Setter Property="eyeX:Behavior.GazeAware" Value="True" />
             <Setter Property="eyeX:Behavior.GazeAwareDelay" Value="1000" />
-            <EventSetter Event="eyeX:Behavior.HasGazeChanged" Handler="MessegaMedium_OnHasGazeChanged" />
+            <EventSetter Event="eyeX:Behavior.HasGazeChanged" Handler="Messenger_OnHasGazeChanged" />
             <EventSetter Event="MouseLeftButtonDown" Handler="StackPanel_MouseLeftButtonDown"/>
             <Style.Triggers>
                 <Trigger Property="eyeX:Behavior.HasGaze" Value="true">

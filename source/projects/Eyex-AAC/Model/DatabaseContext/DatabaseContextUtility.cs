@@ -81,7 +81,7 @@ namespace EyexAAC.ViewModel.Utils
         }
 
 
-        public static ObservableCollection<Messenger> GetBasicMessengers()
+        public static ObservableCollection<Messenger> GetPinnedMessengers()
         {
             using (var context = new MessengerContext())
             {
@@ -121,13 +121,13 @@ namespace EyexAAC.ViewModel.Utils
                 }
             }
         }
-        private static void DeleteChildrenFromDB(ObservableCollection<Messenger> messageMediumList, MessengerContext context, List<Messenger> deleteStack)
+        private static void DeleteChildrenFromDB(ObservableCollection<Messenger> messengers, MessengerContext context, List<Messenger> deleteStack)
         {
-            if (messageMediumList == null)
+            if (messengers == null)
             {
                 return;
             }
-            foreach (Messenger msg in messageMediumList)
+            foreach (Messenger msg in messengers)
             {
                 var result = context.Messengers.Include(c => c.Children).SingleOrDefault(c => c.Id == msg.Id);
                 deleteStack.Add(result);

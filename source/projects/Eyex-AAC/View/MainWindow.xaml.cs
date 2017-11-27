@@ -19,7 +19,7 @@ namespace EyexAAC
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MessengerViewModel messageMediumViewModelObject;
+        private MessengerViewModel messengerViewModel;
 
         private static readonly string UP_A_LEVEL_EVENT = "up";
         private static readonly string NEXT_PAGE_EVENT = "next";
@@ -32,18 +32,18 @@ namespace EyexAAC
             ((INotifyCollectionChanged)SentenceListView.Items).CollectionChanged += SentenceListView_CollectionChanged;
             ActivityLogManager.LoadUnsentLog();
         }
-        private void MessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
+        private void MessengerViewControl_Loaded(object sender, RoutedEventArgs e)
         {
-            messageMediumViewModelObject = new MessengerViewModel();
-            messageMediumViewModelObject.LoadMessengers();
-            MessageMediumViewControl.DataContext = messageMediumViewModelObject;
-            DataContext = messageMediumViewModelObject;
+            messengerViewModel = new MessengerViewModel();
+            messengerViewModel.LoadMessengers();
+            MessengerViewControl.DataContext = messengerViewModel;
+            DataContext = messengerViewModel;
         }
-        private void BasicMessageMediumViewControl_Loaded(object sender, RoutedEventArgs e)
+        private void PinnedMessengerViewControl_Loaded(object sender, RoutedEventArgs e)
         {
-            BasicMessageMediumViewModel messageMediumViewModelObject = new BasicMessageMediumViewModel();
-            messageMediumViewModelObject.LoadBasicMessageMediums();
-            BasicMessageMediumViewControl.DataContext = messageMediumViewModelObject;
+            PinnedMessengerViewModel pinnedMessengerViewModelObject = new PinnedMessengerViewModel();
+            pinnedMessengerViewModelObject.LoadPinnedMessengers();
+            PinnedMessengerViewControl.DataContext = pinnedMessengerViewModelObject;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -80,25 +80,25 @@ namespace EyexAAC
                 string type = (string)stackPanel.Tag;
                 if (type.Equals(NEXT_PAGE_EVENT))
                 {
-                    messageMediumViewModelObject.NextPage();
+                    messengerViewModel.NextPage();
                 }
                 else if (type.Equals(PREVIOUS_PAGE_EVENT))
                 {
-                    messageMediumViewModelObject.PreviousPage();
+                    messengerViewModel.PreviousPage();
                 }
 
                 else if (type.Equals(UP_A_LEVEL_EVENT))
                 {
-                    messageMediumViewModelObject.MoveUpALevel();
+                    messengerViewModel.MoveUpALevel();
                 }
 
                 else if (type.Equals(SENTENCE_MODE_EVENT))
                 {
-                    messageMediumViewModelObject.ChangeSentenceMode();
+                    messengerViewModel.ChangeSentenceMode();
                 }
                 else if (type.Equals(SAY_SENTENCE_EVENT))
                 {
-                    messageMediumViewModelObject.SaySentence();
+                    messengerViewModel.SaySentence();
                 }
             }
         }
@@ -109,29 +109,29 @@ namespace EyexAAC
             string type = (string)stackPanel.Tag;
             if (type.Equals(NEXT_PAGE_EVENT))
             {
-                messageMediumViewModelObject.NextPage();
+                messengerViewModel.NextPage();
             }
             else if (type.Equals(PREVIOUS_PAGE_EVENT))
             {
-                messageMediumViewModelObject.PreviousPage();
+                messengerViewModel.PreviousPage();
             }
 
             else if (type.Equals(UP_A_LEVEL_EVENT))
             {
-                messageMediumViewModelObject.MoveUpALevel();
+                messengerViewModel.MoveUpALevel();
             }
 
             else if (type.Equals(UP_A_LEVEL_EVENT))
             {
-                messageMediumViewModelObject.MoveUpALevel();
+                messengerViewModel.MoveUpALevel();
             }
             else if (type.Equals(SENTENCE_MODE_EVENT))
             {
-                messageMediumViewModelObject.ChangeSentenceMode();
+                messengerViewModel.ChangeSentenceMode();
             }
             else if (type.Equals(SAY_SENTENCE_EVENT))
             {
-                messageMediumViewModelObject.SaySentence();
+                messengerViewModel.SaySentence();
             }
         }
 

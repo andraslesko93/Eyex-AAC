@@ -1,5 +1,4 @@
-﻿using EyexAAC.Model;
-using EyexAAC.ViewModel;
+﻿using EyexAAC.ViewModel;
 using EyeXFramework.Wpf;
 using System;
 using System.Collections.Generic;
@@ -19,31 +18,30 @@ using System.Windows.Shapes;
 namespace EyexAAC.View
 {
     /// <summary>
-    /// Interaction logic for MessageMediumView.xaml
+    /// Interaction logic for PinnedMessengerView.xaml
     /// </summary>
-    public partial class MessageMediumView : UserControl
+    public partial class PinnedMessengerView : UserControl
     {
-        private MessengerViewModel messageMediumViewModel = new MessengerViewModel();
-
-        public MessageMediumView()
+        private PinnedMessengerViewModel pinnedMessengerViewModel = new PinnedMessengerViewModel();
+        public PinnedMessengerView()
         {
             InitializeComponent();
         }
-
-        private void MessegaMedium_OnHasGazeChanged(object sender, RoutedEventArgs e)
+        private void Messenger_OnHasGazeChanged(object sender, RoutedEventArgs e)
         {
             var stackPanel = sender as StackPanel;
             var hasGaze = stackPanel.GetHasGaze();
             if (hasGaze)
             {
-                messageMediumViewModel.PerformActionOnMessenger((int)stackPanel.Tag);
+                pinnedMessengerViewModel.performActionOnPinnedMessengers((int)stackPanel.Tag);
             }
         }
+
         private void StackPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var stackPanel = sender as StackPanel;
-            messageMediumViewModel.PerformActionOnMessenger((int)stackPanel.Tag);
-            
+            pinnedMessengerViewModel.performActionOnPinnedMessengers((int)stackPanel.Tag);
+
         }
     }
 }

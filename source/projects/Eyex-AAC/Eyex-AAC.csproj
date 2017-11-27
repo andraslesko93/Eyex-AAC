@@ -98,7 +98,7 @@
     <Compile Include="ViewModel\SessionViewModel.cs" />
     <Compile Include="ViewModel\Managers\Application\ActivityLogManager .cs" />
     <Compile Include="ViewModel\Managers\UI\ApplicationContext.cs" />
-    <Compile Include="ViewModel\BasicMessageMediumViewModel.cs" />
+    <Compile Include="ViewModel\PinnedMessengerViewModel.cs" />
     <Compile Include="ViewModel\ManageViewModel.cs" />
     <Compile Include="ViewModel\Managers\Network\HttpManager.cs" />
     <Compile Include="ViewModel\Managers\Network\M2qttManager.cs" />
@@ -109,20 +109,20 @@
     <Compile Include="View\AuthenticateWindow.xaml.cs">
       <DependentUpon>AuthenticateWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\BasicMessageMediumView.xaml.cs">
-      <DependentUpon>BasicMessageMediumView.xaml</DependentUpon>
+    <Compile Include="View\PinnedMessengerView.xaml.cs">
+      <DependentUpon>PinnedMessengerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ManageWindow.xaml.cs">
       <DependentUpon>ManageWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MessageMediumView.xaml.cs">
-      <DependentUpon>MessageMediumView.xaml</DependentUpon>
+    <Compile Include="View\MessengerView.xaml.cs">
+      <DependentUpon>MessengerView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\AuthenticateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\BasicMessageMediumView.xaml">
+    <Page Include="View\PinnedMessengerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -144,7 +144,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MessageMediumView.xaml">
+    <Page Include="View\MessengerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

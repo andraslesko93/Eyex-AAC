@@ -1,4 +1,5 @@
-﻿using EyexAAC.ViewModel;
+﻿using EyexAAC.Model;
+using EyexAAC.ViewModel;
 using EyeXFramework.Wpf;
 using System;
 using System.Collections.Generic;
@@ -18,30 +19,31 @@ using System.Windows.Shapes;
 namespace EyexAAC.View
 {
     /// <summary>
-    /// Interaction logic for BasicMessageMediumView.xaml
+    /// Interaction logic for MessengerView.xaml
     /// </summary>
-    public partial class BasicMessageMediumView : UserControl
+    public partial class MessengerView : UserControl
     {
-        private BasicMessageMediumViewModel messageMediumViewModel = new BasicMessageMediumViewModel();
-        public BasicMessageMediumView()
+        private MessengerViewModel messengerViewModel = new MessengerViewModel();
+
+        public MessengerView()
         {
             InitializeComponent();
         }
-        private void MessegaMedium_OnHasGazeChanged(object sender, RoutedEventArgs e)
+
+        private void Messenger_OnHasGazeChanged(object sender, RoutedEventArgs e)
         {
             var stackPanel = sender as StackPanel;
             var hasGaze = stackPanel.GetHasGaze();
             if (hasGaze)
             {
-                messageMediumViewModel.performActionOnBasicMessageMedium((int)stackPanel.Tag);
+                messengerViewModel.PerformActionOnMessenger((int)stackPanel.Tag);
             }
         }
-
         private void StackPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var stackPanel = sender as StackPanel;
-            messageMediumViewModel.performActionOnBasicMessageMedium((int)stackPanel.Tag);
-
+            messengerViewModel.PerformActionOnMessenger((int)stackPanel.Tag);
+            
         }
     }
 }

@@ -15,11 +15,11 @@ namespace EyexAAC.View
     /// </summary>
     public partial class ManageWindow : Window
     {
-        ManageViewModel manageMessageMediumViewModel;
+        ManageViewModel manageViewModel;
         public ManageWindow()
         {
-            manageMessageMediumViewModel = new ManageViewModel();
-            DataContext = manageMessageMediumViewModel;
+            manageViewModel = new ManageViewModel();
+            DataContext = manageViewModel;
             InitializeComponent();
         }
 
@@ -37,13 +37,13 @@ namespace EyexAAC.View
                 {
                     EditorGrid.Visibility = Visibility.Visible; 
                 }
-                manageMessageMediumViewModel.SetMessageMediumToFocus(messenger);
+                manageViewModel.SetMessengerToFocus(messenger);
             }
         }
 
         private void Save_Button_Click(object sender, RoutedEventArgs e)
         {
-            bool result = manageMessageMediumViewModel.SaveFocusedMessenger();
+            bool result = manageViewModel.SaveFocusedMessenger();
             if (result == true)
             {
                 InfoMessage.Content = "Successfully saved.";
@@ -68,15 +68,15 @@ namespace EyexAAC.View
 
         private void Delete_Button_Click(object sender, RoutedEventArgs e)
         {
-            manageMessageMediumViewModel.DeleteFocusedMesageMedium();
+            manageViewModel.DeleteFocusedMesageMedium();
         }
 
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (manageMessageMediumViewModel.FocusedMessenger!=null)
+            if (manageViewModel.FocusedMessenger!=null)
             {
                 EditorGrid.Visibility = System.Windows.Visibility.Visible;
-                manageMessageMediumViewModel.AddChildToFocusedMessenger();
+                manageViewModel.AddChildToFocusedMessenger();
                 InfoMessage.Content = "";
             }
             else
@@ -88,21 +88,21 @@ namespace EyexAAC.View
 
         private void Connect_Button_Click(object sender, RoutedEventArgs e)
         {
-            manageMessageMediumViewModel.Connect(Password.Password);
+            manageViewModel.Connect(Password.Password);
         }
 
         private void Disconnect_Button_Click(object sender, RoutedEventArgs e)
         {
-            manageMessageMediumViewModel.Disconnect();
+            manageViewModel.Disconnect();
         }
 
         private void Start_Sharing_Button_Click(object sender, RoutedEventArgs e)
         {
-            manageMessageMediumViewModel.ShareMessengers();
+            manageViewModel.ShareMessengers();
         }
         private void Leave_Sharing_Session_Button_Click(object sender, RoutedEventArgs e)
         {
-            manageMessageMediumViewModel.LeaveSharingSession();
+            manageViewModel.LeaveSharingSession();
         }
     }
 }

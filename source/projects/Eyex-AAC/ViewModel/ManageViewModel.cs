@@ -59,7 +59,7 @@ namespace EyexAAC.ViewModel
             }
         }
 
-        public static ObservableCollection<Messenger> MessageMediums { get; set; }
+        public static ObservableCollection<Messenger> Messengers { get; set; }
 
 
         public Messenger FocusedMessenger
@@ -77,7 +77,7 @@ namespace EyexAAC.ViewModel
             GeneralRootMessenger =  new Messenger("General messengers", MessengerType.root);
             PinnedRootMessenger =  new Messenger("Pinned messengers", MessengerType.root);
             User = SessionViewModel.User;
-            MessageMediums = new ObservableCollection<Messenger>();
+            Messengers = new ObservableCollection<Messenger>();
             SetRootObjects();
 
             M2qttManager = new M2qttManager();
@@ -97,28 +97,28 @@ namespace EyexAAC.ViewModel
             {
                  GeneralRootMessenger.AddChild(msg);
             }
-            if (!MessageMediums.Contains(GeneralRootMessenger))
+            if (!Messengers.Contains(GeneralRootMessenger))
             {
-                MessageMediums.Add(GeneralRootMessenger);
+                Messengers.Add(GeneralRootMessenger);
             }
-            foreach (Messenger msg in DatabaseContextUtility.GetBasicMessengers())
+            foreach (Messenger msg in DatabaseContextUtility.GetPinnedMessengers())
             {
                 PinnedRootMessenger.AddChild(msg);
             }
-            if (!MessageMediums.Contains(PinnedRootMessenger))
+            if (!Messengers.Contains(PinnedRootMessenger))
             {
-                MessageMediums.Add(PinnedRootMessenger);
+                Messengers.Add(PinnedRootMessenger);
             }   
         }
 
-        public void SetMessageMediumToFocus(Messenger messageMedium)
+        public void SetMessengerToFocus(Messenger messenger)
         {
-            FocusedMessenger = messageMedium;
+            FocusedMessenger = messenger;
             addInProggress = false;
         }
         public bool SaveFocusedMessenger()
         {
-            if (IsFocusMessageMediumSetted())
+            if (IsFocusedMessengerSetted())
             {
                 DatabaseContextUtility.SaveMessengerToDB(FocusedMessenger);
                 SaveToApplicationContext();
@@ -136,22 +136,22 @@ namespace EyexAAC.ViewModel
             }
             else if (FocusedMessenger.Type == MessengerType.pinned)
             {
-                SavePeggedMessenger();
+                SavePinnedMessenger();
             }
         }
 
-        private void SavePeggedMessenger()
+        private void SavePinnedMessenger()
         {
-            Messenger basicMessageMedium = BasicMessageMediumViewModel.BasicMessageMediums.SingleOrDefault(c => c.Id == FocusedMessenger.Id);
+            Messenger pinnedMessenger = PinnedMessengerViewModel.PinnedMessengers.SingleOrDefault(c => c.Id == FocusedMessenger.Id);
 
-            if (basicMessageMedium != null)
+            if (pinnedMessenger != null)
             {
-                basicMessageMedium.Name = FocusedMessenger.Name;
-                basicMessageMedium.Image = FocusedMessenger.Image;
+                pinnedMessenger.Name = FocusedMessenger.Name;
+                pinnedMessenger.Image = FocusedMessenger.Image;
             }
             else
             {
-                BasicMessageMediumViewModel.BasicMessageMediums.Add(FocusedMessenger);
+                PinnedMessengerViewModel.PinnedMessengers.Add(FocusedMessenger);
             }
         }
 
@@ -257,7 +257,7 @@ namespace EyexAAC.ViewModel
             }
             else if (FocusedMessenger.Type == MessengerType.pinned)
             {
-                BasicMessageMediumViewModel.BasicMessageMediums.Remove(BasicMessageMediumViewModel.BasicMessageMediums.SingleOrDefault(i => i.Id == FocusedMessenger.Id));
+                PinnedMessengerViewModel.PinnedMessengers.Remove(PinnedMessengerViewModel.PinnedMessengers.SingleOrDefault(i => i.Id == FocusedMessenger.Id));
             }
         }
         private void RaisePropertyChanged(string property)
@@ -270,7 +270,7 @@ namespace EyexAAC.ViewModel
             StaticPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(property));
         }
 
-        public bool IsFocusMessageMediumSetted()
+        public bool IsFocusedMessengerSetted()
         {
             if (FocusedMessenger !=null && FocusedMessenger.Name!=null && FocusedMessenger.Image!=null)
             {
