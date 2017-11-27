@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EyexAAC.ViewModel.Utils
 {
-    class PageManagerUtil : INotifyPropertyChanged
+    class PageManager : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public int MaxRowCount { get; set; }
@@ -24,15 +24,15 @@ namespace EyexAAC.ViewModel.Utils
 
         private List<int> PageNumberStack { get; set; }
 
-        private static PageManagerUtil instance = null;
+        private static PageManager instance = null;
 
-        public static PageManagerUtil Instance
+        public static PageManager Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new PageManagerUtil();
+                    instance = new PageManager();
                 }
                 return instance;
             }
@@ -69,7 +69,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        private PageManagerUtil() { }
+        private PageManager() { }
         public void SetPageManagerUtil(int maxRowCount, int maxColumnCount, ObservableCollection<Messenger> messengers, ObservableCollection<Messenger> displayedMessengers)
         {
             MessengerCache = messengers;
@@ -267,7 +267,7 @@ namespace EyexAAC.ViewModel.Utils
             if (ManageViewModel.IsSharingSession == true) {
                 return M2qttManager.SharedMessengers;
             }
-            return DatabaseContext.LoadAllGeneralMessenger();
+            return DatabaseContextUtility.LoadAllGeneralMessenger();
         }
     }
 }

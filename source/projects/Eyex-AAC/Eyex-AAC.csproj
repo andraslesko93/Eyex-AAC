@@ -90,22 +90,22 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\ActivityLogEntry.cs" />
-    <Compile Include="Model\ActivityLogContext.cs" />
+    <Compile Include="Model\DatabaseContext\ActivityLogContext.cs" />
     <Compile Include="Model\MqttMessage.cs" />
     <Compile Include="Model\MTObservableCollection.cs" />
     <Compile Include="Model\User.cs" />
-    <Compile Include="Model\UserContext.cs" />
+    <Compile Include="Model\DatabaseContext\UserContext.cs" />
     <Compile Include="ViewModel\SessionViewModel.cs" />
-    <Compile Include="ViewModel\Utils\ActivityLogManager .cs" />
-    <Compile Include="ViewModel\Utils\ApplicationContext.cs" />
+    <Compile Include="ViewModel\Managers\Application\ActivityLogManager .cs" />
+    <Compile Include="ViewModel\Managers\UI\ApplicationContext.cs" />
     <Compile Include="ViewModel\BasicMessageMediumViewModel.cs" />
     <Compile Include="ViewModel\ManageViewModel.cs" />
-    <Compile Include="ViewModel\Utils\HttpManager.cs" />
-    <Compile Include="ViewModel\Utils\M2qttManager.cs" />
-    <Compile Include="ViewModel\Utils\DatabaseContext.cs" />
-    <Compile Include="ViewModel\Utils\RenderUtil.cs" />
-    <Compile Include="ViewModel\Utils\PageManagerUtil.cs" />
-    <Compile Include="ViewModel\Utils\SentenceModeManager.cs" />
+    <Compile Include="ViewModel\Managers\Network\HttpManager.cs" />
+    <Compile Include="ViewModel\Managers\Network\M2qttManager.cs" />
+    <Compile Include="Model\DatabaseContext\DatabaseContextUtility.cs" />
+    <Compile Include="ViewModel\Managers\UI\RenderManager.cs" />
+    <Compile Include="ViewModel\Managers\UI\PageManager.cs" />
+    <Compile Include="ViewModel\Managers\Application\SentenceModeManager.cs" />
     <Compile Include="View\AuthenticateWindow.xaml.cs">
       <DependentUpon>AuthenticateWindow.xaml</DependentUpon>
     </Compile>
@@ -134,7 +134,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\MessengerContext.cs" />
+    <Compile Include="Model\DatabaseContext\MessengerContext.cs" />
     <Compile Include="ViewModel\MessengerViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

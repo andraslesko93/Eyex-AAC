@@ -57,7 +57,7 @@ namespace EyexAAC
                 MessageBoxResult result = MessageBox.Show(messageBoxText, "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
-                    DatabaseContext.SaveMessengers(PageManagerUtil.Instance.MessengerCache);
+                    DatabaseContextUtility.SaveMessengers(PageManager.Instance.MessengerCache);
                 }
             }
             ActivityLogManager.SendActivityLog();

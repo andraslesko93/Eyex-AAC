@@ -10,8 +10,8 @@ namespace EyexAAC.ViewModel
     class MessengerViewModel
     {
         public ObservableCollection<Messenger> Messengers{ get; set; }
-        public static PageManagerUtil PageManagerUtil { get; set; }
-        public static RenderUtil RenderUtil { get; set; }
+        public static PageManager PageManagerUtil { get; set; }
+        public static RenderManager RenderUtil { get; set; }
         private SpeechSynthesizer synthesizer { get; set; }
         public SentenceModeManager SentenceModeManager { get; set; }
 
@@ -25,10 +25,10 @@ namespace EyexAAC.ViewModel
         public void LoadMessengers()
         {
             AddInitData();
-            RenderUtil = new RenderUtil();
+            RenderUtil = new RenderManager();
             Messengers = ApplicationContext.Instance.Messengers;
-            PageManagerUtil = PageManagerUtil.Instance;
-            PageManagerUtil.SetPageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, DatabaseContext.LoadAllGeneralMessenger(), Messengers);
+            PageManagerUtil = PageManager.Instance;
+            PageManagerUtil.SetPageManagerUtil(RenderUtil.MaxRowCount, RenderUtil.MaxColumnCount, DatabaseContextUtility.LoadAllGeneralMessenger(), Messengers);
         }
 
         public void PerformActionOnMessenger(int id)

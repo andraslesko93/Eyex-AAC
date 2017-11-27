@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace EyexAAC.ViewModel.Utils
 {
-    class RenderUtil
+    class RenderManager
     {
         public int MaxRowCount { get; set; }
         public int MaxColumnCount { get; set; }
@@ -15,7 +15,7 @@ namespace EyexAAC.ViewModel.Utils
         public int ImageHeight { get; set; }
         public double WindowHeight { get; set; }
         public double WindowWidth { get; set; }
-        public RenderUtil()
+        public RenderManager()
         {
             WindowHeight = SystemParameters.PrimaryScreenHeight;
             WindowWidth = SystemParameters.PrimaryScreenWidth;

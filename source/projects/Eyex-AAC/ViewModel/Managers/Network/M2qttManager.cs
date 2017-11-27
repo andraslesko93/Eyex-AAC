@@ -125,7 +125,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public string ShareMessengers()
         {
-            ObservableCollection<Messenger> messengers = DatabaseContext.LoadAllGeneralMessenger();
+            ObservableCollection<Messenger> messengers = DatabaseContextUtility.LoadAllGeneralMessenger();
             //Serialize payload and create wrapper class.
             MqttMessage mqttMessage = new MqttMessage(ClientId, JsonConvert.SerializeObject(messengers), MqttMessageType.MessengerList);
             //Serialize wrapper class.
@@ -189,7 +189,7 @@ namespace EyexAAC.ViewModel.Utils
                                 ObservableCollection<Messenger> messengers = DecodePayload(mqttMessage.Payload);
                                 SharedMessengers = messengers;
                                 ManageViewModel.IsSharingSession = true;
-                                synchronizationContext.Post(x => PageManagerUtil.Instance.NewDataScope(messengers), null);
+                                synchronizationContext.Post(x => PageManager.Instance.NewDataScope(messengers), null);
                             }
                             catch (Exception ex)
                             {

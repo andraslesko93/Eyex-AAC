@@ -44,10 +44,10 @@ namespace EyexAAC.ViewModel
                 InfoMessage = USERNAME_IS_NULL_MESSAGE;
                 return false;
             }
-            var user = DatabaseContext.GetUserCredentials(UserNameInputForLogin);
+            var user = DatabaseContextUtility.GetUserCredentials(UserNameInputForLogin);
             if (user == null)
             {
-                user = DatabaseContext.CreateUser(UserNameInputForLogin);
+                user = DatabaseContextUtility.CreateUser(UserNameInputForLogin);
             }
             User = user;
             saveUserName(UserNameInputForLogin);

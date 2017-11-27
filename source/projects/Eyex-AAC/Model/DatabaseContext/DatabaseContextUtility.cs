@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace EyexAAC.ViewModel.Utils
 {
-    class DatabaseContext
+    class DatabaseContextUtility
     {
         public static User GetUserCredentials(string username)
         {

@@ -18,7 +18,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public static void SaveActivityLog()
         {
-            DatabaseContext.SaveActivityLog(ActivityLog);
+            DatabaseContextUtility.SaveActivityLog(ActivityLog);
         }
 
         public static void SendActivityLog()
@@ -26,13 +26,13 @@ namespace EyexAAC.ViewModel.Utils
             bool isSucces = HttpManager.Send(ActivityLog);
             if (isSucces)
             {
-                DatabaseContext.SetActivityLogEntriesToSent(ActivityLog);
+                DatabaseContextUtility.SetActivityLogEntriesToSent(ActivityLog);
                 ActivityLog.Clear();
             }
         }
 
         public static void LoadUnsentLog() {
-            ActivityLog = DatabaseContext.LoadUnsentActivityLogEntries();
+            ActivityLog = DatabaseContextUtility.LoadUnsentActivityLogEntries();
             //If we left some unsent log from the previous use due to the lack of internet connection.
             if (ActivityLog.Any())
             {

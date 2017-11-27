@@ -93,7 +93,7 @@ namespace EyexAAC.ViewModel
             {
                 return;
             }
-            foreach (Messenger msg in DatabaseContext.LoadAllGeneralMessenger())
+            foreach (Messenger msg in DatabaseContextUtility.LoadAllGeneralMessenger())
             {
                  GeneralRootMessenger.AddChild(msg);
             }
@@ -101,7 +101,7 @@ namespace EyexAAC.ViewModel
             {
                 MessageMediums.Add(GeneralRootMessenger);
             }
-            foreach (Messenger msg in DatabaseContext.GetBasicMessengers())
+            foreach (Messenger msg in DatabaseContextUtility.GetBasicMessengers())
             {
                 PinnedRootMessenger.AddChild(msg);
             }
@@ -120,7 +120,7 @@ namespace EyexAAC.ViewModel
         {
             if (IsFocusMessageMediumSetted())
             {
-                DatabaseContext.SaveMessengerToDB(FocusedMessenger);
+                DatabaseContextUtility.SaveMessengerToDB(FocusedMessenger);
                 SaveToApplicationContext();
                 return true;
             }
@@ -161,11 +161,11 @@ namespace EyexAAC.ViewModel
             MessageBoxResult result = MessageBox.Show(messageBoxText, "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-                DatabaseContext.SaveMessengers(PageManagerUtil.Instance.MessengerCache);
+                DatabaseContextUtility.SaveMessengers(PageManager.Instance.MessengerCache);
             }
             IsSharingSession = false;
             SetRootObjects();
-            PageManagerUtil.Instance.NewDataScope(DatabaseContext.LoadAllGeneralMessenger());
+            PageManager.Instance.NewDataScope(DatabaseContextUtility.LoadAllGeneralMessenger());
             SharingStateMessage = "You have left the sharing session.";
         }
 
@@ -181,7 +181,7 @@ namespace EyexAAC.ViewModel
             M2qttManager.Subscribe(User.MessageBrokerTopic, User.MessageBrokerSubTopic);
 
             //Store credentials for further use.
-            DatabaseContext.SaveUserToDB(User);
+            DatabaseContextUtility.SaveUserToDB(User);
         }
 
         public void Disconnect()
@@ -204,10 +204,10 @@ namespace EyexAAC.ViewModel
             else
             {
                 //Should we add the new element to the currently visible elements ?
-                if (FocusedMessenger.Parent.Id == PageManagerUtil.Instance.ParentMessenger.Id)
+                if (FocusedMessenger.Parent.Id == PageManager.Instance.ParentMessenger.Id)
                 {
                     ApplicationContext.Instance.Messengers.Add(FocusedMessenger);
-                    PageManagerUtil.Instance.AddToMessengerCache(FocusedMessenger);
+                    PageManager.Instance.AddToMessengerCache(FocusedMessenger);
                 }
             }
 
@@ -227,7 +227,7 @@ namespace EyexAAC.ViewModel
             }
 
             //Remove from database
-            DatabaseContext.DeleteFromDb(FocusedMessenger);
+            DatabaseContextUtility.DeleteFromDb(FocusedMessenger);
 
             //Remove from application context
             DeleteFromApplicationContext();
@@ -243,7 +243,7 @@ namespace EyexAAC.ViewModel
             addInProggress = false;
 
             //Recalculate next page button
-            PageManagerUtil.Instance.NextPageButtonStateCalculator();
+            PageManager.Instance.NextPageButtonStateCalculator();
         }
 
         private void DeleteFromApplicationContext()
@@ -252,7 +252,7 @@ namespace EyexAAC.ViewModel
             if (FocusedMessenger.Type == MessengerType.general)
             {
                 ApplicationContext.Instance.RemoveMessenger(FocusedMessenger);
-                PageManagerUtil.Instance.RemoveMessenger(FocusedMessenger);
+                PageManager.Instance.RemoveMessenger(FocusedMessenger);
                 //TODO Reorder in page manager.
             }
             else if (FocusedMessenger.Type == MessengerType.pinned)
