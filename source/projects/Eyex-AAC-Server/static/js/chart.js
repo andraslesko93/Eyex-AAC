@@ -3,7 +3,7 @@ var messengerNames = [];
 var messengerUsageCounts = [];
 $.ajax({
     type: "GET",
-    url: "http://127.0.0.1:5000/get_top_messengers/5",
+    url: "get_top_messengers/5",
     contentType: "application/json; charset=utf-8",
     success: function(data) {
         $.each(JSON.parse(data), function(i, obj){
