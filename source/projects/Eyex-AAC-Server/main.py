@@ -93,8 +93,9 @@ def log():
                 messenger_image_relation = MessengerXImage.query\
                     .filter(MessengerXImage.messenger_id == existing_messenger.id)\
                     .filter(MessengerXImage.image_id == existing_image.id).first()
-                messenger_image_relation.image_usage_count += 1
-                db.session.add(messenger_image_relation)
+                if messenger_image_relation is not None:
+                    messenger_image_relation.image_usage_count += 1
+                    db.session.add(messenger_image_relation)
             existing_messenger.messenger_usage_count += 1
             db.session.add(existing_messenger)
     db.session.commit()
