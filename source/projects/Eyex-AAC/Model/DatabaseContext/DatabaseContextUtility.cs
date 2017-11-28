@@ -191,10 +191,24 @@ namespace EyexAAC.ViewModel.Utils
             {
                 foreach (Messenger messenger in messengers)
                 {
+
                     messenger.Username = SessionViewModel.User.Username;
+                    saveMessengerChildren(messenger, context);
                     context.Messengers.Add(messenger);
                 }
                 context.SaveChanges();
+            }
+        }
+
+        private static void saveMessengerChildren(Messenger messenger, MessengerContext context)
+        {
+            if (messenger.HasChild) {
+                foreach (Messenger child in messenger.Children)
+                {
+                    child.Username = SessionViewModel.User.Username;
+                    context.Messengers.Add(child);
+                    saveMessengerChildren(child, context);
+                }
             }
         }
 
