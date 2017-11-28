@@ -9,7 +9,7 @@ namespace EyexAAC.ViewModel.Utils
    
     class HttpManager
     {
-        private static readonly string LOG_SERVER_URL = "http://127.0.0.1:5000/log";
+        private static readonly string LOG_SERVER_URL = "http://192.168.0.220:5000/log";
         public static bool Send(List<ActivityLogEntry> activityLog)
         {
             string activityLogAsJson = JsonConvert.SerializeObject(activityLog);
