@@ -43,7 +43,7 @@ namespace EyexAAC.ViewModel.Utils
             Password = password;
             Synthesizer = new SpeechSynthesizer();
             Synthesizer.Volume = 100;
-            Synthesizer.Rate = -2; ;
+            Synthesizer.SelectVoice("Microsoft Szabolcs");
             ClientId = SessionViewModel.GetUsername();
             Client = new MqttClient(brokerIpAddress);
             Client.MqttMsgPublishReceived += new MqttClient.MqttMsgPublishEventHandler(EventPublished);
