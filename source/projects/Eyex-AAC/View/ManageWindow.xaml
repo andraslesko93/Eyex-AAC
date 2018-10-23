@@ -122,7 +122,7 @@
                 </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Connection and sharing">
+            <TabItem Header="Connection and sharing" Visibility="Hidden">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
