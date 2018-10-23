@@ -19,7 +19,7 @@ namespace EyexAAC.ViewModel
         {
             synthesizer = new SpeechSynthesizer();
             synthesizer.Volume = 100;
-            synthesizer.Rate = -2;
+            synthesizer.SelectVoice("Microsoft Szabolcs");
             SentenceModeManager = SentenceModeManager.Instance;
         }
 
