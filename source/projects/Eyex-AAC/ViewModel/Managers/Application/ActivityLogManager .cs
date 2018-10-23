@@ -23,12 +23,12 @@ namespace EyexAAC.ViewModel.Utils
 
         public static void SendActivityLog()
         {
-            bool isSucces = HttpManager.Send(ActivityLog);
+            /*bool isSucces = HttpManager.Send(ActivityLog);
             if (isSucces)
             {
                 DatabaseContextUtility.SetActivityLogEntriesToSent(ActivityLog);
                 ActivityLog.Clear();
-            }
+            }*/
         }
 
         public static void LoadUnsentLog() {
