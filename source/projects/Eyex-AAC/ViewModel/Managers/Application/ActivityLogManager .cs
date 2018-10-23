@@ -18,7 +18,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public static void SaveActivityLog()
         {
-            DatabaseContextUtility.SaveActivityLog(ActivityLog);
+            //DatabaseContextUtility.SaveActivityLog(ActivityLog);
         }
 
         public static void SendActivityLog()
