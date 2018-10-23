@@ -75,6 +75,7 @@
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding Path = Id, Mode=OneWay}" Style="{StaticResource EyeXGazeAwareSelect}" Width="213" >
                             <Image Source="{Binding Path = Image, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="193" Height="164" Margin="10,10,10,10"/>
                         </StackPanel>
+                        <Label FontSize="20" VerticalAlignment="Bottom" HorizontalAlignment="Center" Content="{Binding Path = Name}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
