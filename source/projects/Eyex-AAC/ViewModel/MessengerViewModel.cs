@@ -55,7 +55,7 @@ namespace EyexAAC.ViewModel
         {
             using (var context = new MessengerContext())
             {
-                context.Messengers.Add(new Messenger("mese", "pack://application:,,,/Resources/Images/demo images/cartoons.jpg", SessionViewModel.User.Username));
+                context.Messengers.Add(new Messenger("rajzfilm", "pack://application:,,,/Resources/Images/demo images/cartoons.jpg", SessionViewModel.User.Username));
                 context.Messengers.Add(new Messenger("macska", "pack://application:,,,/Resources/Images/demo images/cat.jpg", SessionViewModel.User.Username));
                 context.Messengers.Add(new Messenger("sok", "pack://application:,,,/Resources/Images/demo images/many.jpg", SessionViewModel.User.Username));
                 context.Messengers.Add(new Messenger("film", "pack://application:,,,/Resources/Images/demo images/movie.jpg", SessionViewModel.User.Username));
