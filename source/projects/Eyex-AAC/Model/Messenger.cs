@@ -9,46 +9,28 @@ using Newtonsoft.Json;
 
 namespace EyexAAC.Model
 {
-    class Messenger: INotifyPropertyChanged
+    class Messenger : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string name;
         private BitmapImage image;
-        private byte[] imageAsByte;
         private ObservableCollection<Messenger> children;
         private Messenger parent;
         private string encodedImage;
 
         public int Id { get; set; }
-        [JsonIgnore]
-        public byte[] ImageAsByte
+        public string EncodedImage
         {
-            get { return imageAsByte; }
-            set
-            {
-                imageAsByte = value;
-                if (Image == null && value!=null)
-                {
-                    Image = ByteToBitmapImage(ImageAsByte);
-                    Image.Freeze();
-                }
-                if (EncodedImage == null && value != null)
-                {
-                    EncodedImage = Convert.ToBase64String(value);
-                }
-
-            }
-        }
-        [NotMapped]
-        public string EncodedImage {
             get { return encodedImage; }
             set
             {
+
                 encodedImage = value;
-                if (ImageAsByte == null && value != null)
+                if (Image == null && value != null)
                 {
-                    ImageAsByte=Convert.FromBase64String(value);
+                    Image = ByteToBitmapImage(Convert.FromBase64String(value));
+                    Image.Freeze();
                 }
             }
         }
@@ -68,13 +50,13 @@ namespace EyexAAC.Model
         [JsonIgnore]
         public BitmapImage Image
         {
-            get{ return image; }
+            get { return image; }
             set
             {
                 image = value;
-                if (BitmapImageToByte(image) != ImageAsByte)
+                if (Convert.ToBase64String(BitmapImageToByte(image)) != EncodedImage)
                 {
-                    ImageAsByte = BitmapImageToByte(image);
+                    EncodedImage = Convert.ToBase64String(BitmapImageToByte(image));
                 }
                 RaisePropertyChanged("Image");
             }
@@ -96,7 +78,7 @@ namespace EyexAAC.Model
             set
             {
                 if (value != null)
-                { 
+                {
                     children = value;
                     RaisePropertyChanged("Children");
                 }
@@ -104,15 +86,15 @@ namespace EyexAAC.Model
         }
 
         [JsonIgnore]
-        public string Username{ get; set; }
+        public string Username { get; set; }
 
-        public Messenger(){}
+        public Messenger() { }
 
         public Messenger(string name, string image, string username)
         {
             Name = name;
             Image = LoadImage(image);
-            ImageAsByte = BitmapImageToByte(Image);
+            EncodedImage = Convert.ToBase64String(BitmapImageToByte(Image));
             Children = new ObservableCollection<Messenger>();
             HasChild = false;
             Username = username;
@@ -122,7 +104,7 @@ namespace EyexAAC.Model
         {
             Name = name;
             Image = LoadImage(image);
-            ImageAsByte = BitmapImageToByte(Image);
+            EncodedImage = Convert.ToBase64String(BitmapImageToByte(Image));
             Children = new ObservableCollection<Messenger>();
             Type = type;
             HasChild = false;
@@ -175,10 +157,11 @@ namespace EyexAAC.Model
             RaisePropertyChanged("HasChild");
         }
 
-        public void RemoveChild(Messenger messenger) {
+        public void RemoveChild(Messenger messenger)
+        {
             Children.Remove(messenger);
 
-            if (Children!=null && !Children.Any())
+            if (Children != null && !Children.Any())
             {
                 HasChild = false;
                 RaisePropertyChanged("HasChild");
@@ -192,7 +175,7 @@ namespace EyexAAC.Model
             messenger.Children = Children;
             messenger.HasChild = HasChild;
             messenger.Image = Image;
-            messenger.ImageAsByte = ImageAsByte;
+            messenger.EncodedImage = EncodedImage;
             messenger.Name = Name;
             messenger.Parent = Parent;
             messenger.Type = Type;
@@ -200,8 +183,9 @@ namespace EyexAAC.Model
         }
     }
 
-    enum MessengerType {
-        general=0, //default value
+    enum MessengerType
+    {
+        general = 0, //default value
         pinned,
         root
     };
