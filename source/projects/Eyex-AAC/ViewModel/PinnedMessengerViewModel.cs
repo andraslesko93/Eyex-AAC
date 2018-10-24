@@ -19,7 +19,14 @@ namespace EyexAAC.ViewModel
         {
             synthesizer = new SpeechSynthesizer();
             synthesizer.Volume = 100;
-            synthesizer.SelectVoice("Microsoft Szabolcs");
+            try
+            {
+                synthesizer.SelectVoice("Microsoft Szabolcs");
+            }
+            catch (System.ArgumentException)
+            {
+                //The choosen voice is not installed, we use the default.
+            }
             SentenceModeManager = SentenceModeManager.Instance;
         }
 

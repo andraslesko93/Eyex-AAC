@@ -19,12 +19,19 @@ namespace EyexAAC.ViewModel
         {
             synthesizer = new SpeechSynthesizer();
             synthesizer.Volume = 100;
-            synthesizer.SelectVoice("Microsoft Szabolcs");
+            try
+            {
+                synthesizer.SelectVoice("Microsoft Szabolcs");
+            }
+            catch (System.ArgumentException)
+            {
+                //The choosen voice is not installed, we use the default.
+            }
             SentenceModeManager = SentenceModeManager.Instance;
         }
         public void LoadMessengers()
         {
-           // AddInitData();
+            AddInitData();
             RenderUtil = new RenderManager();
             Messengers = ApplicationContext.Instance.Messengers;
             PageManagerUtil = PageManager.Instance;
@@ -53,7 +60,7 @@ namespace EyexAAC.ViewModel
         }
         private void AddInitData()
         {
-            using (var context = new MessengerContext())
+            using (var context = new DatabaseContext())
             {
                 context.Messengers.Add(new Messenger("rajzfilm", "pack://application:,,,/Resources/Images/demo images/cartoons.jpg", SessionViewModel.User.Username));
                 context.Messengers.Add(new Messenger("macska", "pack://application:,,,/Resources/Images/demo images/cat.jpg", SessionViewModel.User.Username));

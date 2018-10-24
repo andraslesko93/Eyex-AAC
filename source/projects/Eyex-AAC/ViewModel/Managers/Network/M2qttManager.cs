@@ -43,7 +43,14 @@ namespace EyexAAC.ViewModel.Utils
             Password = password;
             Synthesizer = new SpeechSynthesizer();
             Synthesizer.Volume = 100;
-            Synthesizer.SelectVoice("Microsoft Szabolcs");
+            try
+            {
+                Synthesizer.SelectVoice("Microsoft Szabolcs");
+            }
+            catch (ArgumentException)
+            {
+                //The choosen voice is not installed, we use the default.
+            }
             ClientId = SessionViewModel.GetUsername();
             Client = new MqttClient(brokerIpAddress);
             Client.MqttMsgPublishReceived += new MqttClient.MqttMsgPublishEventHandler(EventPublished);
