@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 namespace EyexAAC.Model
 {
     class DatabaseContext : DbContext
@@ -16,9 +15,7 @@ namespace EyexAAC.Model
             }
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionbuilder)
-        {
-            optionbuilder.UseSqlite(@"Data Source=Sample.db");
-        }
+            => optionbuilder.UseLazyLoadingProxies().UseSqlite(@"Data Source=Sample.db");
 
         public DbSet<Messenger> Messengers { get; set; }
         public DbSet<ActivityLogEntry> ActivityLog { get; set; }

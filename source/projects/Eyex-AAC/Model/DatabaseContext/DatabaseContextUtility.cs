@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Windows.Media.Imaging;
+using Microsoft.EntityFrameworkCore;
 
 namespace EyexAAC.ViewModel.Utils
 {
@@ -76,9 +77,27 @@ namespace EyexAAC.ViewModel.Utils
             var query = from t in context.Messengers where t.Type==MessengerType.general && t.Username == SessionViewModel.User.Username select t;
                 var subset = query.ToList().Where(x => x.Parent==null);
                 ObservableCollection<Messenger> result = new ObservableCollection<Messenger>(subset);
+
+                //// Since visual studio 2015 does not support lazy loading in entity framework it had to set the images manually.
+                //foreach (Messenger messenger in result)
+                //{
+                //    messenger.Image = ByteToBitmapImage(Convert.FromBase64String(messenger.EncodedImage));
+                //}
                 return result;
             }
         }
+        //public static BitmapImage ByteToBitmapImage(byte[] array)
+        //{
+        //    using (var ms = new System.IO.MemoryStream(array))
+        //    {
+        //        var image = new BitmapImage();
+        //        image.BeginInit();
+        //        image.CacheOption = BitmapCacheOption.OnLoad;
+        //        image.StreamSource = ms;
+        //        image.EndInit();
+        //        return image;
+        //    }
+        //}
 
 
         public static ObservableCollection<Messenger> GetPinnedMessengers()
