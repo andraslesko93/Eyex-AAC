@@ -13,7 +13,7 @@ namespace EyexAAC.ViewModel.Utils
     {
         public static User GetUserCredentials(string username)
         {
-            using (var context = new UserContext())
+            using (var context = new DatabaseContext())
             {
                 var user = context.Users.Where(c => c.Username == username).SingleOrDefault();
                 return user;
@@ -22,7 +22,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public static void SaveActivityLog(List<ActivityLogEntry> ActivityLog)
         {
-            using (var context = new ActivityLogContext())
+            using (var context = new DatabaseContext())
             {
                 foreach (ActivityLogEntry activityLogEntry in ActivityLog)
                 {
@@ -34,7 +34,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public static User CreateUser(string username)
         {
-            using (var context = new UserContext())
+            using (var context = new DatabaseContext())
             {
                 User newUser = new User(username);
                 context.Users.Add(newUser);
@@ -45,7 +45,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public static List<ActivityLogEntry> LoadUnsentActivityLogEntries()
         {
-            using (var context = new ActivityLogContext())
+            using (var context = new DatabaseContext())
             {
                 var query = from t in context.ActivityLog where t.Status == ActivityLogEntryStatus.unsent select t;
                 return query.ToList();
@@ -53,7 +53,7 @@ namespace EyexAAC.ViewModel.Utils
         }
         public static void SetActivityLogEntriesToSent(List<ActivityLogEntry> activitLog)
         {
-            using (var context = new ActivityLogContext())
+            using (var context = new DatabaseContext())
             {
                 foreach(ActivityLogEntry activityLogEntry in activitLog)
                 {
@@ -71,7 +71,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public static ObservableCollection<Messenger> LoadAllGeneralMessenger()
         {
-            using (var context = new MessengerContext())
+            using (var context = new DatabaseContext())
             {
             var query = from t in context.Messengers where t.Type==MessengerType.general && t.Username == SessionViewModel.User.Username select t;
                 var subset = query.ToList().Where(x => x.Parent==null);
@@ -83,7 +83,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public static ObservableCollection<Messenger> GetPinnedMessengers()
         {
-            using (var context = new MessengerContext())
+            using (var context = new DatabaseContext())
             {
                 var messengers = context.Messengers.Where(c => c.Type == MessengerType.pinned && c.Username == SessionViewModel.User.Username).ToList();
                 return new ObservableCollection<Messenger>(messengers);
@@ -92,7 +92,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public static void DeleteFromDb(Messenger messenger)
         {
-            using (var context = new MessengerContext())
+            using (var context = new DatabaseContext())
             {
                 var result = context.Messengers.Include(c => c.Children).Include(c => c.Parent).SingleOrDefault(c => c.Id == messenger.Id);
                 if (result != null)
@@ -121,7 +121,7 @@ namespace EyexAAC.ViewModel.Utils
                 }
             }
         }
-        private static void DeleteChildrenFromDB(ObservableCollection<Messenger> messengers, MessengerContext context, List<Messenger> deleteStack)
+        private static void DeleteChildrenFromDB(ObservableCollection<Messenger> messengers, DatabaseContext context, List<Messenger> deleteStack)
         {
             if (messengers == null)
             {
@@ -137,7 +137,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public static void SaveUserToDB(User user)
         {
-            using (var context = new UserContext())
+            using (var context = new DatabaseContext())
             {
                 var result = context.Users.SingleOrDefault(c => c.Username == user.Username);
                 if (result != null)
@@ -153,7 +153,7 @@ namespace EyexAAC.ViewModel.Utils
 
         public static void SaveMessengerToDB(Messenger messenger)
         {
-            using (var context = new MessengerContext())
+            using (var context = new DatabaseContext())
             {
                 var result = context.Messengers.SingleOrDefault(c => c.Id == messenger.Id);
                 if (result != null)
@@ -187,7 +187,7 @@ namespace EyexAAC.ViewModel.Utils
         public static void SaveMessengers(ObservableCollection<Messenger> messengers)
         {
 
-            using (var context = new MessengerContext())
+            using (var context = new DatabaseContext())
             {
                 foreach (Messenger messenger in messengers)
                 {
@@ -200,7 +200,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        private static void saveMessengerChildren(Messenger messenger, MessengerContext context)
+        private static void saveMessengerChildren(Messenger messenger, DatabaseContext context)
         {
             if (messenger.HasChild) {
                 foreach (Messenger child in messenger.Children)
