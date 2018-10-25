@@ -10,12 +10,15 @@ namespace EyexAAC.Model
             if (!_created)
             {
                 _created = true;
-               // Database.EnsureDeleted();
+                // Database.EnsureDeleted();
                 Database.EnsureCreated();
             }
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionbuilder)
-            => optionbuilder.UseLazyLoadingProxies().UseSqlite(@"Data Source=Sample.db");
+          => optionbuilder.UseSqlite(@"Data Source=Sample.db");
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+            => modelBuilder.UsePropertyAccessMode(PropertyAccessMode.Property);
 
         public DbSet<Messenger> Messengers { get; set; }
         public DbSet<ActivityLogEntry> ActivityLog { get; set; }
