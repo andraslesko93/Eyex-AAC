@@ -8,12 +8,14 @@ namespace EyexAAC.Model
 {
     class MqttMessage
     {
-        public string ClientId { get; set; }
+        public string UserName { get; set; }
+        public string MessageBrokerUserName { get; set; }
         public MqttMessageType Type { get; set; }
         public string Payload { get; set; }
-        public MqttMessage(string clientId, string payload, MqttMessageType type)
+        public MqttMessage(string userName, string messageBrokerUserName, string payload, MqttMessageType type)
         {
-            ClientId = clientId;
+            UserName = userName;
+            MessageBrokerUserName = messageBrokerUserName;
             Payload = payload;
             Type = type;
         }

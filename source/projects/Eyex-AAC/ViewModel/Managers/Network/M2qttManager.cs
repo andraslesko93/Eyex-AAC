@@ -18,30 +18,21 @@ namespace EyexAAC.ViewModel.Utils
     {
         public static MqttClient Client { get; set; }
         private static MqttSettings settings { get; set; }
-        private static string ClientId { get; set; }
+        private static string ApplicationUserName { get; set; }
 
         private byte connectionResponse = 6;
 
         public static bool IsSubscribed { get; set; } = false;
-        //public static string Topic { get; set; }
         private SpeechSynthesizer Synthesizer { get; set; }
 
 
         public static ObservableCollection<Messenger> SharedMessengers { get;  set; }
 
         private SynchronizationContext synchronizationContext;
-        public void  initialize(string brokerHostName, uint port, string username, string topic, string password)
+        public void  initialize(string messageBrokerHostName, uint port, string userName, string password, string topic)
         {
             synchronizationContext = System.Threading.SynchronizationContext.Current;
-
-            settings = new MqttSettings();
-            settings.UserName = username;
-            settings.Password = password;
-            settings.BrokerHostName = brokerHostName;
-            settings.Port = port;
-            settings.UseSecureConnection = true;
-            settings.Topic = topic;
-
+            settings = new MqttSettings(messageBrokerHostName, port, true, userName, password, topic);
             Synthesizer = new SpeechSynthesizer();
             Synthesizer.Volume = 100;
             try
@@ -52,8 +43,8 @@ namespace EyexAAC.ViewModel.Utils
             {
                 //The choosen voice is not installed, we use the default.
             }
-            ClientId = SessionViewModel.GetUsername();
-            Client = new MqttClient(settings.BrokerHostName, Convert.ToInt32(settings.Port), true, null, null, MqttSslProtocols.TLSv1_2);
+            ApplicationUserName = SessionViewModel.GetUsername();
+            Client = new MqttClient(settings.MessageBrokerHostName, Convert.ToInt32(settings.Port), true, null, null, MqttSslProtocols.TLSv1_2);
             Client.MqttMsgPublishReceived += new MqttClient.MqttMsgPublishEventHandler(EventPublished);
         }
         public string Connect() {
@@ -108,14 +99,14 @@ namespace EyexAAC.ViewModel.Utils
         private void EstablishConnection() {
             try
             {
-                connectionResponse = Client.Connect(ClientId, settings.UserName, settings.Password);
+                connectionResponse = Client.Connect(ApplicationUserName, settings.MessageBrokerUserName, settings.Password);
             }
             catch { }
         }
 
         public static void Publish(string message)
         {
-            MqttMessage mqttMessage = new MqttMessage(ClientId, message, MqttMessageType.SimpleMessage);
+            MqttMessage mqttMessage = new MqttMessage(ApplicationUserName, settings.MessageBrokerUserName ,message, MqttMessageType.SimpleMessage);
             string mqttMessageAsJson = JsonConvert.SerializeObject(mqttMessage);
             Client.Publish(settings.Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 1, true);
         }
@@ -135,7 +126,7 @@ namespace EyexAAC.ViewModel.Utils
         {
             ObservableCollection<Messenger> messengers = DatabaseContextUtility.LoadAllGeneralMessenger();
             //Serialize payload and create wrapper class.
-            MqttMessage mqttMessage = new MqttMessage(ClientId, JsonConvert.SerializeObject(messengers), MqttMessageType.MessengerList);
+            MqttMessage mqttMessage = new MqttMessage(ApplicationUserName, settings.MessageBrokerUserName, JsonConvert.SerializeObject(messengers), MqttMessageType.MessengerList);
             //Serialize wrapper class.
             string mqttMessageAsJson = JsonConvert.SerializeObject(mqttMessage);
             try
@@ -174,20 +165,19 @@ namespace EyexAAC.ViewModel.Utils
             if (IsValidJson(messageAsJson))
             {
                 MqttMessage mqttMessage = JsonConvert.DeserializeObject<MqttMessage>(messageAsJson);
-                if (mqttMessage.ClientId == ClientId)
+                if (mqttMessage.MessageBrokerUserName == settings.MessageBrokerUserName)
                 {
                    return;
                 }
                 switch (mqttMessage.Type)
                 {
                     case MqttMessageType.SimpleMessage:
-                        SentenceModeManager.Instance.PublishSentence(mqttMessage.Payload, mqttMessage.ClientId);
-                        Synthesizer.SpeakAsync(mqttMessage.ClientId + " say: " + mqttMessage.Payload);
-                        Console.WriteLine(mqttMessage.ClientId + mqttMessage.Payload);
+                        SentenceModeManager.Instance.PublishSentence(mqttMessage.Payload, mqttMessage.UserName);
+                        Synthesizer.SpeakAsync(mqttMessage.UserName + " say: " + mqttMessage.Payload);
                         break;
                     case MqttMessageType.MessengerList:
 
-                        string messageBoxText = mqttMessage.ClientId + " wants to share thier messengers with you, do want to accept them? By accepting them any unsaved changes will be discarded.";
+                        string messageBoxText = mqttMessage.UserName + " wants to share thier messengers with you, do want to accept them? By accepting them any unsaved changes will be discarded.";
                         MessageBoxResult result = MessageBox.Show(messageBoxText, "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (result == MessageBoxResult.Yes)
                         {
@@ -256,7 +246,7 @@ namespace EyexAAC.ViewModel.Utils
         class MqttSettings
         {
             [Required]
-            public string BrokerHostName { get; set; }
+            public string MessageBrokerHostName { get; set; }
 
             [Required]
             public uint Port { get; set; }
@@ -265,13 +255,23 @@ namespace EyexAAC.ViewModel.Utils
             public bool UseSecureConnection { get; set; }
 
             [Required]
-            public string UserName { get; set; }
+            public string MessageBrokerUserName { get; set; }
 
             [Required]
             public string Password { get; set; }
 
             [Required]
             public string Topic { get; set; }
+
+            public MqttSettings(string messageBrokerHostName, uint port, bool useSecureConnection, string messageBrokerUserName, string password, string topic)
+            {
+                MessageBrokerHostName = messageBrokerHostName;
+                Port = port;
+                UseSecureConnection = useSecureConnection;
+                MessageBrokerUserName = messageBrokerUserName;
+                Password = password;
+                Topic = topic;
+            }
         }
     }
 }
