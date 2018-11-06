@@ -15,7 +15,7 @@ namespace EyexAAC.Model
             }
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionbuilder)
-          => optionbuilder.UseSqlite(@"Data Source=Sample.db");
+          => optionbuilder.UseSqlite(@"Data Source=EyexAAC.db");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
             => modelBuilder.UsePropertyAccessMode(PropertyAccessMode.Property);
