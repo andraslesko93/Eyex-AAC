@@ -99,7 +99,7 @@ namespace EyexAAC.ViewModel.Utils
         private void EstablishConnection() {
             try
             {
-                connectionResponse = Client.Connect(ApplicationUserName, settings.MessageBrokerUserName, settings.Password);
+                connectionResponse = Client.Connect(settings.MessageBrokerUserName, settings.MessageBrokerUserName, settings.Password);
             }
             catch { }
         }
