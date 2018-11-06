@@ -176,9 +176,9 @@ namespace EyexAAC.ViewModel
 
         public void Connect(string password)
         {
-            M2qttManager.initialize(User.MessageBrokerIpAddress, User.MessageBrokerUsername, password);
+            M2qttManager.initialize(User.MessageBrokerHostName, User.MessageBrokerPort, User.MessageBrokerUsername, User.MessageBrokerTopic, password);
             ConnectionStateMessage =M2qttManager.Connect();
-            M2qttManager.Subscribe(User.MessageBrokerTopic, User.MessageBrokerSubTopic);
+            M2qttManager.Subscribe();
 
             //Store credentials for further use.
             DatabaseContextUtility.SaveUserToDB(User);

@@ -162,9 +162,9 @@ namespace EyexAAC.ViewModel.Utils
                 if (result != null)
                 {
                     result.MessageBrokerUsername = user.MessageBrokerUsername;
-                    result.MessageBrokerIpAddress = user.MessageBrokerIpAddress;
+                    result.MessageBrokerHostName = user.MessageBrokerHostName;
+                    result.MessageBrokerPort = user.MessageBrokerPort;
                     result.MessageBrokerTopic = user.MessageBrokerTopic;
-                    result.MessageBrokerSubTopic = user.MessageBrokerSubTopic;
                     context.SaveChanges();
                 }
             }

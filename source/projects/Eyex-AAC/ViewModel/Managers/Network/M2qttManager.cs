@@ -3,10 +3,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
@@ -18,29 +16,32 @@ namespace EyexAAC.ViewModel.Utils
 {
     class M2qttManager
     {
-        private static readonly string TOPIC_SEPARATOR = "/";
-
         public static MqttClient Client { get; set; }
-        private string Username { get; set; }
-        private string Password { get; set; }
+        private static MqttSettings settings { get; set; }
         private static string ClientId { get; set; }
 
         private byte connectionResponse = 6;
 
         public static bool IsSubscribed { get; set; } = false;
-        public static string Topic { get; set; }
+        //public static string Topic { get; set; }
         private SpeechSynthesizer Synthesizer { get; set; }
 
 
         public static ObservableCollection<Messenger> SharedMessengers { get;  set; }
 
         private SynchronizationContext synchronizationContext;
-        public void  initialize(string brokerIpAddress, string username, string password)
+        public void  initialize(string brokerHostName, uint port, string username, string topic, string password)
         {
             synchronizationContext = System.Threading.SynchronizationContext.Current;
 
-            Username = username;
-            Password = password;
+            settings = new MqttSettings();
+            settings.UserName = username;
+            settings.Password = password;
+            settings.BrokerHostName = brokerHostName;
+            settings.Port = port;
+            settings.UseSecureConnection = true;
+            settings.Topic = topic;
+
             Synthesizer = new SpeechSynthesizer();
             Synthesizer.Volume = 100;
             try
@@ -52,7 +53,7 @@ namespace EyexAAC.ViewModel.Utils
                 //The choosen voice is not installed, we use the default.
             }
             ClientId = SessionViewModel.GetUsername();
-            Client = new MqttClient(brokerIpAddress);
+            Client = new MqttClient(settings.BrokerHostName, Convert.ToInt32(settings.Port), true, null, null, MqttSslProtocols.TLSv1_2);
             Client.MqttMsgPublishReceived += new MqttClient.MqttMsgPublishEventHandler(EventPublished);
         }
         public string Connect() {
@@ -107,7 +108,7 @@ namespace EyexAAC.ViewModel.Utils
         private void EstablishConnection() {
             try
             {
-                connectionResponse = Client.Connect(ClientId, Username, Password);
+                connectionResponse = Client.Connect(ClientId, settings.UserName, settings.Password);
             }
             catch { }
         }
@@ -116,7 +117,7 @@ namespace EyexAAC.ViewModel.Utils
         {
             MqttMessage mqttMessage = new MqttMessage(ClientId, message, MqttMessageType.SimpleMessage);
             string mqttMessageAsJson = JsonConvert.SerializeObject(mqttMessage);
-            Client.Publish(Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 1, true);
+            Client.Publish(settings.Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 1, true);
         }
 
         public string Disconnect()
@@ -139,7 +140,7 @@ namespace EyexAAC.ViewModel.Utils
             string mqttMessageAsJson = JsonConvert.SerializeObject(mqttMessage);
             try
             {
-                Client.Publish(Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 0, true);
+                Client.Publish(settings.Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 0, true);
                 return "Your messengers has been shared.";
             }
             catch {
@@ -147,16 +148,15 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public void Subscribe(string topic, string subtopic)
+        public void Subscribe()
         {
             if (Client == null || Client.IsConnected == false)
             {
                 return;
             }
-            Topic = topic + TOPIC_SEPARATOR + subtopic;
-            if (Topic != "")
+            if (settings.Topic != "")
             {
-                Subscribe(new string[] { Topic });
+                Subscribe(new string[] { settings.Topic });
                 IsSubscribed = true;
             }
         }
@@ -252,6 +252,26 @@ namespace EyexAAC.ViewModel.Utils
             {
                 return false;
             }
+        }
+        class MqttSettings
+        {
+            [Required]
+            public string BrokerHostName { get; set; }
+
+            [Required]
+            public uint Port { get; set; }
+
+            [Required]
+            public bool UseSecureConnection { get; set; }
+
+            [Required]
+            public string UserName { get; set; }
+
+            [Required]
+            public string Password { get; set; }
+
+            [Required]
+            public string Topic { get; set; }
         }
     }
 }

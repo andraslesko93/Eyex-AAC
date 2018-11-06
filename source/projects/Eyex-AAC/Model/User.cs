@@ -8,10 +8,9 @@ namespace EyexAAC.Model
         [Key]
         public string Username { get; set; }
         public string MessageBrokerUsername { get; set; }
-        public string MessageBrokerIpAddress { get; set; }
+        public string MessageBrokerHostName { get; set; }
+        public uint MessageBrokerPort { get; set; }
         public string MessageBrokerTopic { get; set; }
-        public string MessageBrokerSubTopic { get; set; }
-
         public User() { }
 
         public User(string username)
