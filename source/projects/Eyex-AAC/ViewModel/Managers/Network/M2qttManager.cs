@@ -1,4 +1,5 @@
-﻿using EyexAAC.Model;
+﻿using EyexAAC.Common.Utility;
+using EyexAAC.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -132,10 +133,10 @@ namespace EyexAAC.ViewModel.Utils
             try
             {
                 Client.Publish(settings.Topic, Encoding.UTF8.GetBytes(mqttMessageAsJson), 0, true);
-                return "Your messengers has been shared.";
+                return MessageIds.MESSENGERS_SHARED;
             }
             catch {
-                return "A technical error occured";
+                return MessageIds.TECHNICAL_ERROR;
             }
         }
 
@@ -173,12 +174,12 @@ namespace EyexAAC.ViewModel.Utils
                 {
                     case MqttMessageType.SimpleMessage:
                         SentenceModeManager.Instance.PublishSentence(mqttMessage.Payload, mqttMessage.UserName);
-                        Synthesizer.SpeakAsync(mqttMessage.UserName + " say: " + mqttMessage.Payload);
+                        Synthesizer.SpeakAsync(mqttMessage.UserName + MessageIds.SENDS + mqttMessage.Payload);
                         break;
                     case MqttMessageType.MessengerList:
 
-                        string messageBoxText = mqttMessage.UserName + " wants to share thier messengers with you, do want to accept them? By accepting them any unsaved changes will be discarded.";
-                        MessageBoxResult result = MessageBox.Show(messageBoxText, "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        string messageBoxText = mqttMessage.UserName + MessageIds.MESSENGER_SHARING_ASK_FOR_PERMISSION;
+                        MessageBoxResult result = MessageBox.Show(messageBoxText, MessageIds.CONFIRMATION, MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (result == MessageBoxResult.Yes)
                         {
                             try
