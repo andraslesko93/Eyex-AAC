@@ -70,28 +70,28 @@ namespace EyexAAC.ViewModel.Utils
             switch(connectionResponse)
             {
                 case 0:
-                    responseMessage = "Connected";
+                    responseMessage = MessageIds.CONNECTION_RESPONSE_CONNECTED;
                     break;
                 case 1:
-                    responseMessage = "Connection Refused, unacceptable protocol version";
+                    responseMessage = MessageIds.CONNECTION_RESPONSE_REFUSED_UNACCEPTABLE_PROTOCOL_VERSION;
                     break;
                 case 2:
-                    responseMessage = "Connection Refused, identifier rejected";
+                    responseMessage = MessageIds.CONNECTION_RESPONSE_REFUSED_IDENTIFIER_REJECTED;
                     break;
                 case 3:
-                    responseMessage = "Connection Refused, Server unavailable";
+                    responseMessage = MessageIds.CONNECTION_RESPONSE_REFUSED_SERVER_UNAVAILABLE;
                     break;
                 case 4:
-                    responseMessage = "Connection Refused, bad user name or password";
+                    responseMessage = MessageIds.CONNECTION_RESPONSE_REFUSED_NOT_AUTHORIZED;
                     break;
                 case 5:
-                    responseMessage = "Connection Refused, not authorized";
+                    responseMessage = MessageIds.CONNECTION_RESPONSE_REFUSED_BAD_USER_NAME_OR_PASSWORD;
                     break;
                 case 6:
-                    responseMessage = "Disconnected";
+                    responseMessage = MessageIds.CONNECTION_RESPONSE_REFUSED_DISCONNECTED;
                     break;
                 default:
-                    responseMessage = "Unknown error occured.";
+                    responseMessage = MessageIds.CONNECTION_RESPONSE_UNKNOWN_ERROR;
                     break;
             }
             return responseMessage;

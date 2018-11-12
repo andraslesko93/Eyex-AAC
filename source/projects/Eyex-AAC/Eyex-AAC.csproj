@@ -207,6 +207,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\Util\MessageIds.cs" />
     <Compile Include="Model\ActivityLogEntry.cs" />
     <Compile Include="Model\MqttMessage.cs" />
     <Compile Include="Model\MTObservableCollection.cs" />

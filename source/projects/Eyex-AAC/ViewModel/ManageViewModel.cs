@@ -5,6 +5,7 @@ using EyexAAC.ViewModel.Utils;
 using System.ComponentModel;
 using System;
 using System.Windows;
+using EyexAAC.Common.Utility;
 
 namespace EyexAAC.ViewModel
 {
@@ -157,7 +158,7 @@ namespace EyexAAC.ViewModel
 
         public void LeaveSharingSession()
         {
-            string messageBoxText = "If you leave sharing session, all shared messengers will be discarded, do you want to save them?";
+            string messageBoxText = MessageIds.SHARING_SESSION_SAVE_CONFIRMATION;
             MessageBoxResult result = MessageBox.Show(messageBoxText, "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
@@ -166,7 +167,7 @@ namespace EyexAAC.ViewModel
             IsSharingSession = false;
             SetRootObjects();
             PageManager.Instance.NewDataScope(DatabaseContextUtility.LoadAllGeneralMessenger());
-            SharingStateMessage = "You have left the sharing session.";
+            SharingStateMessage = MessageIds.SHARING_SESSION_LEAVE;
         }
 
         public void ShareMessengers()
@@ -177,6 +178,12 @@ namespace EyexAAC.ViewModel
         public void Connect(string password)
         {
             M2qttManager.initialize(User.MessageBrokerHostName, User.MessageBrokerPort, User.MessageBrokerUsername, password, User.MessageBrokerTopic);
+            if (string.IsNullOrEmpty(User.MessageBrokerHostName) || User.MessageBrokerPort==0 || 
+                string.IsNullOrEmpty(User.MessageBrokerUsername) || string.IsNullOrEmpty(password) || 
+                string.IsNullOrEmpty(User.MessageBrokerTopic)) {
+                ConnectionStateMessage = MessageIds.CONNECTION_FIELD_MISSING;
+                return;
+            }
             ConnectionStateMessage =M2qttManager.Connect();
             M2qttManager.Subscribe();
             //Store credentials for further use.
