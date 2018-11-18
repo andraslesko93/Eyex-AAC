@@ -56,7 +56,7 @@ namespace EyexAAC.ViewModel.Utils
             Thread t = new Thread(EstablishConnection);
             t.IsBackground = true;
             t.Start();
-            if (!t.Join(TimeSpan.FromSeconds(5)))
+            if (!t.Join(TimeSpan.FromSeconds(15)))
             {
                 t.Abort();
                 connectionResponse = 3;
