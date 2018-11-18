@@ -29,7 +29,6 @@ namespace EyexAAC.ViewModel
                 return instance;
             }
         }
-
         public Messenger GetMessengerFromApplicationContextById(int id)
         {
             var messenger = Messengers.FirstOrDefault(c => c.Id == id);
@@ -51,6 +50,23 @@ namespace EyexAAC.ViewModel
             }
             
 
+        }
+        //Recursive search to return a children if it's exist in the treestructure of the application context.
+        public Messenger findMessengerInTree(int id) {
+            return findMessenger(Messengers, id);
+        }
+
+        private Messenger findMessenger(ObservableCollection<Messenger> messengers, int id) {
+            Messenger result = messengers.SingleOrDefault(c => c.Id == id);
+            if (result == null) {
+                foreach (Messenger messenger in messengers)
+                {
+                    if (messenger.HasChild) {
+                        return findMessenger(messenger.Children, id);
+                    }
+                }
+            }
+            return result;
         }
     }
 }

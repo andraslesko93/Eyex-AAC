@@ -122,7 +122,10 @@ namespace EyexAAC.ViewModel
             if (IsFocusedMessengerSetted())
             {
                 DatabaseContextUtility.SaveMessengerToDB(FocusedMessenger);
-                SaveToApplicationContext();
+
+                //Temporary disable the saving to application context, and shortcut it with a direct refresh from db.
+                //SaveToApplicationContext();
+                PageManager.Instance.NewDataScope(DatabaseContextUtility.LoadAllGeneralMessenger());
                 return true;
             }
             addInProggress = false;
@@ -199,8 +202,11 @@ namespace EyexAAC.ViewModel
         }
 
         private void SaveGeneralMessengers() {
-            Messenger messenger = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessenger.Id);
-            //Is the element already in the currently visible elements (Edit mode)?
+
+            // Messenger messenger = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessenger.Id);
+            Messenger messenger = ApplicationContext.Instance.findMessengerInTree(FocusedMessenger.Id);
+
+            //Is the element already exists (Edit mode)?
             if (messenger != null)
             {
                 messenger.Name = FocusedMessenger.Name;
@@ -215,14 +221,14 @@ namespace EyexAAC.ViewModel
                     ApplicationContext.Instance.Messengers.Add(FocusedMessenger);
                     PageManager.Instance.AddToMessengerCache(FocusedMessenger);
                 }
+                //Add to parent.
+                Messenger parentMessenger = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessenger.Parent.Id);
+                if (parentMessenger != null)
+                {
+                    parentMessenger.AddChild(FocusedMessenger);
+                }
             }
-
-            //Add to parent.
-            Messenger parentMessenger = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessenger.Parent.Id);
-            if (parentMessenger != null)
-            {
-                parentMessenger.AddChild(FocusedMessenger);
-            }
+            
         }
 
         public void DeleteFocusedMesageMedium()
