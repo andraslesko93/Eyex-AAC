@@ -51,7 +51,7 @@ namespace EyexAAC.ViewModel
             
 
         }
-        //Recursive search to return a children if it's exist in the treestructure of the application context.
+       /* //Recursive search to return a children if it's exist in the treestructure of the application context.
         public Messenger findMessengerInTree(int id) {
             return findMessenger(Messengers, id);
         }
@@ -67,6 +67,6 @@ namespace EyexAAC.ViewModel
                 }
             }
             return result;
-        }
+        }*/
     }
 }

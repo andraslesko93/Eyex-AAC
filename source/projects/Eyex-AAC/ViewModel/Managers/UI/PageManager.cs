@@ -243,11 +243,11 @@ namespace EyexAAC.ViewModel.Utils
             CalculateButtonStates();
         }
 
-        public void AddToMessengerCache(Messenger messenger)
+        /*public void AddToMessengerCache(Messenger messenger)
         {
             MessengerCache.Add(messenger);
             NextPageButtonStateCalculator();
-        }
+        }*/
 
         public void NewDataScope(ObservableCollection<Messenger> messengerList)
         {

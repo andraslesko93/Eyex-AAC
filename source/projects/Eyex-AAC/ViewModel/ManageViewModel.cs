@@ -132,7 +132,7 @@ namespace EyexAAC.ViewModel
             return false;
         }
 
-        private void SaveToApplicationContext()
+        /*private void SaveToApplicationContext()
         {
             if (FocusedMessenger.Type == MessengerType.general)
             {
@@ -142,9 +142,9 @@ namespace EyexAAC.ViewModel
             {
                 SavePinnedMessenger();
             }
-        }
+        }*/
 
-        private void SavePinnedMessenger()
+        /*private void SavePinnedMessenger()
         {
             Messenger pinnedMessenger = PinnedMessengerViewModel.PinnedMessengers.SingleOrDefault(c => c.Id == FocusedMessenger.Id);
 
@@ -157,7 +157,7 @@ namespace EyexAAC.ViewModel
             {
                 PinnedMessengerViewModel.PinnedMessengers.Add(FocusedMessenger);
             }
-        }
+        }*/
 
         public void LeaveSharingSession()
         {
@@ -201,7 +201,7 @@ namespace EyexAAC.ViewModel
             }
         }
 
-        private void SaveGeneralMessengers() {
+        /*private void SaveGeneralMessengers() {
 
             // Messenger messenger = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessenger.Id);
             Messenger messenger = ApplicationContext.Instance.findMessengerInTree(FocusedMessenger.Id);
@@ -229,7 +229,7 @@ namespace EyexAAC.ViewModel
                 }
             }
             
-        }
+        }*/
 
         public void DeleteFocusedMesageMedium()
         {
