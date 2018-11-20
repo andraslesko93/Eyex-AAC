@@ -122,17 +122,14 @@ namespace EyexAAC.ViewModel
             if (IsFocusedMessengerSetted())
             {
                 DatabaseContextUtility.SaveMessengerToDB(FocusedMessenger);
-
-                //Temporary disable the saving to application context, and shortcut it with a direct refresh from db.
-                //SaveToApplicationContext();
-                PageManager.Instance.NewDataScope(DatabaseContextUtility.LoadAllGeneralMessenger());
+                SaveToApplicationContext();
                 return true;
             }
             addInProggress = false;
             return false;
         }
 
-        /*private void SaveToApplicationContext()
+        private void SaveToApplicationContext()
         {
             if (FocusedMessenger.Type == MessengerType.general)
             {
@@ -142,9 +139,9 @@ namespace EyexAAC.ViewModel
             {
                 SavePinnedMessenger();
             }
-        }*/
+        }
 
-        /*private void SavePinnedMessenger()
+        private void SavePinnedMessenger()
         {
             Messenger pinnedMessenger = PinnedMessengerViewModel.PinnedMessengers.SingleOrDefault(c => c.Id == FocusedMessenger.Id);
 
@@ -157,7 +154,7 @@ namespace EyexAAC.ViewModel
             {
                 PinnedMessengerViewModel.PinnedMessengers.Add(FocusedMessenger);
             }
-        }*/
+        }
 
         public void LeaveSharingSession()
         {
@@ -201,9 +198,13 @@ namespace EyexAAC.ViewModel
             }
         }
 
-        /*private void SaveGeneralMessengers() {
+        private void SaveGeneralMessengers() {
 
-            // Messenger messenger = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessenger.Id);
+            PageManager.Instance.NewDataScope(DatabaseContextUtility.LoadAllGeneralMessenger());
+            //Temporary disable the saving to application context, and shortcut it with a direct refresh from db.
+
+
+            /*// Messenger messenger = ApplicationContext.Instance.Messengers.SingleOrDefault(c => c.Id == FocusedMessenger.Id);
             Messenger messenger = ApplicationContext.Instance.findMessengerInTree(FocusedMessenger.Id);
 
             //Is the element already exists (Edit mode)?
@@ -227,9 +228,9 @@ namespace EyexAAC.ViewModel
                 {
                     parentMessenger.AddChild(FocusedMessenger);
                 }
-            }
-            
-        }*/
+            }*/
+
+        }
 
         public void DeleteFocusedMesageMedium()
         {
@@ -293,12 +294,15 @@ namespace EyexAAC.ViewModel
 
         public void AddChildToFocusedMessenger()
         {
-            if (addInProggress == true)
+            if (addInProggress == true || FocusedMessenger.Type==MessengerType.pinned)
             {
                 return;
             }
             addInProggress = true;
             Messenger child = new Messenger();
+            if (FocusedMessenger == PinnedRootMessenger) {
+                child.Type = MessengerType.pinned;
+            }
             FocusedMessenger.AddChild(child);
             FocusedMessenger = child;
         }
