@@ -80,7 +80,7 @@ namespace EyexAAC.ViewModel
             User = SessionViewModel.User;
             Messengers = new ObservableCollection<Messenger>();
             SetRootObjects();
-
+            FocusedMessenger = null;
             M2qttManager = new M2qttManager();
             if (string.IsNullOrEmpty(ConnectionStateMessage))
             {
