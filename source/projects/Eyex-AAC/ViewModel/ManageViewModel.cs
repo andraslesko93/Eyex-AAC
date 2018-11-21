@@ -75,8 +75,8 @@ namespace EyexAAC.ViewModel
 
         public ManageViewModel()
         {
-            GeneralRootMessenger =  new Messenger("General messengers", MessengerType.root);
-            PinnedRootMessenger =  new Messenger("Pinned messengers", MessengerType.root);
+            GeneralRootMessenger =  new Messenger("Általános üzenethordozók", MessengerType.root);
+            PinnedRootMessenger =  new Messenger("Rögzített üzenethordozók", MessengerType.root);
             User = SessionViewModel.User;
             Messengers = new ObservableCollection<Messenger>();
             SetRootObjects();

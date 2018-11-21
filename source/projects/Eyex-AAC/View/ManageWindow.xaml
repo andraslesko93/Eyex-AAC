@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EyexAAC.Model"
         mc:Ignorable="d"
-        Title="Settings" Height="720" Width="1280">
+        Title="Beállítások" Height="720" Width="1280">
     <Window.Resources>
         <Style x:Key="StartSharingButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="106,10,0,0" />
@@ -13,7 +13,7 @@
             <Setter Property="Background" Value="White" />
             <Setter Property="Width" Value="200"/>
             <Setter Property="Height" Value="40"/>
-            <Setter Property="Content" Value="Share messengers..."/>
+            <Setter Property="Content" Value="Üzenethordozók megosztása..."/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsSharingSession}" Value="True">
                     <Setter Property="IsEnabled" Value="False"/>
@@ -30,7 +30,7 @@
             <Setter Property="Background" Value="White" />
             <Setter Property="Width" Value="200"/>
             <Setter Property="Height" Value="40"/>
-            <Setter Property="Content" Value="Leave sharing session."/>
+            <Setter Property="Content" Value="Megosztás megszüntetése"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsSharingSession}" Value="True">
                     <Setter Property="IsEnabled" Value="True"/>
@@ -70,7 +70,7 @@
     </Window.Resources>
     <Grid>
         <TabControl>
-            <TabItem Header="Messengers">
+            <TabItem Header="Üzenethordozók">
                 <Grid>
                 <Label Style="{StaticResource SharingModeLabelStyle}"/>
                 <Grid Style="{StaticResource SharingModeGridStyle}" >
@@ -104,65 +104,65 @@
                         <Grid x:Name="EditorGrid" Visibility="Hidden" Margin="50,50,50,50">
                             <StackPanel>
                                 <StackPanel HorizontalAlignment="Left" Margin="0,0,0,20" >
-                                    <Label Content="Parent's name:" FontSize="15" Margin="0,0,0,5" />
+                                    <Label Content="Tematika:" FontSize="15" Margin="0,0,0,5" />
                                     <TextBox Text="{Binding Path = FocusedMessenger.Parent.Name, Mode=TwoWay}" Background="LightGray" IsReadOnly="True"  FontSize="15" Margin="5,0,0,10" MaxLines="1" Width="200"/>
 
-                                    <Label Content="Name:" FontSize="15" Margin="0,0,0,5" />
+                                    <Label Content="Jelentés:" FontSize="15" Margin="0,0,0,5" />
                                     <TextBox x:Name="NameTextBox" Text="{Binding Path = FocusedMessenger.Name, Mode=TwoWay}" FontSize="15" Margin="5,0,0,10" MaxLines="1" Width="200"/>
-                                    <Label Content="Image preview:"  FontSize="15" Margin="0,0,0,5" />
+                                    <Label Content="Kép előnézete:"  FontSize="15" Margin="0,0,0,5" />
                                 </StackPanel>
                                 <StackPanel HorizontalAlignment="Center">
                                     <Image x:Name="Image" Source="{Binding Path = FocusedMessenger.Image, Mode=TwoWay}" Width="193" Height="163" Margin="0,0,0,20"/>
-                                    <Button Content="Change Image" Click="Change_Button_Click" FontSize="15" Background="White"/>
+                                    <Button Content="Kép megváltoztatása" Click="Change_Button_Click" FontSize="15" Background="White"/>
                                 </StackPanel>
                             </StackPanel>
-                            <Button Content="Save" Click="Save_Button_Click" Background="White" FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                            <Button Content="Mentés" Click="Save_Button_Click" Background="White" FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
                         </Grid>
                     </Border>
                 </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Connection and sharing">
+            <TabItem Header="Hálózat és megosztás">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Width="1230" Margin="20,20,20,20">
-                        <Label Content="User credentials:" FontSize="20" Margin="0,0,0,10" />
+                        <Label Content="Felhasználói adatok:" FontSize="20" Margin="0,0,0,10" />
                         <StackPanel Margin="100,0,0,0" Width="250" HorizontalAlignment="Left">
-                            <Label Content="Username:"/>
+                            <Label Content="Felhasználó név:"/>
                             <TextBox FontSize="15" Margin="6,0,0,0" Text="{Binding User.Username}" Background="LightGray" IsReadOnly="True"/>
                         </StackPanel>
-                        <Label Content="Connection:" FontSize="20" Margin="0,30,0,0"/>
+                        <Label Content="Kapcsolat:" FontSize="20" Margin="0,30,0,0"/>
                         <StackPanel Margin="100,10,0,0" Width="250" HorizontalAlignment="Left">
-                            <Label Content="Message broker host name:"/>
+                            <Label Content="Üzenetközvetítő szerver hoszt név:"/>
                             <TextBox Margin="6,0,0,0" FontSize="15" Text="{Binding User.MessageBrokerHostName}"/>
                             
-                            <Label Content="Message broker port:"/>
+                            <Label Content="Üzenetközvetítő szerver port:"/>
                             <TextBox Margin="6,0,0,0" FontSize="15" Text="{Binding User.MessageBrokerPort}"/>
-                            
-                            <Label Content="Message broker username:"/>
+
+                            <Label Content="Üzenetközvetítő szerver felhasználónév:"/>
                             <TextBox Margin="6,0,0,0" FontSize="15" Text="{Binding User.MessageBrokerUsername}"/>
-                            
-                            <Label Content="Message broker password:"/>
+
+                            <Label Content="Üzenetközvetítő szerver jelszó:"/>
                             <PasswordBox Margin="6,0,0,0" FontSize="15" x:Name="Password"></PasswordBox>
 
-                            <Label Content="Topic:"/>
+                            <Label Content="Téma:"/>
                             <TextBox Margin="6,0,0,0" FontSize="15" Text="{Binding User.MessageBrokerTopic}"/>
                         </StackPanel>
 
                         <Grid Margin="100,30,0,0" Width="250" HorizontalAlignment="Left">
-                            <Button Background="White" Content="Disconnect"  Margin="10,0,10,0" HorizontalAlignment="Left" Click="Disconnect_Button_Click"/>
-                            <Button Background="White" Content="Connect" Margin="10,0,10,0" HorizontalAlignment="Right" Click="Connect_Button_Click"/>
+                            <Button Background="White" Content="Szétkapcsolás"  Margin="10,0,10,0" HorizontalAlignment="Left" Click="Disconnect_Button_Click"/>
+                            <Button Background="White" Content="Csatlakozás" Margin="10,0,10,0" HorizontalAlignment="Right" Click="Connect_Button_Click"/>
                         </Grid>
 
-                        <Label Content="Connection state:" FontSize="20" Margin="0,30,0,0" />
+                        <Label Content="Kapcsolat állapota:" FontSize="20" Margin="0,30,0,0" />
                         <Label Margin="100,10,0,0" Content="{Binding ConnectionStateMessage}" FontSize="15" FontWeight="Bold"/>
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="20,20,20,20" >
-                        <Label Content="Share messengers:" FontSize="20" Margin="0,0,0,10"/>
+                        <Label Content="Üzenethordozók megosztása:" FontSize="20" Margin="0,0,0,10"/>
                         <Button Style="{StaticResource StartSharingButtonStyle}" Click="Start_Sharing_Button_Click"/>
                         <Button Style="{StaticResource LeaveSharingSessionButtonStyle}" Click="Leave_Sharing_Session_Button_Click" />
                         <Label Margin="100,10,0,0" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left">

@@ -31,7 +31,7 @@ namespace EyexAAC.ViewModel
         }
         public void LoadMessengers()
         {
-            AddInitData();
+            //AddInitData();
             RenderUtil = new RenderManager();
             Messengers = ApplicationContext.Instance.Messengers;
             PageManagerUtil = PageManager.Instance;

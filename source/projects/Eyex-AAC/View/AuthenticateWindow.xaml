@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EyexAAC.View"
         mc:Ignorable="d"
-        Title="Authenticate" Height="480" Width="600">
+        Title="Belépés" Height="480" Width="600">
     <Grid>
         <Label Content="{Binding InfoMessage}" HorizontalAlignment="Center" VerticalAlignment="Top"></Label>
         <StackPanel Width="300" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Label Content="Please enter your username:"/>
+            <Label Content="Felhasználó név:"/>
             <TextBox Text="{Binding UserNameInputForLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Login" Click="Login_Button_Click" Background="White" Margin="0,20,0,0"/> 
+            <Button Content="Belépés" Click="Login_Button_Click" Background="White" Margin="0,20,0,0"/> 
         </StackPanel>
     </Grid>
 </Window>
