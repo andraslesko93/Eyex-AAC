@@ -125,6 +125,9 @@ namespace EyexAAC.ViewModel.Utils
 
         public string ShareMessengers()
         {
+            if (Client == null || !Client.IsConnected) {
+                return MessageIds.NOT_CONNECTED;
+            }
             ObservableCollection<Messenger> messengers = DatabaseContextUtility.LoadAllGeneralMessenger();
             //Serialize payload and create wrapper class.
             MqttMessage mqttMessage = new MqttMessage(ApplicationUserName, settings.MessageBrokerUserName, JsonConvert.SerializeObject(messengers), MqttMessageType.MessengerList);

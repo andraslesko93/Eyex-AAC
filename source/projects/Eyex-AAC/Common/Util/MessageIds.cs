@@ -11,6 +11,7 @@ namespace EyexAAC.Common.Utility
         public static readonly string SENDS = "üzeni";
         public static readonly string TECHNICAL_ERROR = "A technical error occured";
         public static readonly string MESSENGERS_SHARED = "Your messengers has been shared.";
+        public static readonly string NOT_CONNECTED = "You should connect first.";
         public static readonly string MESSENGER_SHARING_ASK_FOR_PERMISSION = " wants to share thier messengers with you, do want to accept them? By accepting them any unsaved changes will be discarded.";
         public static readonly string CONFIRMATION = "Confirmation";
 
