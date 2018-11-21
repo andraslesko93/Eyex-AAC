@@ -27,7 +27,14 @@ $.ajax({
               legend: { display: false },
               title: {
                 display: true,
-                text: 'Top 5 most used messengers'
+                text: 'Top 5 üzenethordozó'
+              },
+              scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
               }
             }
         });

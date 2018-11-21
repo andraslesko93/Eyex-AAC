@@ -35,9 +35,9 @@
 
     <!-- Page Content -->
     <div class="container">
-        <h3 class="mt-4">Images for messenger: "{{messenger.messenger_name}}"</h3>
+        <h3 class="mt-4">Képek a "{{messenger.messenger_name}}" üzenethordozóra</h3>
         {% for image in messenger.images %}
-             <h5>{{ loop.index }}. Used {{ usage_numbers[loop.index0]}} times.</h5>
+             <h5>{{ loop.index }}. {{ usage_numbers[loop.index0]}} esetben használva.</h5>
              <img src="data:;base64,{{ image.encoded_messenger_image }}" height="150"/>
         {% endfor %}
 
