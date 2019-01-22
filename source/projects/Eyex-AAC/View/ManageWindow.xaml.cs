@@ -94,16 +94,19 @@ namespace EyexAAC.View
         }
         private void Save_User_Button_Click(object sender, RoutedEventArgs e)
         {
-            manageViewModel.SaveUserAppearanceConnectionData();
-            if (string.IsNullOrEmpty(RowCount.Text) || int.Parse(RowCount.Text) > 3 || int.Parse(RowCount.Text) <1) {
+            int rowCount;
+            if (string.IsNullOrEmpty(RowCount.Text) || !int.TryParse(RowCount.Text, out rowCount) || rowCount > 3 || rowCount < 1) {
                 AppearanceStateMessage.Content = "Sorok száma minimum 1, maximum 3.";
                 return;
             }
-            if (string.IsNullOrEmpty(ColumnCount.Text) || int.Parse(ColumnCount.Text) > 10 || int.Parse(ColumnCount.Text) < 1)
+            int columnCount;
+            if (string.IsNullOrEmpty(ColumnCount.Text) || !int.TryParse(ColumnCount.Text, out columnCount) || columnCount > 10 || columnCount < 1)
             {
                 AppearanceStateMessage.Content = "Oszolopok száma minimum 1, maximum 10.";
                 return;
             }
+
+            manageViewModel.SaveUserAppearanceConnectionData();
             AppearanceStateMessage.Content = "Sikeres mentés!\nA változások érvénybe lépéséhez újra kell indítani az alkalmazást.";
         }
 
