@@ -187,7 +187,16 @@ namespace EyexAAC.ViewModel
             ConnectionStateMessage =M2qttManager.Connect();
             M2qttManager.Subscribe();
             //Store credentials for further use.
-            DatabaseContextUtility.SaveUserToDB(User);
+            SaveUserConnectionData();
+        }
+        public void SaveUserConnectionData()
+        {
+            DatabaseContextUtility.SaveUserConnectionDataToDB(User);
+        }
+
+        public void SaveUserAppearanceConnectionData()
+        {
+            DatabaseContextUtility.SaveUserAppearanceDataToDB(User);
         }
 
         public void Disconnect()
@@ -306,6 +315,5 @@ namespace EyexAAC.ViewModel
             FocusedMessenger.AddChild(child);
             FocusedMessenger = child;
         }
-
     }
 }

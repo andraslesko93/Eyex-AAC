@@ -4,8 +4,10 @@ using EyexAAC.ViewModel.Utils;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace EyexAAC.View
@@ -90,6 +92,20 @@ namespace EyexAAC.View
         {
             manageViewModel.Connect(Password.Password);
         }
+        private void Save_User_Button_Click(object sender, RoutedEventArgs e)
+        {
+            manageViewModel.SaveUserAppearanceConnectionData();
+            if (string.IsNullOrEmpty(RowCount.Text) || int.Parse(RowCount.Text) > 3 || int.Parse(RowCount.Text) <1) {
+                AppearanceStateMessage.Content = "Sorok száma minimum 1, maximum 3.";
+                return;
+            }
+            if (string.IsNullOrEmpty(ColumnCount.Text) || int.Parse(ColumnCount.Text) > 10 || int.Parse(ColumnCount.Text) < 1)
+            {
+                AppearanceStateMessage.Content = "Oszolopok száma minimum 1, maximum 10.";
+                return;
+            }
+            AppearanceStateMessage.Content = "Sikeres mentés!\nA változások érvénybe lépéséhez újra kell indítani az alkalmazást.";
+        }
 
         private void Disconnect_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -103,6 +119,11 @@ namespace EyexAAC.View
         private void Leave_Sharing_Session_Button_Click(object sender, RoutedEventArgs e)
         {
             manageViewModel.LeaveSharingSession();
+        }
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

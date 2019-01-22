@@ -140,7 +140,7 @@
                             <TextBox Margin="6,0,0,0" FontSize="15" Text="{Binding User.MessageBrokerHostName}"/>
                             
                             <Label Content="Üzenetközvetítő szerver port:"/>
-                            <TextBox Margin="6,0,0,0" FontSize="15" Text="{Binding User.MessageBrokerPort}"/>
+                            <TextBox PreviewTextInput="NumberValidationTextBox" Margin="6,0,0,0" FontSize="15" Text="{Binding User.MessageBrokerPort}"/>
 
                             <Label Content="Üzenetközvetítő szerver felhasználónév:"/>
                             <TextBox Margin="6,0,0,0" FontSize="15" Text="{Binding User.MessageBrokerUsername}"/>
@@ -168,6 +168,30 @@
                         <Label Margin="100,10,0,0" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left">
                             <AccessText TextWrapping="WrapWithOverflow" Text="{Binding SharingStateMessage}"/>
                         </Label>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Megjelenés">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Width="1230" Margin="20,20,20,20">
+                        <Label Content="Felhasználói adatok:" FontSize="20" Margin="0,0,0,10" />
+                        <StackPanel Margin="100,0,0,0" Width="250" HorizontalAlignment="Left">
+                            <Label Content="Felhasználó név:"/>
+                            <TextBox FontSize="15" Margin="6,0,0,0" Text="{Binding User.Username}" Background="LightGray" IsReadOnly="True"/>
+                            
+                            <Label Content="Üzenehordozó oszlopok oldalanként:"/>
+                            <TextBox x:Name="ColumnCount" PreviewTextInput="NumberValidationTextBox" FontSize="15" Margin="6,0,0,0" Text="{Binding User.MaxColumnCount}"/>
+                            <Label Content="Üzenehordozó sorok oldalanként:"/>
+                            <TextBox x:Name="RowCount" PreviewTextInput="NumberValidationTextBox" FontSize="15" Margin="6,0,0,0" Text="{Binding User.MaxRowCount}"/>
+                        </StackPanel>
+                        <Grid Margin="100,30,0,0" Width="250" HorizontalAlignment="Left">
+                            <Button Background="White" Content="Mentés"  Margin="10,0,10,0" HorizontalAlignment="Left" Click="Save_User_Button_Click"/>
+                        </Grid>
+                        <Label x:Name="AppearanceStateMessage" Margin="100,10,0,0" FontSize="15" FontWeight="Bold" />
                     </StackPanel>
                 </Grid>
             </TabItem>

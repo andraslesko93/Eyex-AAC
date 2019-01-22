@@ -135,7 +135,7 @@ namespace EyexAAC.ViewModel.Utils
             }
         }
 
-        public static void SaveUserToDB(User user)
+        public static void SaveUserConnectionDataToDB(User user)
         {
             using (var context = new DatabaseContext())
             {
@@ -146,6 +146,20 @@ namespace EyexAAC.ViewModel.Utils
                     result.MessageBrokerHostName = user.MessageBrokerHostName;
                     result.MessageBrokerPort = user.MessageBrokerPort;
                     result.MessageBrokerTopic = user.MessageBrokerTopic;
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public static void SaveUserAppearanceDataToDB(User user)
+        {
+            using (var context = new DatabaseContext())
+            {
+                var result = context.Users.SingleOrDefault(c => c.Username == user.Username);
+                if (result != null)
+                {
+                    result.MaxColumnCount = user.MaxColumnCount;
+                    result.MaxRowCount = user.MaxRowCount;
                     context.SaveChanges();
                 }
             }
